@@ -1,2 +1,2 @@
 TOC:
-- [wip-figures](assets/figures/wip-figures.md)
+- [wip-figures](src/assets/figures/wip-figures.md)
