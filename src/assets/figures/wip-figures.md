@@ -25,6 +25,14 @@ A vendor agnostic overview of Oiva
 Our current implementation
 ![102-overall-design-w-vendors.excalidraw](100-intro/102-overall-design-w-vendors.excalidraw.svg)
 
+## The problem
+
+![301-overwhelm](300-problem/301-overwhelm/301-overwhelm.png)
+
+![305-astro-shop-architecture-mermaid](300-problem/320-astro-shop-architecture-mermaid.png)
+
+![310-modern-observability-dashboard](300-problem/325-modern-observability-dashboard.png)
+
 ## System Archtecture
 
 ### Simplified Architecture
