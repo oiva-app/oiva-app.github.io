@@ -40,15 +40,36 @@ Idea: animate from least complex to most complex?
 
 
 ## Agent Architecture
-![](700-agent/750-minimal-agent.excalidraw.svg)
+
+A minimal agentic workflow
+![751-min-agent.excalidraw](700-agent/751-min-agent.excalidraw.svg)
+
+Splitting workload into more specific agents
+![752-med-agent.excalidraw](700-agent/752-med-agent.excalidraw.svg)
+
+Adding supervisor and subagents
+![753-super-agent.excalidraw](700-agent/753-super-agent.excalidraw.svg)
+
+Adding more determinism to increase likelihood of certain outcomes
+![780-another-workflow.excalidraw|359](700-agent/780-another-workflow.excalidraw.svg)
+
+### enrichAlert tool
+Before the enrichAlert tool
+![770-before-enrich-alert-tool.excalidraw](700-agent/770-before-enrich-alert-tool.excalidraw.svg)
+
+After:
+![771-after-enrich-alert-tool.excalidraw](700-agent/771-after-enrich-alert-tool.excalidraw.svg)
 
 ### tool Wrapper
 
-This diagram is currently pretty terrible and will be improved or removed
+
+
 ![](700-agent/760-improving-telagent-performance.excalidraw.svg)
 
 
 ![](700-agent/765-tool-wrapper.jpg)
+
+
 
 
 
