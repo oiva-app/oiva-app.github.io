@@ -1,0 +1,114 @@
+---
+import type { TeamMember } from "../data/team";
+
+type Props = {
+  member: TeamMember;
+};
+
+const { member } = Astro.props;
+---
+
+<article class="team-profile">
+  <div class="avatar" aria-hidden="true">{member.initials}</div>
+  <h2>{member.name}</h2>
+  <p>{member.location}</p>
+
+  <div class="profile-links">
+    {member.emailUrl && (
+      <a href={member.emailUrl} aria-label={`Email ${member.name}`}>
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M4 4h16v16H4z"></path>
+          <path d="m22 6-10 7L2 6"></path>
+        </svg>
+      </a>
+    )}
+    {member.githubUrl && (
+      <a href={member.githubUrl} aria-label={`${member.name} on GitHub`}>
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.41-4.04-1.41-.55-1.38-1.34-1.75-1.34-1.75-1.09-.75.08-.74.08-.74 1.21.09 1.85 1.24 1.85 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.83.57A12 12 0 0 0 12 .5Z"></path>
+        </svg>
+      </a>
+    )}
+    {member.linkedinUrl && (
+      <a href={member.linkedinUrl} aria-label={`${member.name} on LinkedIn`}>
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M4.98 3.5a2.5 2.5 0 1 1-.02 5 2.5 2.5 0 0 1 .02-5ZM3 9h4v12H3zM10 9h3.8v1.64h.06c.53-1 1.84-2.06 3.79-2.06 4.05 0 4.8 2.67 4.8 6.14V21h-4v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94V21h-4V9Z"></path>
+        </svg>
+      </a>
+    )}
+  </div>
+</article>
+
+<style>
+  .team-profile {
+    align-items: center;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    display: grid;
+    gap: 0.75rem;
+    justify-items: center;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .avatar {
+    align-items: center;
+    aspect-ratio: 1;
+    background: var(--color-accent-soft);
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    color: var(--color-accent-strong);
+    display: inline-flex;
+    font-size: 1.6rem;
+    font-weight: 800;
+    justify-content: center;
+    width: 7rem;
+  }
+
+  h2 {
+    font-size: 1.15rem;
+    margin: 0.5rem 0 0;
+  }
+
+  p {
+    color: var(--color-muted);
+    margin: 0;
+  }
+
+  .profile-links {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  a {
+    align-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text);
+    display: inline-flex;
+    height: 2.25rem;
+    justify-content: center;
+    width: 2.25rem;
+  }
+
+  a:hover {
+    background: var(--color-surface);
+  }
+
+  svg {
+    fill: none;
+    height: 1.1rem;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+    width: 1.1rem;
+  }
+
+  a[aria-label*="GitHub"] svg,
+  a[aria-label*="LinkedIn"] svg {
+    fill: currentColor;
+    stroke: none;
+  }
+</style>

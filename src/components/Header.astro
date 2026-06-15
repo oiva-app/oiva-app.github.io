@@ -1,9 +1,256 @@
-<header class="site-header">
-  <a href="/" class="brand">Oiva</a>
+---
+import Logo from "./Logo.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+import { githubUrl, navLinks } from "../data/navigation";
+import { sectionTitles, type HeadingLink, type SectionKey, type SectionPage } from "../lib/content";
 
-  <nav>
-    <a href="/case-study/intro/">Case Study</a>
-    <a href="/getting-started/">Getting Started</a>
-    <a href="/team/">Team</a>
-  </nav>
+type Props = {
+  section?: SectionKey;
+  sectionPages?: SectionPage[];
+  currentPageId?: string;
+  headings?: HeadingLink[];
+};
+
+const {
+  section,
+  sectionPages = [],
+  currentPageId,
+  headings = [],
+} = Astro.props;
+const pathname = Astro.url.pathname;
+const sectionTitle = section ? sectionTitles[section] : undefined;
+
+function isActive(match: string) {
+  return pathname.startsWith(match);
+}
+---
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <Logo />
+
+    <nav class="desktop-nav" aria-label="Main navigation">
+      {navLinks.map((link) => (
+        <a href={link.href} aria-current={isActive(link.match) ? "page" : undefined}>
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="header-actions">
+      <a class="icon-link desktop-github" href={githubUrl} aria-label="Oiva on GitHub">
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.41-4.04-1.41-.55-1.38-1.34-1.75-1.34-1.75-1.09-.75.08-.74.08-.74 1.21.09 1.85 1.24 1.85 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.83.57A12 12 0 0 0 12 .5Z"></path>
+        </svg>
+      </a>
+      <ThemeToggle class="desktop-theme" />
+      <button class="menu-button" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu" data-menu-button>
+        <svg class="menu-open-icon" aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M4 6h16"></path>
+          <path d="M4 12h16"></path>
+          <path d="M4 18h16"></path>
+        </svg>
+        <svg class="menu-close-icon" aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="mobile-menu" hidden data-mobile-menu>
+    <nav aria-label="Mobile navigation">
+      {navLinks.map((link) => (
+        <a href={link.href} aria-current={isActive(link.match) ? "page" : undefined}>
+          {link.label}
+        </a>
+      ))}
+      <a href={githubUrl}>GitHub</a>
+    </nav>
+
+    <div class="mobile-theme-row">
+      <span>Theme</span>
+      <ThemeToggle />
+    </div>
+
+    {sectionTitle && sectionPages.length > 0 && (
+      <nav class="mobile-section-nav" aria-label={`${sectionTitle} navigation`}>
+        <p>{sectionTitle}</p>
+        {sectionPages.map((page) => (
+          <a href={page.href} aria-current={page.id === currentPageId ? "page" : undefined}>
+            {page.label}
+          </a>
+        ))}
+      </nav>
+    )}
+
+    {headings.length > 0 && (
+      <nav class="mobile-heading-nav" aria-label="Page headings">
+        <p>On this page</p>
+        {headings.map((heading) => (
+          <a href={`#${heading.slug}`}>{heading.text}</a>
+        ))}
+      </nav>
+    )}
+  </div>
 </header>
+
+<script>
+  const button = document.querySelector("[data-menu-button]");
+  const menu = document.querySelector("[data-mobile-menu]");
+
+  if (button && menu) {
+    button.addEventListener("click", () => {
+      const isOpen = button.getAttribute("aria-expanded") === "true";
+      button.setAttribute("aria-expanded", String(!isOpen));
+      button.setAttribute("aria-label", isOpen ? "Open navigation menu" : "Close navigation menu");
+      menu.toggleAttribute("hidden", isOpen);
+    });
+  }
+</script>
+
+<style>
+  .site-header {
+    background: color-mix(in srgb, var(--color-background) 94%, transparent);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  .site-header-inner {
+    align-items: center;
+    display: flex;
+    gap: 1.5rem;
+    margin: 0 auto;
+    max-width: var(--container-wide);
+    min-height: 4.25rem;
+    padding: 0 var(--space-page);
+  }
+
+  .desktop-nav {
+    align-items: center;
+    display: flex;
+    gap: 0.25rem;
+    margin-left: 1rem;
+  }
+
+  .desktop-nav a,
+  .mobile-menu a {
+    border-radius: var(--radius-sm);
+    color: var(--color-muted);
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    text-decoration: none;
+  }
+
+  .desktop-nav a:hover,
+  .desktop-nav a[aria-current="page"],
+  .mobile-menu a:hover,
+  .mobile-menu a[aria-current="page"] {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .header-actions {
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+
+  .icon-link,
+  .menu-button {
+    align-items: center;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text);
+    display: inline-flex;
+    height: 2.25rem;
+    justify-content: center;
+    width: 2.25rem;
+  }
+
+  .icon-link:hover,
+  .menu-button:hover {
+    background: var(--color-surface-strong);
+  }
+
+  .icon-link svg {
+    fill: currentColor;
+    height: 1.125rem;
+    width: 1.125rem;
+  }
+
+  .menu-button {
+    cursor: pointer;
+    display: none;
+  }
+
+  .menu-button svg {
+    fill: none;
+    height: 1.25rem;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+    width: 1.25rem;
+  }
+
+  .menu-close-icon,
+  .menu-button[aria-expanded="true"] .menu-open-icon {
+    display: none;
+  }
+
+  .menu-button[aria-expanded="true"] .menu-close-icon {
+    display: block;
+  }
+
+  .mobile-menu {
+    border-top: 1px solid var(--color-border);
+    padding: 1rem var(--space-page) 1.5rem;
+  }
+
+  .mobile-menu nav {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .mobile-theme-row {
+    align-items: center;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+
+  .mobile-section-nav,
+  .mobile-heading-nav {
+    border-top: 1px solid var(--color-border);
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+
+  .mobile-section-nav p,
+  .mobile-heading-nav p {
+    color: var(--color-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin: 0 0 0.375rem;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 780px) {
+    .desktop-nav,
+    .desktop-github,
+    .desktop-theme {
+      display: none;
+    }
+
+    .menu-button {
+      display: inline-flex;
+    }
+  }
+</style>
