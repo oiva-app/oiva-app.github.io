@@ -1,0 +1,37 @@
+---
+import lightLogo from "../assets/logo/oiva_logo_green_02.svg";
+import darkLogo from "../assets/logo/oiva_logo_white_02.svg";
+
+const { label = "Oiva", href = "/" } = Astro.props;
+---
+
+<a class="logo" href={href} aria-label={label}>
+  <img class="logo-mark logo-mark-light" src={lightLogo.src} alt="" />
+  <img class="logo-mark logo-mark-dark" src={darkLogo.src} alt="" />
+</a>
+
+<style>
+  .logo {
+    align-items: center;
+    color: var(--color-text);
+    display: inline-flex;
+    text-decoration: none;
+  }
+
+  .logo-mark {
+    height: 2.4rem;
+    width: auto;
+  }
+
+  .logo-mark-dark {
+    display: none;
+  }
+
+  :global([data-theme="dark"]) .logo-mark-light {
+    display: none;
+  }
+
+  :global([data-theme="dark"]) .logo-mark-dark {
+    display: block;
+  }
+</style>
