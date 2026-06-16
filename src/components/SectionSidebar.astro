@@ -10,7 +10,12 @@ type Props = {
 const { title, pages, currentPageId } = Astro.props;
 ---
 
-<aside class="section-sidebar" data-section-accordion data-current-page={currentPageId}>
+<aside
+  class="section-sidebar"
+  data-section-accordion
+  data-section-accordion-navigation="animated"
+  data-current-page={currentPageId}
+>
   <nav aria-label={`${title} pages`}>
     <p class="sidebar-title">{title}</p>
     {pages.map((page) => (
@@ -201,13 +206,14 @@ const { title, pages, currentPageId } = Astro.props;
     document.querySelectorAll<HTMLElement>("[data-section-accordion]").forEach((accordion) => {
       const currentPageId = accordion.dataset.currentPage;
       const panels = accordion.querySelectorAll<PanelElement>("[data-heading-panel]");
-      const isDesktopSidebar = accordion.classList.contains("section-sidebar");
+      const hasAnimatedNavigation =
+        accordion.dataset.sectionAccordionNavigation === "animated";
 
       panels.forEach((panel) => {
         const item = panel.closest<HTMLElement>("[data-page-id]");
         const isCurrent = item?.dataset.pageId === currentPageId;
 
-        if (shouldAnimateIncoming && isDesktopSidebar && isCurrent) {
+        if (shouldAnimateIncoming && hasAnimatedNavigation && isCurrent) {
           animateIncomingPanel(panel);
           return;
         }
@@ -232,7 +238,7 @@ const { title, pages, currentPageId } = Astro.props;
           : null;
 
         if (
-          !isDesktopSidebar ||
+          !hasAnimatedNavigation ||
           !link ||
           !(event instanceof MouseEvent) ||
           !shouldHandleSidebarNavigation(event, link)
