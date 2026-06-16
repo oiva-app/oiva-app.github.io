@@ -1,27 +1,42 @@
 ---
-import type { HeadingLink, SectionPage } from "../lib/content";
+import type { SectionPage } from "../lib/content";
 
 type Props = {
   title: string;
   pages: SectionPage[];
   currentPageId: string;
-  headings: HeadingLink[];
 };
 
-const { title, pages, currentPageId, headings } = Astro.props;
+const { title, pages, currentPageId } = Astro.props;
 ---
 
-<aside class="section-sidebar">
+<aside
+  class="section-sidebar"
+  data-section-accordion
+  data-section-accordion-navigation="animated"
+  data-current-page={currentPageId}
+>
   <nav aria-label={`${title} pages`}>
     <p class="sidebar-title">{title}</p>
     {pages.map((page) => (
-      <div class="page-nav-item">
-        <a class="page-link" href={page.href} aria-current={page.id === currentPageId ? "page" : undefined}>
+      <div class="page-nav-item" data-page-id={page.id}>
+        <a
+          class="page-link"
+          href={page.href}
+          aria-current={page.id === currentPageId ? "page" : undefined}
+          data-section-page-link
+        >
           {page.label}
         </a>
-        {page.id === currentPageId && headings.length > 0 && (
-          <div class="page-headings" aria-label={`${page.label} headings`}>
-            {headings.map((heading) => (
+        {page.headings.length > 0 && (
+          <div
+            class="page-headings"
+            aria-label={`${page.label} headings`}
+            aria-hidden={page.id === currentPageId ? "false" : "true"}
+            data-open={page.id === currentPageId ? "true" : "false"}
+            data-heading-panel
+          >
+            {page.headings.map((heading) => (
               <a class="heading-link" href={`#${heading.slug}`}>{heading.text}</a>
             ))}
           </div>
@@ -30,6 +45,249 @@ const { title, pages, currentPageId, headings } = Astro.props;
     ))}
   </nav>
 </aside>
+
+<script>
+  import { navigate } from "astro:transitions/client";
+
+  type PanelElement = HTMLElement & { dataset: DOMStringMap };
+
+  const accordionNavigationDelay = 360;
+  const navigationLockFallbackDelay = accordionNavigationDelay + 8000;
+  const pendingNavigationStorageKey = "oiva-section-navigation-pending";
+  const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let isNavigating = false;
+  let navigationLockFallbackTimer: number | undefined;
+  let pendingSidebarNavigationTimer: number | undefined;
+
+  const getPendingSectionNavigation = () => {
+    try {
+      return sessionStorage.getItem(pendingNavigationStorageKey) === "true";
+    } catch {
+      return document.documentElement.dataset.sectionNavigationPending === "true";
+    }
+  };
+
+  const setPendingSectionNavigation = () => {
+    try {
+      sessionStorage.setItem(pendingNavigationStorageKey, "true");
+    } catch {
+      document.documentElement.dataset.sectionNavigationPending = "true";
+    }
+  };
+
+  const clearPendingSectionNavigation = () => {
+    try {
+      sessionStorage.removeItem(pendingNavigationStorageKey);
+    } catch {
+      // Ignore unavailable storage.
+    }
+
+    delete document.documentElement.dataset.sectionNavigationPending;
+  };
+
+  const clearPendingSidebarNavigation = () => {
+    if (pendingSidebarNavigationTimer !== undefined) {
+      window.clearTimeout(pendingSidebarNavigationTimer);
+      pendingSidebarNavigationTimer = undefined;
+    }
+  };
+
+  const releaseSidebarNavigationLock = () => {
+    isNavigating = false;
+    clearPendingSidebarNavigation();
+
+    if (navigationLockFallbackTimer !== undefined) {
+      window.clearTimeout(navigationLockFallbackTimer);
+      navigationLockFallbackTimer = undefined;
+    }
+  };
+
+  const abortSidebarNavigation = () => {
+    releaseSidebarNavigationLock();
+    clearPendingSectionNavigation();
+  };
+
+  const startSidebarNavigation = () => {
+    releaseSidebarNavigationLock();
+    isNavigating = true;
+    navigationLockFallbackTimer = window.setTimeout(
+      abortSidebarNavigation,
+      navigationLockFallbackDelay,
+    );
+  };
+
+  const shouldHandleSidebarNavigation = (event: MouseEvent, link: HTMLAnchorElement) => {
+    if (
+      link.getAttribute("aria-current") === "page" ||
+      link.hasAttribute("download") ||
+      link.dataset.astroReload !== undefined ||
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.altKey ||
+      event.shiftKey
+    ) {
+      return false;
+    }
+
+    const target = link.getAttribute("target");
+
+    if (target && target !== "_self") {
+      return false;
+    }
+
+    return new URL(link.href).origin === window.location.origin;
+  };
+
+  const getSidebarNavigationOptions = (link: HTMLAnchorElement) => ({
+    history: link.dataset.astroHistory === "replace" ? "replace" as const : "auto" as const,
+    sourceElement: link,
+  });
+
+  const setPanelOpen = (
+    panel: PanelElement,
+    isOpen: boolean,
+    animate: boolean,
+  ) => {
+    panel.dataset.open = isOpen ? "true" : "false";
+    panel.setAttribute("aria-hidden", isOpen ? "false" : "true");
+
+    if (reducedMotionQuery.matches || !animate) {
+      panel.style.height = isOpen ? "auto" : "0px";
+      return;
+    }
+
+    const startHeight = panel.offsetHeight;
+    const endHeight = isOpen ? panel.scrollHeight : 0;
+
+    panel.style.height = `${startHeight}px`;
+
+    requestAnimationFrame(() => {
+      panel.style.height = `${endHeight}px`;
+    });
+
+    const finishTransition = (event: TransitionEvent) => {
+      if (event.propertyName !== "height") {
+        return;
+      }
+
+      panel.removeEventListener("transitionend", finishTransition);
+
+      if (isOpen) {
+        panel.style.height = "auto";
+      }
+    };
+
+    panel.addEventListener("transitionend", finishTransition);
+  };
+
+  const animateIncomingPanel = (panel: PanelElement) => {
+    if (reducedMotionQuery.matches) {
+      setPanelOpen(panel, true, false);
+      return;
+    }
+
+    panel.dataset.open = "true";
+    panel.setAttribute("aria-hidden", "false");
+    panel.style.height = "0px";
+    panel.style.visibility = "hidden";
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        panel.style.visibility = "";
+        setPanelOpen(panel, true, true);
+      });
+    });
+  };
+
+  const initializeSectionAccordions = () => {
+    releaseSidebarNavigationLock();
+    const shouldAnimateIncoming = getPendingSectionNavigation();
+
+    document.querySelectorAll<HTMLElement>("[data-section-accordion]").forEach((accordion) => {
+      const currentPageId = accordion.dataset.currentPage;
+      const panels = accordion.querySelectorAll<PanelElement>("[data-heading-panel]");
+      const hasAnimatedNavigation =
+        accordion.dataset.sectionAccordionNavigation === "animated";
+
+      panels.forEach((panel) => {
+        const item = panel.closest<HTMLElement>("[data-page-id]");
+        const isCurrent = item?.dataset.pageId === currentPageId;
+
+        if (shouldAnimateIncoming && hasAnimatedNavigation && isCurrent) {
+          animateIncomingPanel(panel);
+          return;
+        }
+
+        setPanelOpen(
+          panel,
+          isCurrent,
+          accordion.dataset.accordionReady === "true",
+        );
+      });
+
+      if (accordion.dataset.accordionReady === "true") {
+        return;
+      }
+
+      accordion.dataset.accordionReady = "true";
+
+      accordion.addEventListener("click", (event) => {
+        const target = event.target;
+        const link = target instanceof Element
+          ? target.closest<HTMLAnchorElement>("[data-section-page-link]")
+          : null;
+
+        if (
+          !hasAnimatedNavigation ||
+          !link ||
+          !(event instanceof MouseEvent) ||
+          !shouldHandleSidebarNavigation(event, link)
+        ) {
+          return;
+        }
+
+        event.preventDefault();
+
+        if (isNavigating) {
+          return;
+        }
+
+        startSidebarNavigation();
+        setPendingSectionNavigation();
+
+        panels.forEach((panel) => {
+          if (panel.dataset.open === "true") {
+            setPanelOpen(panel, false, true);
+          }
+        });
+
+        pendingSidebarNavigationTimer = window.setTimeout(() => {
+          pendingSidebarNavigationTimer = undefined;
+
+          try {
+            navigate(link.href, getSidebarNavigationOptions(link));
+          } catch (error) {
+            abortSidebarNavigation();
+            throw error;
+          }
+        }, reducedMotionQuery.matches ? 0 : accordionNavigationDelay);
+      });
+    });
+
+    if (shouldAnimateIncoming) {
+      clearPendingSectionNavigation();
+    }
+  };
+
+  initializeSectionAccordions();
+
+  if (document.documentElement.dataset.sectionAccordionListenerReady !== "true") {
+    document.documentElement.dataset.sectionAccordionListenerReady = "true";
+    document.addEventListener("astro:page-load", initializeSectionAccordions);
+  }
+</script>
 
 <style>
   .section-sidebar {
@@ -82,6 +340,19 @@ const { title, pages, currentPageId, headings } = Astro.props;
     gap: 0.05rem;
     margin: 0 0 0.45rem 0.95rem;
     min-width: 0;
+    overflow: hidden;
+    transition: height 360ms ease, opacity 280ms ease;
+  }
+
+  .page-headings[data-open="false"] {
+    height: 0;
+    margin-bottom: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .page-headings[data-open="true"] {
+    opacity: 1;
   }
 
   .heading-link {
@@ -100,6 +371,12 @@ const { title, pages, currentPageId, headings } = Astro.props;
   @media (max-width: 900px) {
     .section-sidebar {
       display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page-headings {
+      transition: none;
     }
   }
 </style>

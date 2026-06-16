@@ -5,26 +5,29 @@ import {
   getSectionEntries,
   mapSectionPages,
   toHeadingLinks,
+  type SectionPage,
 } from "../../lib/content";
 
 export async function getStaticPaths() {
   const entries = await getSectionEntries("caseStudy");
+  const pages = mapSectionPages("caseStudy", entries);
 
   return entries.map((entry) => ({
     params: { slug: entry.id },
-    props: { entry, entries },
+    props: { entry, pages },
   }));
 }
 
 type Props = {
   entry: CollectionEntry<"caseStudy">;
-  entries: CollectionEntry<"caseStudy">[];
+  pages: SectionPage[];
 };
 
-const { entry, entries } = Astro.props;
+const { entry, pages } = Astro.props;
 const { Content, headings } = await render(entry);
-const pages = mapSectionPages("caseStudy", entries);
-const headingLinks = toHeadingLinks(headings);
+const pagesWithCurrentHeadings = pages.map((page) => page.id === entry.id
+  ? { ...page, headings: toHeadingLinks(headings) }
+  : page);
 ---
 
 <ContentPageLayout
@@ -32,8 +35,7 @@ const headingLinks = toHeadingLinks(headings);
   title={entry.data.title}
   description={entry.data.description}
   currentPageId={entry.id}
-  pages={pages}
-  headings={headingLinks}
+  pages={pagesWithCurrentHeadings}
 >
   <Content />
 </ContentPageLayout>

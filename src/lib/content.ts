@@ -10,6 +10,7 @@ export type SectionPage = {
   description: string;
   id: string;
   order: number;
+  headings: HeadingLink[];
 };
 
 export type HeadingLink = {
@@ -51,6 +52,7 @@ export function mapSectionPages(
     description: entry.data.description,
     id: entry.id,
     order: entry.data.order,
+    headings: [],
   }));
 }
 
