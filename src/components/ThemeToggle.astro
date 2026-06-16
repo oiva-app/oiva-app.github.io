@@ -20,11 +20,17 @@ const { class: className = "" } = Astro.props;
 </button>
 
 <script>
-  const getStoredTheme = () => localStorage.getItem("theme");
-  const getSystemTheme = () =>
+  type Theme = "dark" | "light";
+
+  const getStoredTheme = (): Theme | null => {
+    const theme = localStorage.getItem("theme");
+    return theme === "dark" || theme === "light" ? theme : null;
+  };
+
+  const getSystemTheme = (): Theme =>
     window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 
-  const applyTheme = (theme) => {
+  const applyTheme = (theme: Theme) => {
     document.documentElement.dataset.theme = theme;
     document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
       button.setAttribute(
