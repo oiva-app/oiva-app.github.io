@@ -4,25 +4,26 @@ import ContentPageLayout from "../../components/ContentPageLayout.astro";
 import {
   getSectionEntries,
   mapSectionPagesWithHeadings,
+  type SectionPage,
 } from "../../lib/content";
 
 export async function getStaticPaths() {
   const entries = await getSectionEntries("gettingStarted");
+  const pages = await mapSectionPagesWithHeadings("gettingStarted", entries);
 
   return entries.map((entry) => ({
     params: { slug: entry.id },
-    props: { entry, entries },
+    props: { entry, pages },
   }));
 }
 
 type Props = {
   entry: CollectionEntry<"gettingStarted">;
-  entries: CollectionEntry<"gettingStarted">[];
+  pages: SectionPage[];
 };
 
-const { entry, entries } = Astro.props;
+const { entry, pages } = Astro.props;
 const { Content } = await render(entry);
-const pages = await mapSectionPagesWithHeadings("gettingStarted", entries);
 ---
 
 <ContentPageLayout
