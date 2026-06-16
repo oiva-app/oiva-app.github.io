@@ -42,9 +42,61 @@ const { title, pages, currentPageId } = Astro.props;
 </aside>
 
 <script>
+  import { navigate } from "astro:transitions/client";
+
   type PanelElement = HTMLElement & { dataset: DOMStringMap };
 
+  const accordionNavigationDelay = 360;
+  const pendingNavigationStorageKey = "oiva-section-navigation-pending";
   const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  const getPendingSectionNavigation = () => {
+    try {
+      return sessionStorage.getItem(pendingNavigationStorageKey) === "true";
+    } catch {
+      return document.documentElement.dataset.sectionNavigationPending === "true";
+    }
+  };
+
+  const setPendingSectionNavigation = () => {
+    try {
+      sessionStorage.setItem(pendingNavigationStorageKey, "true");
+    } catch {
+      document.documentElement.dataset.sectionNavigationPending = "true";
+    }
+  };
+
+  const clearPendingSectionNavigation = () => {
+    try {
+      sessionStorage.removeItem(pendingNavigationStorageKey);
+    } catch {
+      delete document.documentElement.dataset.sectionNavigationPending;
+    }
+  };
+
+  const shouldHandleSidebarNavigation = (event: MouseEvent, link: HTMLAnchorElement) => {
+    if (
+      link.getAttribute("aria-current") === "page" ||
+      link.hasAttribute("download") ||
+      link.dataset.astroReload !== undefined ||
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.altKey ||
+      event.shiftKey
+    ) {
+      return false;
+    }
+
+    const target = link.getAttribute("target");
+
+    if (target && target !== "_self") {
+      return false;
+    }
+
+    return new URL(link.href).origin === window.location.origin;
+  };
 
   const setPanelOpen = (
     panel: PanelElement,
@@ -84,21 +136,48 @@ const { title, pages, currentPageId } = Astro.props;
     panel.addEventListener("transitionend", finishTransition);
   };
 
+  const animateIncomingPanel = (panel: PanelElement) => {
+    if (reducedMotionQuery.matches) {
+      setPanelOpen(panel, true, false);
+      return;
+    }
+
+    panel.dataset.open = "true";
+    panel.setAttribute("aria-hidden", "false");
+    panel.style.height = "0px";
+    panel.style.visibility = "hidden";
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        panel.style.visibility = "";
+        setPanelOpen(panel, true, true);
+      });
+    });
+  };
+
   const initializeSectionAccordions = () => {
-    const shouldAnimateIncoming = document.documentElement.dataset.sectionNavigationPending === "true";
+    const shouldAnimateIncoming = getPendingSectionNavigation();
+    let didScheduleIncomingAnimation = false;
 
     document.querySelectorAll<HTMLElement>("[data-section-accordion]").forEach((accordion) => {
       const currentPageId = accordion.dataset.currentPage;
       const panels = accordion.querySelectorAll<PanelElement>("[data-heading-panel]");
+      const isDesktopSidebar = accordion.classList.contains("section-sidebar");
 
       panels.forEach((panel) => {
         const item = panel.closest<HTMLElement>("[data-page-id]");
         const isCurrent = item?.dataset.pageId === currentPageId;
+
+        if (shouldAnimateIncoming && isDesktopSidebar && isCurrent) {
+          animateIncomingPanel(panel);
+          didScheduleIncomingAnimation = true;
+          return;
+        }
+
         setPanelOpen(
           panel,
           isCurrent,
-          accordion.dataset.accordionReady === "true" || shouldAnimateIncoming,
-          shouldAnimateIncoming && isCurrent,
+          accordion.dataset.accordionReady === "true",
         );
       });
 
@@ -114,22 +193,33 @@ const { title, pages, currentPageId } = Astro.props;
           ? target.closest<HTMLAnchorElement>("[data-section-page-link]")
           : null;
 
-        if (!link || link.getAttribute("aria-current") === "page" || event.defaultPrevented) {
+        if (
+          !isDesktopSidebar ||
+          !link ||
+          !(event instanceof MouseEvent) ||
+          !shouldHandleSidebarNavigation(event, link)
+        ) {
           return;
         }
 
-        document.documentElement.dataset.sectionNavigationPending = "true";
+        event.preventDefault();
+        setPendingSectionNavigation();
 
         panels.forEach((panel) => {
           if (panel.dataset.open === "true") {
             setPanelOpen(panel, false, true);
           }
         });
+
+        window.setTimeout(
+          () => navigate(link.href, { sourceElement: link }),
+          reducedMotionQuery.matches ? 0 : accordionNavigationDelay,
+        );
       });
     });
 
-    if (shouldAnimateIncoming) {
-      delete document.documentElement.dataset.sectionNavigationPending;
+    if (shouldAnimateIncoming && didScheduleIncomingAnimation) {
+      clearPendingSectionNavigation();
     }
   };
 
@@ -193,7 +283,7 @@ const { title, pages, currentPageId } = Astro.props;
     margin: 0 0 0.45rem 0.95rem;
     min-width: 0;
     overflow: hidden;
-    transition: height 180ms ease, opacity 180ms ease;
+    transition: height 360ms ease, opacity 280ms ease;
   }
 
   .page-headings[data-open="false"] {

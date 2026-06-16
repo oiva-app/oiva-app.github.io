@@ -309,7 +309,7 @@ function isActive(match: string) {
     margin: 0 0 0.45rem 0.95rem;
     min-width: 0;
     overflow: hidden;
-    transition: height 180ms ease, opacity 180ms ease;
+    transition: none;
   }
 
   .mobile-page-headings[data-open="false"] {
@@ -346,9 +346,4 @@ function isActive(match: string) {
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .mobile-page-headings {
-      transition: none;
-    }
-  }
 </style>
