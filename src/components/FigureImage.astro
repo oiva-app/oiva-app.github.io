@@ -5,11 +5,10 @@ type Props = {
   src: ImageMetadata | string;
   alt: string;
   caption?: string;
-  sourceLabel?: string;
   sourceUrl?: string;
 };
 
-const { src, alt, caption, sourceLabel = "Open full size", sourceUrl } = Astro.props;
+const { src, alt, caption, sourceUrl } = Astro.props;
 const fullSizeHref = sourceUrl ?? (typeof src === "string" ? src : src.src);
 const isSvg = typeof src !== "string" && src.format === "svg";
 ---
@@ -22,10 +21,9 @@ const isSvg = typeof src !== "string" && src.format === "svg";
       <Image src={src} alt={alt} widths={[640, 960, 1280, 1600]} sizes="(max-width: 900px) 100vw, 760px" />
     )}
   </a>
-  {(caption || sourceLabel) && (
+  {caption && (
     <figcaption>
-      {caption && <span>{caption}</span>}
-      <a href={fullSizeHref}>{sourceLabel}</a>
+      <span>{caption}</span>
     </figcaption>
   )}
 </figure>
