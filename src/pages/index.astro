@@ -1,17 +1,202 @@
 ---
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Oiva"
+  bareTitle
+  description="Oiva is an open-source, self-hosted service for AI-assisted incident investigation."
+>
+  <section class="hero">
+    <div class="hero-content">
+      <p class="eyebrow">Open-source incident investigation</p>
+      <h1>Oiva</h1>
+      <p>
+        Oiva turns production alerts into evidence-backed investigation reports by combining observability data, codebase context, and team delivery workflows.
+      </p>
+      <div class="button-row">
+        <a class="button button-primary" href="/case-study/overview/">Read the case study</a>
+        <a class="button button-secondary" href="/getting-started/overview/">Get started</a>
+      </div>
+    </div>
+    <section class="flow-panel" aria-label="Oiva workflow overview">
+      <div>
+        <span>1</span>
+        <strong>Alert received</strong>
+        <p>Honeycomb-style alert payload starts the workflow.</p>
+      </div>
+      <div>
+        <span>2</span>
+        <strong>Investigation launched</strong>
+        <p>Agents gather telemetry and codebase evidence.</p>
+      </div>
+      <div>
+        <span>3</span>
+        <strong>Report delivered</strong>
+        <p>Slack updates and final findings reach the team.</p>
+      </div>
+    </section>
+  </section>
+
+  <section class="overview-grid" aria-label="Oiva capabilities">
+    <article>
+      <h2>Investigates alerts</h2>
+      <p>Placeholder copy for how Oiva enriches noisy production alerts with practical context.</p>
+    </article>
+    <article>
+      <h2>Connects signals</h2>
+      <p>Placeholder copy for combining observability data with repository and codebase information.</p>
+    </article>
+    <article>
+      <h2>Delivers results</h2>
+      <p>Placeholder copy for live Slack updates, final reports, and reviewable investigation output.</p>
+    </article>
+    <article>
+      <h2>Runs self-hosted</h2>
+      <p>Placeholder copy for the Mastra, OpenTelemetry, Postgres, Terraform, and AWS architecture.</p>
+    </article>
+  </section>
+
+  <section class="next-step">
+    <p class="eyebrow">Next step</p>
+    <h2>Start with the structure, then go deeper.</h2>
+    <p>This first site pass uses placeholder copy while preserving the planned routes, navigation, and content architecture.</p>
+    <div class="button-row">
+      <a class="button button-primary" href="/case-study/overview/">Case Study</a>
+      <a class="button button-secondary" href="/getting-started/overview/">Getting Started</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr);
+    margin: 0 auto;
+    max-width: var(--container-wide);
+    min-height: calc(100vh - 4.25rem);
+    padding: clamp(4rem, 9vw, 7rem) var(--space-page) 3rem;
+  }
+
+  .hero-content {
+    align-self: center;
+  }
+
+  h1 {
+    font-size: clamp(4rem, 14vw, 9rem);
+    letter-spacing: 0;
+    line-height: 0.9;
+    margin: 0;
+  }
+
+  .hero-content > p:not(.eyebrow) {
+    color: var(--color-muted);
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+    line-height: 1.55;
+    margin: 1.5rem 0 2rem;
+    max-width: 42rem;
+  }
+
+  .flow-panel {
+    align-self: center;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    display: grid;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .flow-panel div {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+  }
+
+  .flow-panel span {
+    align-items: center;
+    background: var(--color-accent-strong);
+    border-radius: 999px;
+    color: var(--color-background);
+    display: inline-flex;
+    font-size: 0.8rem;
+    font-weight: 800;
+    height: 1.75rem;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    width: 1.75rem;
+  }
+
+  .flow-panel strong {
+    display: block;
+    font-size: 1.1rem;
+  }
+
+  .flow-panel p {
+    color: var(--color-muted);
+    margin: 0.35rem 0 0;
+  }
+
+  .overview-grid,
+  .next-step {
+    margin: 0 auto;
+    max-width: var(--container-wide);
+    padding: var(--space-section) var(--space-page) 0;
+  }
+
+  .overview-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .overview-grid article {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 1.25rem;
+  }
+
+  .overview-grid h2,
+  .next-step h2 {
+    margin: 0 0 0.75rem;
+  }
+
+  .overview-grid p,
+  .next-step p:not(.eyebrow) {
+    color: var(--color-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .next-step {
+    max-width: 760px;
+    text-align: center;
+  }
+
+  .next-step .button-row {
+    justify-content: center;
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 920px) {
+    .hero {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .overview-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 620px) {
+    .overview-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

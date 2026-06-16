@@ -1,0 +1,105 @@
+---
+import type { HeadingLink, SectionPage } from "../lib/content";
+
+type Props = {
+  title: string;
+  pages: SectionPage[];
+  currentPageId: string;
+  headings: HeadingLink[];
+};
+
+const { title, pages, currentPageId, headings } = Astro.props;
+---
+
+<aside class="section-sidebar">
+  <nav aria-label={`${title} pages`}>
+    <p class="sidebar-title">{title}</p>
+    {pages.map((page) => (
+      <div class="page-nav-item">
+        <a class="page-link" href={page.href} aria-current={page.id === currentPageId ? "page" : undefined}>
+          {page.label}
+        </a>
+        {page.id === currentPageId && headings.length > 0 && (
+          <div class="page-headings" aria-label={`${page.label} headings`}>
+            {headings.map((heading) => (
+              <a class="heading-link" href={`#${heading.slug}`}>{heading.text}</a>
+            ))}
+          </div>
+        )}
+      </div>
+    ))}
+  </nav>
+</aside>
+
+<style>
+  .section-sidebar {
+    align-self: start;
+    display: grid;
+    max-height: calc(100vh - 6rem);
+    overflow: auto;
+    position: sticky;
+    top: 5.5rem;
+  }
+
+  nav {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .sidebar-title {
+    color: var(--color-muted);
+    font-size: 0.78rem;
+    font-weight: 800;
+    margin: 0 0 0.35rem;
+    text-transform: uppercase;
+  }
+
+  .page-nav-item {
+    display: grid;
+    gap: 0.125rem;
+    min-width: 0;
+  }
+
+  a {
+    border-radius: var(--radius-sm);
+    color: var(--color-muted);
+    display: block;
+    font-size: 0.94rem;
+    font-weight: 600;
+    line-height: 1.35;
+    padding: 0.45rem 0.6rem;
+    text-decoration: none;
+  }
+
+  a:hover,
+  a[aria-current="page"] {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .page-headings {
+    display: grid;
+    gap: 0.05rem;
+    margin: 0 0 0.45rem 0.95rem;
+    min-width: 0;
+  }
+
+  .heading-link {
+    border-radius: calc(var(--radius-sm) * 0.75);
+    color: var(--color-muted);
+    font-size: 0.84rem;
+    font-weight: 600;
+    padding: 0.28rem 0.45rem;
+  }
+
+  .heading-link:hover {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  @media (max-width: 900px) {
+    .section-sidebar {
+      display: none;
+    }
+  }
+</style>

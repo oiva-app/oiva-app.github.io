@@ -1,0 +1,59 @@
+---
+import Logo from "./Logo.astro";
+import { githubUrl } from "../data/navigation";
+---
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <Logo />
+    <p>Open-source, self-hosted AI-assisted incident investigation.</p>
+    <nav aria-label="Footer navigation">
+      <a href={githubUrl}>GitHub</a>
+      <a href="/team/">Team</a>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+    margin-top: var(--space-section);
+  }
+
+  .site-footer-inner {
+    align-items: center;
+    display: flex;
+    gap: 1.25rem;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: var(--container-wide);
+    padding: 1.5rem var(--space-page);
+  }
+
+  p {
+    color: var(--color-muted);
+    margin: 0;
+  }
+
+  nav {
+    display: flex;
+    gap: 1rem;
+  }
+
+  a {
+    color: var(--color-muted);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--color-text);
+  }
+
+  @media (max-width: 720px) {
+    .site-footer-inner {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>

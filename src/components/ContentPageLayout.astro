@@ -1,0 +1,146 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionSidebar from "./SectionSidebar.astro";
+import {
+  getAdjacentPages,
+  sectionTitles,
+  type HeadingLink,
+  type SectionKey,
+  type SectionPage,
+} from "../lib/content";
+
+type Props = {
+  section: SectionKey;
+  title: string;
+  description: string;
+  currentPageId: string;
+  pages: SectionPage[];
+  headings: HeadingLink[];
+};
+
+const { section, title, description, currentPageId, pages, headings } = Astro.props;
+const sectionTitle = sectionTitles[section];
+const { previous, next } = getAdjacentPages(pages, currentPageId);
+const hasPager = Boolean(previous || next);
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  section={section}
+  sectionPages={pages}
+  currentPageId={currentPageId}
+  headings={headings}
+>
+  <div class="content-shell">
+    <SectionSidebar title={sectionTitle} pages={pages} currentPageId={currentPageId} headings={headings} />
+
+    <article class="content-article">
+      <p class="eyebrow">{sectionTitle}</p>
+      <h1>{title}</h1>
+      <p class="description">{description}</p>
+      <div class="prose">
+        <slot />
+      </div>
+
+      {hasPager && (
+        <nav class="pager" aria-label="Previous and next pages">
+          {previous && (
+            <a class="pager-link" href={previous.href}>
+              <span>Previous</span>
+              <strong>{previous.label}</strong>
+            </a>
+          )}
+
+          {next && (
+            <a class="pager-link pager-link-next" href={next.href}>
+              <span>Next</span>
+              <strong>{next.label}</strong>
+            </a>
+          )}
+        </nav>
+      )}
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .content-shell {
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: minmax(13rem, 16rem) minmax(0, var(--container-article));
+    margin: 0 auto;
+    max-width: var(--container-wide);
+    padding: 3rem var(--space-page) 0;
+  }
+
+  .content-article {
+    min-width: 0;
+  }
+
+  h1 {
+    font-size: clamp(2.1rem, 5vw, 3.8rem);
+    letter-spacing: 0;
+    line-height: 1.05;
+    margin: 0;
+  }
+
+  .description {
+    color: var(--color-muted);
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    line-height: 1.55;
+    margin: 1rem 0 2rem;
+  }
+
+  .pager {
+    border-top: 1px solid var(--color-border);
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+  }
+
+  .pager-link {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    display: grid;
+    gap: 0.25rem;
+    padding: 1rem;
+    text-decoration: none;
+  }
+
+  .pager-link:hover {
+    background: var(--color-surface-strong);
+  }
+
+  .pager-link span {
+    color: var(--color-muted);
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .pager-link-next {
+    grid-column: 2;
+    text-align: right;
+  }
+
+  @media (max-width: 900px) {
+    .content-shell {
+      display: block;
+      padding-top: 2rem;
+    }
+
+    .pager {
+      grid-template-columns: 1fr;
+    }
+
+    .pager-link-next {
+      grid-column: auto;
+      text-align: left;
+    }
+  }
+</style>

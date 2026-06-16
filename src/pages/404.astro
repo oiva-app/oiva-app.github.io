@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Page Not Found" description="The requested Oiva page could not be found.">
+  <section class="not-found">
+    <p class="eyebrow">404</p>
+    <h1>Page not found</h1>
+    <p>The page may have moved, or the route may not exist yet in this structural build.</p>
+    <div class="button-row">
+      <a class="button button-primary" href="/case-study/overview/">Case Study</a>
+      <a class="button button-secondary" href="/getting-started/overview/">Getting Started</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    margin: 0 auto;
+    max-width: 720px;
+    padding: var(--space-section) var(--space-page) 0;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    line-height: 1;
+    margin: 0;
+  }
+
+  p:not(.eyebrow) {
+    color: var(--color-muted);
+    font-size: 1.15rem;
+    line-height: 1.6;
+    margin: 1rem auto 1.5rem;
+  }
+
+  .button-row {
+    justify-content: center;
+  }
+</style>
