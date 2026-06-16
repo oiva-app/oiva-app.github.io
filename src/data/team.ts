@@ -1,7 +1,11 @@
+import type { ImageMetadata } from "astro";
+import jonathanHeadshot from "../assets/team/jonathan-mcnair.png";
+
 export type TeamMember = {
   name: string;
   location: string;
   initials: string;
+  headshot?: ImageMetadata;
   emailUrl?: string;
   githubUrl?: string;
   linkedinUrl?: string;
@@ -12,6 +16,7 @@ export const teamMembers: TeamMember[] = [
     name: "Jonathan McNair",
     location: "Atlanta, GA, United States",
     initials: "JM",
+    headshot: jonathanHeadshot,
     githubUrl: "https://github.com/orgs/oiva-app/people/unlikelykoala",
     linkedinUrl: "https://www.linkedin.com/in/jonathan-mcnair-aa3b47ab/",
   },
