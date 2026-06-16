@@ -1,0 +1,86 @@
+---
+import FigureCard from "./FigureCard.astro";
+import DottedGrid from "./motifs/DottedGrid.astro";
+import TopographicLines from "./motifs/TopographicLines.astro";
+
+type Props = {
+  title: string;
+  caption?: string;
+  variant?: "workflow" | "infrastructure" | "concept";
+  motif?: "none" | "topographic" | "dots";
+  class?: string;
+};
+
+const {
+  title,
+  caption,
+  variant = "workflow",
+  motif = "none",
+  class: className = "",
+} = Astro.props;
+
+const frameClass = [
+  "diagram-frame",
+  `diagram-${variant}`,
+  motif !== "none" ? `diagram-motif-${motif}` : "",
+  className,
+].filter(Boolean).join(" ");
+---
+
+<FigureCard
+  class={frameClass}
+  title={title}
+  eyebrow="Diagram"
+  caption={caption}
+>
+  <div class="diagram-frame-body">
+    {motif === "topographic" && <TopographicLines position="fill" density="quiet" />}
+    {motif === "dots" && <DottedGrid position="top-right" density="quiet" />}
+    <div class="diagram-frame-content">
+      <slot />
+    </div>
+  </div>
+</FigureCard>
+
+<style>
+  :global(.diagram-frame) {
+    --diagram-accent: var(--color-accent-green);
+  }
+
+  :global(.diagram-infrastructure) {
+    --diagram-accent: var(--color-accent-blue);
+  }
+
+  :global(.diagram-concept) {
+    --diagram-accent: var(--color-accent-yellow);
+  }
+
+  .diagram-frame-body {
+    background: color-mix(in srgb, var(--color-bg-soft) 64%, var(--color-surface));
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    min-height: 10rem;
+    overflow: hidden;
+    padding: var(--space-lg);
+    position: relative;
+  }
+
+  .diagram-frame-body::before {
+    background: color-mix(in srgb, var(--diagram-accent) 14%, transparent);
+    border-radius: 999px;
+    content: "";
+    height: 7rem;
+    opacity: 0.6;
+    position: absolute;
+    right: -2rem;
+    top: -3rem;
+    width: 7rem;
+    z-index: 0;
+  }
+
+  .diagram-frame-content {
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+  }
+</style>

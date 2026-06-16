@@ -1,0 +1,24 @@
+---
+type Props = {
+  class?: string;
+};
+
+const { class: className = "" } = Astro.props;
+---
+
+<div class:list={["wide-figure", className]}>
+  <slot />
+</div>
+
+<style>
+  .wide-figure {
+    margin: var(--space-xl) 0;
+    max-width: var(--container-wide-content);
+    width: min(var(--container-wide-content), 100%);
+  }
+
+  .wide-figure :global(figure) {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+</style>

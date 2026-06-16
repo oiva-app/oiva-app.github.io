@@ -1,0 +1,93 @@
+---
+import DiagramCaption from "./DiagramCaption.astro";
+
+type Props = {
+  title?: string;
+  eyebrow?: string;
+  caption?: string;
+  sourceLabel?: string;
+  sourceHref?: string;
+  variant?: "default" | "raised" | "outline";
+  class?: string;
+};
+
+const {
+  title,
+  eyebrow,
+  caption,
+  sourceLabel,
+  sourceHref,
+  variant = "default",
+  class: className = "",
+} = Astro.props;
+---
+
+<figure class:list={["figure-card", `figure-card-${variant}`, className]}>
+  {(title || eyebrow) && (
+    <header class="figure-card-header">
+      {eyebrow && <p>{eyebrow}</p>}
+      {title && <h3>{title}</h3>}
+    </header>
+  )}
+
+  <div class="figure-card-body">
+    <slot />
+  </div>
+
+  {caption && (
+    <DiagramCaption sourceLabel={sourceLabel} sourceHref={sourceHref}>
+      {caption}
+    </DiagramCaption>
+  )}
+</figure>
+
+<style>
+  .figure-card {
+    background: var(--color-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    color: var(--color-text);
+    margin: var(--space-xl) 0;
+    overflow: hidden;
+    padding: var(--space-lg);
+  }
+
+  .figure-card-raised {
+    background: var(--color-surface-raised);
+  }
+
+  .figure-card-outline {
+    background: transparent;
+    border-style: dashed;
+    box-shadow: none;
+  }
+
+  .figure-card-header {
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+  }
+
+  .figure-card-header p {
+    color: var(--color-primary);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: var(--leading-ui);
+    margin: 0 0 var(--space-2xs);
+    text-transform: uppercase;
+  }
+
+  .figure-card-header h3 {
+    font-family: var(--font-sans);
+    font-size: var(--text-md);
+    line-height: var(--leading-heading);
+    margin: 0;
+  }
+
+  .figure-card-body {
+    min-width: 0;
+    position: relative;
+  }
+</style>

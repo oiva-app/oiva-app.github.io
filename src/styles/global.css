@@ -31,6 +31,12 @@
   --shadow-soft: 0 18px 50px rgba(32, 59, 56, 0.12);
   --shadow-card: 0 10px 28px rgba(32, 59, 56, 0.1);
 
+  --motif-line-color: rgba(31, 74, 67, 0.32);
+  --motif-dot-color: rgba(31, 74, 67, 0.36);
+  --motif-opacity-quiet: 0.24;
+  --motif-opacity-medium: 0.42;
+  --motif-dot-size: 18px;
+
   --font-sans: Inter, "Source Sans 3", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display: Merriweather, Spectral, Georgia, "Times New Roman", serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
@@ -119,6 +125,11 @@
 
   --shadow-soft: 0 18px 60px rgba(0, 0, 0, 0.35);
   --shadow-card: 0 10px 32px rgba(0, 0, 0, 0.28);
+
+  --motif-line-color: rgba(217, 189, 105, 0.32);
+  --motif-dot-color: rgba(217, 189, 105, 0.34);
+  --motif-opacity-quiet: 0.18;
+  --motif-opacity-medium: 0.3;
 }
 
 * {

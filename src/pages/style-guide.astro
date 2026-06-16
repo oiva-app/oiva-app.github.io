@@ -1,5 +1,12 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Callout from "../components/Callout.astro";
+import DiagramFrame from "../components/DiagramFrame.astro";
+import FigureCard from "../components/FigureCard.astro";
+import WideFigure from "../components/WideFigure.astro";
+import DottedGrid from "../components/motifs/DottedGrid.astro";
+import LandscapeBands from "../components/motifs/LandscapeBands.astro";
+import TopographicLines from "../components/motifs/TopographicLines.astro";
 
 const paletteGroups = [
   {
@@ -62,6 +69,7 @@ const spacingTokens = [
       <a href="#typography">Typography</a>
       <a href="#spacing">Spacing</a>
       <a href="#components">Components</a>
+      <a href="#motifs">Motifs</a>
       <a href="#layout">Layout</a>
       <a href="#dark-mode">Dark Mode</a>
     </aside>
@@ -194,22 +202,18 @@ const spacingTokens = [
           </div>
 
           <div class="callout-grid">
-            <div class="callout">
-              <strong>Insight</strong>
+            <Callout title="Insight">
               <p>Highlights a useful observation from the system design.</p>
-            </div>
-            <div class="callout callout-decision">
-              <strong>Decision</strong>
+            </Callout>
+            <Callout title="Decision" variant="decision">
               <p>Records a tradeoff or design choice worth preserving.</p>
-            </div>
-            <div class="callout callout-warning">
-              <strong>Warning</strong>
+            </Callout>
+            <Callout title="Warning" variant="warning">
               <p>Flags a risk, limitation, or important implementation note.</p>
-            </div>
-            <div class="callout callout-note">
-              <strong>Technical note</strong>
+            </Callout>
+            <Callout title="Technical note" variant="note">
               <p>Adds context without interrupting the reading flow.</p>
-            </div>
+            </Callout>
           </div>
 
           <pre><code>{`async function investigate(incidentId) {
@@ -220,14 +224,18 @@ const spacingTokens = [
         </div>
       </section>
 
-      <section class="guide-section">
+      <section class="guide-section" id="figures">
         <div class="section-heading">
           <p class="eyebrow">Content</p>
           <h2>Figures and Diagrams</h2>
         </div>
 
         <div class="diagram-grid">
-          <figure class="figure-frame">
+          <DiagramFrame
+            title="Workflow diagram"
+            caption="Workflow diagrams use short labels, thin strokes, and muted color."
+            motif="topographic"
+          >
             <div class="workflow-diagram" aria-label="Workflow diagram example">
               <span>Alert</span>
               <i></i>
@@ -235,10 +243,14 @@ const spacingTokens = [
               <i></i>
               <span>Report</span>
             </div>
-            <figcaption>Workflow diagrams use short labels, thin strokes, and muted color.</figcaption>
-          </figure>
+          </DiagramFrame>
 
-          <figure class="figure-frame">
+          <DiagramFrame
+            title="Infrastructure diagram"
+            caption="Infrastructure diagrams stay grid-aligned and avoid ambiguous arrows."
+            variant="infrastructure"
+            motif="dots"
+          >
             <div class="system-diagram" aria-label="System diagram example">
               <span>Sources</span>
               <span>Detection</span>
@@ -247,8 +259,51 @@ const spacingTokens = [
               <b></b>
               <b></b>
             </div>
-            <figcaption>Infrastructure diagrams can extend wider than prose when needed.</figcaption>
-          </figure>
+          </DiagramFrame>
+        </div>
+
+        <WideFigure>
+          <FigureCard
+            title="Wide figure"
+            eyebrow="Breakout"
+            caption="Wide figures are capped at the wide-content token and can hold larger diagrams."
+            sourceLabel="Design system"
+          >
+            <div class="wide-demo">Wide diagram region</div>
+          </FigureCard>
+        </WideFigure>
+      </section>
+
+      <section class="guide-section" id="motifs">
+        <div class="section-heading">
+          <p class="eyebrow">Visual System</p>
+          <h2>Decorative Motifs</h2>
+        </div>
+
+        <div class="motif-grid">
+          <article class="motif-demo-card">
+            <TopographicLines position="fill" density="medium" />
+            <div>
+              <h3>Topographic lines</h3>
+              <p>Low-contrast contour lines for section atmosphere and diagram frames.</p>
+            </div>
+          </article>
+
+          <article class="motif-demo-card">
+            <DottedGrid position="fill" density="medium" />
+            <div>
+              <h3>Dotted grids</h3>
+              <p>Technical structure for diagrams and quiet background zones.</p>
+            </div>
+          </article>
+
+          <article class="motif-demo-card motif-demo-wide">
+            <LandscapeBands position="bottom" tone="muted" />
+            <div>
+              <h3>Landscape bands</h3>
+              <p>Layered Nordic-inspired transitions for heroes and major section breaks.</p>
+            </div>
+          </article>
         </div>
       </section>
 
@@ -273,7 +328,9 @@ const spacingTokens = [
               Long-form pages prioritize a stable navigation rail and a comfortable reading
               column. Diagrams can break out to wider frames without changing page routing.
             </p>
-            <div class="wide-demo">Wide diagram region</div>
+            <FigureCard title="Inline figure" caption="Reusable cards keep figure title and caption treatment consistent.">
+              <div class="wide-demo">Wide diagram region</div>
+            </FigureCard>
           </article>
         </div>
       </section>
@@ -546,6 +603,7 @@ const spacingTokens = [
   .card-grid,
   .callout-grid,
   .diagram-grid,
+  .motif-grid,
   .theme-validation {
     display: grid;
     gap: var(--space-md);
@@ -554,8 +612,41 @@ const spacingTokens = [
 
   .callout-grid,
   .diagram-grid,
+  .motif-grid,
   .theme-validation {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .motif-demo-card {
+    background: var(--color-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    min-height: 13rem;
+    overflow: hidden;
+    padding: var(--space-xl);
+    position: relative;
+  }
+
+  .motif-demo-card > div {
+    max-width: 32rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .motif-demo-card h3 {
+    font-family: var(--font-sans);
+    font-size: var(--text-md);
+    margin: 0 0 var(--space-xs);
+  }
+
+  .motif-demo-card p {
+    color: var(--color-text-muted);
+    line-height: var(--leading-ui);
+    margin: 0;
+  }
+
+  .motif-demo-wide {
+    grid-column: 1 / -1;
   }
 
   .sample-icon {
@@ -721,10 +812,15 @@ const spacingTokens = [
     .card-grid,
     .callout-grid,
     .diagram-grid,
+    .motif-grid,
     .theme-validation,
     .type-list > div,
     .spacing-list > div {
       grid-template-columns: 1fr;
+    }
+
+    .motif-demo-wide {
+      grid-column: auto;
     }
 
     .workflow-diagram {
