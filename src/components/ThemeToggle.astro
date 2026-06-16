@@ -23,8 +23,12 @@ const { class: className = "" } = Astro.props;
   type Theme = "dark" | "light";
 
   const getStoredTheme = (): Theme | null => {
-    const theme = localStorage.getItem("theme");
-    return theme === "dark" || theme === "light" ? theme : null;
+    try {
+      const theme = localStorage.getItem("theme");
+      return theme === "dark" || theme === "light" ? theme : null;
+    } catch {
+      return null;
+    }
   };
 
   const getSystemTheme = (): Theme =>
@@ -45,7 +49,11 @@ const { class: className = "" } = Astro.props;
   document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
     button.addEventListener("click", () => {
       const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-      localStorage.setItem("theme", nextTheme);
+      try {
+        localStorage.setItem("theme", nextTheme);
+      } catch {
+        // Theme still applies for the current page view when storage is unavailable.
+      }
       applyTheme(nextTheme);
     });
   });
