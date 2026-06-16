@@ -1,0 +1,54 @@
+---
+type Props = {
+  position?: "fill" | "top-right" | "bottom-left";
+  density?: "quiet" | "medium";
+  class?: string;
+};
+
+const {
+  position = "fill",
+  density = "quiet",
+  class: className = "",
+} = Astro.props;
+---
+
+<span
+  class:list={["motif", "dotted-grid", `motif-${position}`, `motif-${density}`, className]}
+  aria-hidden="true"
+></span>
+
+<style>
+  .motif {
+    pointer-events: none;
+    position: absolute;
+    z-index: 0;
+  }
+
+  .dotted-grid {
+    background-image: radial-gradient(var(--motif-dot-color) 1.2px, transparent 1.3px);
+    background-size: var(--motif-dot-size) var(--motif-dot-size);
+    opacity: var(--motif-opacity-quiet);
+  }
+
+  .motif-medium {
+    opacity: var(--motif-opacity-medium);
+  }
+
+  .motif-fill {
+    inset: 0;
+  }
+
+  .motif-top-right {
+    height: 62%;
+    right: var(--space-lg);
+    top: var(--space-lg);
+    width: min(18rem, 48%);
+  }
+
+  .motif-bottom-left {
+    bottom: var(--space-lg);
+    height: 62%;
+    left: var(--space-lg);
+    width: min(18rem, 48%);
+  }
+</style>

@@ -1,0 +1,59 @@
+---
+type Props = {
+  title: string;
+  variant?: "insight" | "decision" | "warning" | "note";
+  class?: string;
+};
+
+const {
+  title,
+  variant = "insight",
+  class: className = "",
+} = Astro.props;
+---
+
+<aside class:list={["callout-box", `callout-${variant}`, className]}>
+  <strong>{title}</strong>
+  <div class="callout-body">
+    <slot />
+  </div>
+</aside>
+
+<style>
+  .callout-box {
+    --callout-color: var(--color-accent-green);
+    background: color-mix(in srgb, var(--callout-color) 12%, var(--color-surface));
+    border: 1px solid color-mix(in srgb, var(--callout-color) 58%, var(--border-subtle));
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    line-height: var(--leading-ui);
+    padding: var(--space-lg);
+  }
+
+  .callout-decision {
+    --callout-color: var(--color-accent-yellow);
+  }
+
+  .callout-warning {
+    --callout-color: var(--color-accent-coral);
+  }
+
+  .callout-note {
+    --callout-color: var(--color-accent-blue);
+  }
+
+  strong {
+    display: block;
+    margin-bottom: var(--space-xs);
+  }
+
+  .callout-body {
+    color: var(--color-text-muted);
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  .callout-body :global(p) {
+    margin: 0;
+  }
+</style>
