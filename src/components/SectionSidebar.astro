@@ -133,6 +133,11 @@ const { title, pages, currentPageId } = Astro.props;
     return new URL(link.href).origin === window.location.origin;
   };
 
+  const getSidebarNavigationOptions = (link: HTMLAnchorElement) => ({
+    history: link.dataset.astroHistory === "replace" ? "replace" as const : "auto" as const,
+    sourceElement: link,
+  });
+
   const setPanelOpen = (
     panel: PanelElement,
     isOpen: boolean,
@@ -254,7 +259,7 @@ const { title, pages, currentPageId } = Astro.props;
           pendingSidebarNavigationTimer = undefined;
 
           try {
-            navigate(link.href, { sourceElement: link });
+            navigate(link.href, getSidebarNavigationOptions(link));
           } catch (error) {
             abortSidebarNavigation();
             throw error;
