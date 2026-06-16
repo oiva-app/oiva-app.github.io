@@ -47,9 +47,11 @@ const { title, pages, currentPageId } = Astro.props;
   type PanelElement = HTMLElement & { dataset: DOMStringMap };
 
   const accordionNavigationDelay = 360;
+  const navigationLockFallbackDelay = accordionNavigationDelay + 8000;
   const pendingNavigationStorageKey = "oiva-section-navigation-pending";
   const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   let isNavigating = false;
+  let navigationLockFallbackTimer: number | undefined;
 
   const getPendingSectionNavigation = () => {
     try {
@@ -73,6 +75,29 @@ const { title, pages, currentPageId } = Astro.props;
     } catch {
       delete document.documentElement.dataset.sectionNavigationPending;
     }
+  };
+
+  const releaseSidebarNavigationLock = () => {
+    isNavigating = false;
+
+    if (navigationLockFallbackTimer !== undefined) {
+      window.clearTimeout(navigationLockFallbackTimer);
+      navigationLockFallbackTimer = undefined;
+    }
+  };
+
+  const abortSidebarNavigation = () => {
+    releaseSidebarNavigationLock();
+    clearPendingSectionNavigation();
+  };
+
+  const startSidebarNavigation = () => {
+    releaseSidebarNavigationLock();
+    isNavigating = true;
+    navigationLockFallbackTimer = window.setTimeout(
+      abortSidebarNavigation,
+      navigationLockFallbackDelay,
+    );
   };
 
   const shouldHandleSidebarNavigation = (event: MouseEvent, link: HTMLAnchorElement) => {
@@ -157,7 +182,7 @@ const { title, pages, currentPageId } = Astro.props;
   };
 
   const initializeSectionAccordions = () => {
-    isNavigating = false;
+    releaseSidebarNavigationLock();
     const shouldAnimateIncoming = getPendingSectionNavigation();
 
     document.querySelectorAll<HTMLElement>("[data-section-accordion]").forEach((accordion) => {
@@ -208,7 +233,7 @@ const { title, pages, currentPageId } = Astro.props;
           return;
         }
 
-        isNavigating = true;
+        startSidebarNavigation();
         setPendingSectionNavigation();
 
         panels.forEach((panel) => {
@@ -217,10 +242,14 @@ const { title, pages, currentPageId } = Astro.props;
           }
         });
 
-        window.setTimeout(
-          () => navigate(link.href, { sourceElement: link }),
-          reducedMotionQuery.matches ? 0 : accordionNavigationDelay,
-        );
+        window.setTimeout(() => {
+          try {
+            navigate(link.href, { sourceElement: link });
+          } catch (error) {
+            abortSidebarNavigation();
+            throw error;
+          }
+        }, reducedMotionQuery.matches ? 0 : accordionNavigationDelay);
       });
     });
 
