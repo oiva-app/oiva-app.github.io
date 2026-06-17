@@ -1,46 +1,49 @@
 ---
 import TeamProfile from "../components/TeamProfile.astro";
+import TeamPageBackground from "../components/TeamPageBackground.astro";
 import { teamMembers } from "../data/team";
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="Our Team" description="Meet the team building Oiva.">
-  <section class="team-page">
-    <p class="eyebrow">Team</p>
-    <h1>Our Team</h1>
-    <p class="intro">Placeholder profile layout for the Oiva team. Headshots and email links are intentionally deferred.</p>
+  <section class="team-page" aria-labelledby="team-title">
+    <TeamPageBackground />
+    <div class="team-page__inner">
+      <h1 id="team-title">Our Team</h1>
 
-    <div class="team-grid">
-      {teamMembers.map((member) => <TeamProfile member={member} />)}
+      <div class="team-grid">
+        {teamMembers.map((member) => <TeamProfile member={member} />)}
+      </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
   .team-page {
-    margin: 0 auto;
-    max-width: var(--container-wide);
-    padding: var(--space-section) var(--space-page) 0;
+    margin: 0;
+    min-height: calc(100vh - var(--header-height));
+    overflow: hidden;
+    padding: var(--space-section) var(--space-page);
+    position: relative;
     text-align: center;
   }
 
-  h1 {
-    font-size: clamp(2.4rem, 6vw, 4.5rem);
-    line-height: 1;
-    margin: 0;
+  .team-page__inner {
+    margin: 0 auto;
+    max-width: var(--container-wide);
+    position: relative;
+    z-index: 1;
   }
 
-  .intro {
-    color: var(--color-muted);
-    font-size: 1.1rem;
-    line-height: 1.6;
-    margin: 1rem auto 2.5rem;
-    max-width: 42rem;
+  h1 {
+    font-size: var(--text-3xl);
+    line-height: var(--leading-tight);
+    margin: 0 0 var(--space-2xl);
   }
 
   .team-grid {
     display: grid;
-    gap: 1rem;
+    gap: var(--space-lg);
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
@@ -51,7 +54,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   @media (max-width: 560px) {
+    .team-page {
+      padding-block: var(--space-2xl);
+    }
+
+    h1 {
+      margin-bottom: var(--space-xl);
+    }
+
     .team-grid {
+      gap: var(--space-md);
       grid-template-columns: 1fr;
     }
   }
