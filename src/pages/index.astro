@@ -8,6 +8,9 @@ const description =
 ---
 
 <BaseLayout title="Oiva" bareTitle description={description}>
+  <link slot="head" rel="preconnect" href="https://fonts.googleapis.com" />
+  <link slot="head" rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link slot="head" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500&display=swap" />
   <section class="home-hero" aria-labelledby="home-title">
     <HomeHeroAtlasBackground />
     <div class="home-hero__inner">
@@ -110,6 +113,7 @@ const description =
     grid-row: 1;
     min-height: clamp(18rem, 44vw, 34rem);
     min-width: 0;
+    padding-top: clamp(2rem, 5vw, 5rem);
     position: relative;
   }
 
@@ -142,7 +146,9 @@ const description =
   }
 
   .home-hero h1 {
+    font-family: 'Prompt', var(--font-display);
     font-size: clamp(4rem, 14vw, 9rem);
+    font-weight: 400;
     letter-spacing: 0;
     line-height: 0.9;
     margin: 0;
