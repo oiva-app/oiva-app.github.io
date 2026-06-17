@@ -1,0 +1,71 @@
+---
+type Props = {
+  position?: "bottom" | "hero";
+  tone?: "muted" | "accent";
+  class?: string;
+};
+
+const {
+  position = "bottom",
+  tone = "muted",
+  class: className = "",
+} = Astro.props;
+---
+
+<svg
+  class:list={["motif", "landscape-bands", `landscape-${position}`, `landscape-${tone}`, className]}
+  viewBox="0 0 720 260"
+  aria-hidden="true"
+  preserveAspectRatio="none"
+>
+  <path class="band band-one" d="M0 170C110 118 178 124 286 160C394 196 476 186 720 98V260H0Z" />
+  <path class="band band-two" d="M0 204C126 154 230 172 338 204C462 240 562 210 720 150V260H0Z" />
+  <path class="band band-three" d="M0 232C138 198 254 210 386 232C510 252 596 236 720 196V260H0Z" />
+</svg>
+
+<style>
+  .motif {
+    pointer-events: none;
+    position: absolute;
+    z-index: 0;
+  }
+
+  .landscape-bands {
+    bottom: 0;
+    left: 0;
+    opacity: var(--motif-opacity-medium);
+    width: 100%;
+  }
+
+  .landscape-bottom {
+    height: 52%;
+  }
+
+  .landscape-hero {
+    height: 78%;
+  }
+
+  .band-one {
+    fill: color-mix(in srgb, var(--color-accent-blue) 34%, transparent);
+  }
+
+  .band-two {
+    fill: color-mix(in srgb, var(--color-accent-green) 34%, transparent);
+  }
+
+  .band-three {
+    fill: color-mix(in srgb, var(--color-accent-yellow) 24%, transparent);
+  }
+
+  .landscape-accent .band-one {
+    fill: color-mix(in srgb, var(--color-accent-blue) 48%, transparent);
+  }
+
+  .landscape-accent .band-two {
+    fill: color-mix(in srgb, var(--color-accent-green) 48%, transparent);
+  }
+
+  .landscape-accent .band-three {
+    fill: color-mix(in srgb, var(--color-accent-yellow) 36%, transparent);
+  }
+</style>

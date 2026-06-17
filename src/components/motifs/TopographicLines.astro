@@ -1,0 +1,68 @@
+---
+type Props = {
+  position?: "fill" | "top-right" | "bottom-left";
+  density?: "quiet" | "medium";
+  class?: string;
+};
+
+const {
+  position = "fill",
+  density = "quiet",
+  class: className = "",
+} = Astro.props;
+---
+
+<svg
+  class:list={["motif", "topographic-lines", `motif-${position}`, `motif-${density}`, className]}
+  viewBox="0 0 420 260"
+  aria-hidden="true"
+  preserveAspectRatio="none"
+>
+  <path d="M-20 210C48 152 86 242 154 184S282 112 440 150" />
+  <path d="M-18 184C54 126 95 214 164 158S292 88 438 120" />
+  <path d="M-18 158C55 103 108 188 176 132S302 66 440 92" />
+  <path d="M-16 132C58 78 120 162 188 106S312 46 440 66" />
+  <path d="M-12 106C64 55 134 138 204 82S326 28 438 42" />
+  <path d="M-8 80C72 32 150 116 220 60S338 12 430 22" />
+</svg>
+
+<style>
+  .motif {
+    color: var(--motif-line-color);
+    pointer-events: none;
+    position: absolute;
+    z-index: 0;
+  }
+
+  .topographic-lines {
+    fill: none;
+    opacity: var(--motif-opacity-quiet);
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 1.2;
+  }
+
+  .motif-medium {
+    opacity: var(--motif-opacity-medium);
+  }
+
+  .motif-fill {
+    inset: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  .motif-top-right {
+    height: 70%;
+    right: -8%;
+    top: -10%;
+    width: 66%;
+  }
+
+  .motif-bottom-left {
+    bottom: -12%;
+    height: 70%;
+    left: -10%;
+    width: 72%;
+  }
+</style>
