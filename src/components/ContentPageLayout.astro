@@ -20,6 +20,7 @@ const { section, title, description, currentPageId, pages } = Astro.props;
 const sectionTitle = sectionTitles[section];
 const { previous, next } = getAdjacentPages(pages, currentPageId);
 const hasPager = Boolean(previous || next);
+const isCaseStudy = section === "caseStudy";
 ---
 
 <BaseLayout
@@ -29,7 +30,7 @@ const hasPager = Boolean(previous || next);
   sectionPages={pages}
   currentPageId={currentPageId}
 >
-  <div class="content-shell">
+  <div class:list={["content-shell", isCaseStudy && "content-shell-case-study"]} data-section={section}>
     <SectionSidebar title={sectionTitle} pages={pages} currentPageId={currentPageId} />
 
     <article class="content-article">
@@ -69,10 +70,38 @@ const hasPager = Boolean(previous || next);
     margin: 0 auto;
     max-width: var(--container-page);
     padding: var(--space-2xl) var(--space-page) 0;
+    position: relative;
   }
 
   .content-article {
     min-width: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .content-shell :global(.section-sidebar) {
+    position: sticky;
+    z-index: 1;
+  }
+
+  .content-shell-case-study {
+    gap: var(--space-xl);
+    grid-template-columns: minmax(13rem, var(--sidebar-width)) minmax(0, 1fr);
+    max-width: 1520px;
+    min-height: calc(100vh - var(--header-height));
+  }
+
+  .content-shell-case-study .content-article {
+    background: var(--color-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: var(--space-2xl);
+  }
+
+  .content-shell-case-study .prose {
+    max-width: none;
+    width: 100%;
   }
 
   h1 {
@@ -132,6 +161,10 @@ const hasPager = Boolean(previous || next);
     .content-shell {
       display: block;
       padding-top: var(--space-xl);
+    }
+
+    .content-shell-case-study .content-article {
+      padding: var(--space-lg);
     }
 
     .pager {
