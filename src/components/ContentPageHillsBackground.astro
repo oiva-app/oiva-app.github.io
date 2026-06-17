@@ -20,13 +20,13 @@
       </filter>
 
       <linearGradient id="paper-warmth" x1="0" x2="1" y1="0" y2="1">
-        <stop offset="0" stop-color="color-mix(in srgb, var(--color-bg-soft) 72%, var(--color-surface))" />
-        <stop offset="0.44" stop-color="color-mix(in srgb, var(--color-bg-soft) 42%, transparent)" />
-        <stop offset="1" stop-color="color-mix(in srgb, var(--color-accent-yellow) 16%, var(--color-bg-soft))" />
+        <stop offset="0" class="gradient-stop-warm" />
+        <stop offset="0.44" class="gradient-stop-mid" />
+        <stop offset="1" class="gradient-stop-golden" />
       </linearGradient>
     </defs>
 
-    <rect width="1600" height="4200" fill="color-mix(in srgb, var(--color-bg-soft) 68%, var(--color-surface))" />
+    <rect width="1600" height="4200" class="paper-base" />
     <rect width="1600" height="4200" fill="url(#paper-warmth)" />
 
     <g filter="url(#watercolor-edge)">
@@ -93,6 +93,22 @@
     display: block;
     height: 100%;
     width: 100%;
+  }
+
+  .paper-base {
+    fill: color-mix(in srgb, var(--color-bg-soft) 68%, var(--color-surface));
+  }
+
+  .gradient-stop-warm {
+    stop-color: color-mix(in srgb, var(--color-bg-soft) 72%, var(--color-surface));
+  }
+
+  .gradient-stop-mid {
+    stop-color: color-mix(in srgb, var(--color-bg-soft) 42%, transparent);
+  }
+
+  .gradient-stop-golden {
+    stop-color: color-mix(in srgb, var(--color-accent-yellow) 16%, var(--color-bg-soft));
   }
 
   .hill {
