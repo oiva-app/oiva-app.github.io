@@ -42,6 +42,10 @@
         class="hill hill-pale-green"
         d="M-80 580 C88 618 248 595 438 510 C624 430 762 508 970 608 C1148 694 1300 650 1478 558 C1574 508 1642 544 1680 578 L1680 900 L-80 900 Z"
       />
+      <path
+        class="hill hill-sage-green"
+        d="M-80 728 C72 768 228 752 420 682 C606 616 748 690 958 774 C1140 848 1302 816 1484 738 C1578 696 1644 724 1680 754 L1680 900 L-80 900 Z"
+      />
     </g>
   </svg>
   <span class="atlas-fiber"></span>
@@ -83,6 +87,11 @@
     opacity: 0.48;
   }
 
+  .hill-sage-green {
+    fill: #7aad8a;
+    opacity: 0.52;
+  }
+
   .atlas-fiber {
     background-image:
       radial-gradient(circle at 18% 24%, color-mix(in srgb, var(--color-text-subtle) 14%, transparent) 0 0.55px, transparent 0.75px),
@@ -111,6 +120,11 @@
   :global([data-theme="dark"]) .hill-pale-green {
     fill: #16284b;
     opacity: 0.68;
+  }
+
+  :global([data-theme="dark"]) .hill-sage-green {
+    fill: #1a3528;
+    opacity: 0.72;
   }
 
   :global([data-theme="dark"]) .atlas-fiber {
