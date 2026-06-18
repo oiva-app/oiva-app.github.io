@@ -3,6 +3,7 @@ import Logo from "./Logo.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 import { githubUrl, navLinks } from "../data/navigation";
 import { sectionTitles, type SectionKey, type SectionPage } from "../lib/content";
+import { withoutBase } from "../lib/urls";
 
 type Props = {
   section?: SectionKey;
@@ -15,7 +16,7 @@ const {
   sectionPages = [],
   currentPageId,
 } = Astro.props;
-const pathname = Astro.url.pathname;
+const pathname = withoutBase(Astro.url.pathname);
 const sectionTitle = section ? sectionTitles[section] : undefined;
 
 function normalizePath(path: string) {

@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../lib/urls";
+
+const target = withBase("/getting-started/overview/");
+---
+
+<BaseLayout title="Redirecting" description="Redirecting to the Oiva getting started overview.">
+  <meta slot="head" http-equiv="refresh" content={`0; url=${target}`} />
+  <link slot="head" rel="canonical" href={target} />
+  <section class="redirect-page">
+    <p>
+      Redirecting to <a href={target}>Getting Started Overview</a>.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .redirect-page {
+    margin: 0 auto;
+    max-width: 720px;
+    padding: var(--space-section) var(--space-page) 0;
+  }
+</style>

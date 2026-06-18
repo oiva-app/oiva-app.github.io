@@ -1,5 +1,6 @@
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
+import { withBase } from "./urls";
 
 export type SectionKey = "caseStudy" | "gettingStarted";
 
@@ -46,7 +47,7 @@ export function mapSectionPages(
   entries: CollectionEntry<SectionKey>[],
 ): SectionPage[] {
   return entries.map((entry) => ({
-    href: `${sectionBasePath[section]}/${entry.id}/`,
+    href: withBase(`${sectionBasePath[section]}/${entry.id}/`),
     label: entry.data.sidebarLabel ?? entry.data.title,
     title: entry.data.title,
     description: entry.data.description,

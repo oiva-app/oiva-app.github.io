@@ -7,6 +7,7 @@ import WideFigure from "../components/WideFigure.astro";
 import DottedGrid from "../components/motifs/DottedGrid.astro";
 import LandscapeBands from "../components/motifs/LandscapeBands.astro";
 import TopographicLines from "../components/motifs/TopographicLines.astro";
+import { withBase } from "../lib/urls";
 
 const paletteGroups = [
   {
@@ -178,9 +179,9 @@ const spacingTokens = [
 
         <div class="component-stack">
           <div class="sample-row">
-            <a class="button button-primary" href="/case-study/overview/">Primary</a>
-            <a class="button button-secondary" href="/getting-started/overview/">Secondary</a>
-            <a class="button button-text" href="/team/">Text link -></a>
+            <a class="button button-primary" href={withBase("/case-study/overview/")}>Primary</a>
+            <a class="button button-secondary" href={withBase("/getting-started/overview/")}>Secondary</a>
+            <a class="button button-text" href={withBase("/team/")}>Text link -></a>
           </div>
 
           <div class="card-grid">

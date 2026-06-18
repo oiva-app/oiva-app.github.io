@@ -4,9 +4,7 @@ import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://oiva-app.github.io',
+  base: '/oiva-site',
   integrations: [mdx()],
-  redirects: {
-    '/case-study/': '/case-study/overview/',
-    '/getting-started/': '/getting-started/overview/',
-  },
 });

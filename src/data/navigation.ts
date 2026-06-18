@@ -1,19 +1,21 @@
+import { withBase } from "../lib/urls";
+
 export const githubUrl = "https://github.com/oiva-app/oiva";
 
 export const navLinks = [
   {
     label: "Case Study",
-    href: "/case-study/overview/",
+    href: withBase("/case-study/overview/"),
     match: "/case-study/",
   },
   {
     label: "Getting Started",
-    href: "/getting-started/overview/",
+    href: withBase("/getting-started/overview/"),
     match: "/getting-started/",
   },
   {
     label: "Team",
-    href: "/team/",
+    href: withBase("/team/"),
     match: "/team/",
   },
 ];
