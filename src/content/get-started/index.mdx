@@ -159,7 +159,7 @@ cp terraform.tfvars.example terraform.tfvars
 
 Set the required values in `terraform.tfvars`, including `deployment_name`, `aws_region`, `agent_image`, `domain_name`, `observed_app_name`, `app_github_repositories`, and `slack_channel_id`.
 
-In the bottom part of this file, there are a number of escape hatches for using your own existing infrastructure components. There are also configuration variables if you wish to override Oiva's defaults. For example, the Codebase Agent uses OpenAI's GPT5.4 by default, but you can change this via the `codebase_agent_model` variable.
+In the bottom part of this file, there are a number of escape hatches for using your own existing infrastructure components. There are also configuration variables if you wish to override Oiva's defaults. For example, the Codebase Agent uses OpenAI's GPT-5.4 by default, but you can change this via the `codebase_agent_model` variable.
 
 __Choose one supported domain path before applying Terraform:__
 
@@ -225,7 +225,7 @@ Note that Provider API key placeholders use the lower-case, hyphenated form of t
 For example, if you are populating the `GITHUB_PAT` secret for a deployment named `oiva`, you would use:
 ```bash
 aws secretsmanager put-secret-value \
-  --secret-id /oiva/oiva>/github-pat \
+  --secret-id /oiva/oiva/github-pat \
   --secret-string "123456789ABCD"
 ```
 
@@ -315,7 +315,7 @@ Then verify the external integrations:
 
 Use `terraform destroy` when you want to tear down a self-hosted Oiva environment.
 
-Destroying the stack can delete will delete everything provisioned by `terraform apply`, but not components you provided via the escape hatches.
+Destroying the stack will delete everything provisioned by `terraform apply`, but not components you provided via the escape hatches.
 
 Before destroying, back up anything you need to keep.
 
