@@ -1,6 +1,6 @@
 import { withBase } from "./urls";
 
-export type SectionKey = "caseStudy" | "gettingStarted";
+export type SectionKey = "caseStudy" | "getStarted";
 
 export type SectionPage = {
   href: string;
@@ -20,12 +20,12 @@ export type HeadingLink = {
 
 const sectionBasePath: Record<SectionKey, string> = {
   caseStudy: "/case-study",
-  gettingStarted: "/getting-started",
+  getStarted: "/get-started",
 };
 
 export const sectionTitles: Record<SectionKey, string> = {
   caseStudy: "Case Study",
-  gettingStarted: "Getting Started",
+  getStarted: "Get Started",
 };
 
 export function toSinglePageSidebarPages(

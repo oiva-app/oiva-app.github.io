@@ -3,19 +3,19 @@ import { getEntry, render } from "astro:content";
 import ContentPageLayout from "../../components/ContentPageLayout.astro";
 import { toSinglePageSidebarPages } from "../../lib/content";
 
-const entry = await getEntry("gettingStarted", "index");
+const entry = await getEntry("getStarted", "index");
 
 if (!entry) {
-  throw new Error("Missing getting started index content entry.");
+  throw new Error("Missing get started index content entry.");
 }
 
 const { Content, headings } = await render(entry);
-const pages = toSinglePageSidebarPages("gettingStarted", headings);
+const pages = toSinglePageSidebarPages("getStarted", headings);
 const currentPageId = pages[0]?.id ?? entry.id;
 ---
 
 <ContentPageLayout
-  section="gettingStarted"
+  section="getStarted"
   title={entry.data.title}
   description={entry.data.description}
   currentPageId={currentPageId}
