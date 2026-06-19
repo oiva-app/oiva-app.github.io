@@ -9,9 +9,9 @@ export const navLinks = [
     match: "/case-study/",
   },
   {
-    label: "Getting Started",
-    href: withBase("/getting-started/"),
-    match: "/getting-started/",
+    label: "Get Started",
+    href: withBase("/get-started/"),
+    match: "/get-started/",
   },
   {
     label: "Team",

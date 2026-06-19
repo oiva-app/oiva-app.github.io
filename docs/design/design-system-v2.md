@@ -349,7 +349,7 @@ Rules:
 
 ---
 
-## 3.2 Getting Started Pages
+## 3.2 Get Started Pages
 
 Should feel like:
 
@@ -362,7 +362,7 @@ Rules:
 * Denser than case study.
 * Code blocks should be prominent.
 * Use fewer illustrations.
-* Use one consistent background wash or motif across all getting-started pages.
+* Use one consistent background wash or motif across all get-started pages.
 * Prioritize scannability.
 
 ---
@@ -856,7 +856,7 @@ The first styling pass is done when:
 - Dark mode works through CSS variables.
 - Header, sidebar, prose, cards, code blocks, and figures are styled.
 - Case study pages feel intentionally designed.
-- Getting Started pages remain readable and scannable.
+- Get Started pages remain readable and scannable.
 - The site still builds.
 - /style-guide exists and shows the system.
 - No routes or content structure are broken.

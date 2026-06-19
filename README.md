@@ -35,7 +35,7 @@ src/
     logo-vendors/         Vendor and integration logos
   content/
     case-study/           Case study pages
-    getting-started/      Getting started pages
+    get-started/          Get started pages
   data/
     navigation.ts         Top navigation links and GitHub URL
     team.ts               Team profile data
@@ -43,7 +43,7 @@ src/
     index.astro           Homepage route
     team.astro            Team page route
     case-study/index.astro
-    getting-started/index.astro
+    get-started/index.astro
   components/             Reusable page pieces
   layouts/
     BaseLayout.astro      Site metadata and shared page shell
@@ -61,32 +61,32 @@ Astro creates pages from files in `src/pages/`.
 - `src/pages/index.astro` becomes `/`.
 - `src/pages/team.astro` becomes `/team/`.
 - `src/pages/case-study/index.astro` renders `/case-study/`.
-- `src/pages/getting-started/index.astro` renders `/getting-started/`.
+- `src/pages/get-started/index.astro` renders `/get-started/`.
 
-The case study and getting started sections each use one MDX file:
+The case study and get started sections each use one MDX file:
 
 ```text
 src/content/case-study/index.mdx
-src/content/getting-started/index.mdx
+src/content/get-started/index.mdx
 ```
 
 Those files become:
 
 ```text
 /case-study/
-/getting-started/
+/get-started/
 ```
 
-## Editing Case Study and Getting Started Pages
+## Editing Case Study and Get Started Pages
 
 Most article-style content lives in MDX files:
 
 - Case study pages: `src/content/case-study/*.mdx`
-- Getting started pages: `src/content/getting-started/*.mdx`
+- Get started pages: `src/content/get-started/*.mdx`
 
 MDX is Markdown with the option to import and use components. Regular Markdown headings, paragraphs, lists, links, and code blocks work as expected.
 
-The case study and getting started sidebars are generated from headings inside their single MDX files. Use `##` for top sidebar sections and `###` for nested subsection links.
+The case study and get started sidebars are generated from headings inside their single MDX files. Use `##` for top sidebar sections and `###` for nested subsection links.
 
 Each MDX file starts with frontmatter. Frontmatter is the data between the `---` lines at the top of the file.
 
@@ -112,7 +112,7 @@ The frontmatter fields are validated in `src/content.config.ts`.
 
 To add a new section to a single-page content file:
 
-1. Open `src/content/case-study/index.mdx` or `src/content/getting-started/index.mdx`.
+1. Open `src/content/case-study/index.mdx` or `src/content/get-started/index.mdx`.
 2. Add a `##` heading for the new sidebar section.
 3. Add `###` headings for nested sidebar links.
 4. Run `npm run build` to catch missing or invalid fields.
@@ -312,6 +312,6 @@ Then spot-check:
 
 - Homepage: `/`
 - Case study page: `/case-study/`
-- Getting started page: `/getting-started/`
+- Get started page: `/get-started/`
 - Team page: `/team/`
 - Light and dark theme logo switching
