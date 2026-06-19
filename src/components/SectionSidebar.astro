@@ -152,11 +152,12 @@ const { title, pages, currentPageId } = Astro.props;
 
       panels.forEach((panel) => {
         const item = panel.closest<HTMLElement>("[data-page-id]");
-        setPanelOpen(
-          panel,
-          item === initiallyOpenItem || panel.dataset.open === "true",
-          false,
-        );
+        const shouldBeOpen = item === initiallyOpenItem || panel.dataset.open === "true";
+        const isCurrentlyOpen = panel.dataset.open === "true";
+
+        if (shouldBeOpen !== isCurrentlyOpen) {
+          setPanelOpen(panel, shouldBeOpen, false);
+        }
       });
 
       if (accordion.dataset.accordionReady === "true") {
@@ -211,21 +212,109 @@ const { title, pages, currentPageId } = Astro.props;
 
 <style>
   .section-sidebar {
+    --section-sidebar-offset: calc(var(--header-height) + var(--space-md));
+    --section-sidebar-scrollbar-bg: color-mix(in srgb, var(--color-surface) 86%, transparent);
+
     align-self: start;
-    background: color-mix(in srgb, var(--color-surface) 86%, transparent);
+    background: var(--section-sidebar-scrollbar-bg);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-lg);
     display: grid;
-    max-height: calc(100vh - 6rem);
-    overflow: auto;
-    padding: var(--space-md);
+    height: calc(100vh - (var(--section-sidebar-offset) * 2));
+    max-height: calc(100vh - (var(--section-sidebar-offset) * 2));
+    overflow: hidden;
+    padding: 0;
     position: sticky;
-    top: calc(var(--header-height) + var(--space-lg));
+    top: var(--section-sidebar-offset);
   }
 
   nav {
     display: grid;
     gap: var(--space-2xs);
+    height: calc(100% - (var(--space-sm) * 2));
+    margin-block: var(--space-sm);
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: calc(var(--space-md) - var(--space-sm)) var(--space-md);
+    scrollbar-color:
+      color-mix(in srgb, var(--color-primary) 24%, transparent)
+      transparent;
+    scrollbar-width: thin;
+  }
+
+  nav::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  nav::-webkit-scrollbar-button {
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--section-sidebar-scrollbar-bg);
+    background-color: var(--section-sidebar-scrollbar-bg);
+    background-image: none;
+    block-size: 0;
+    border: 0;
+    color: transparent;
+    display: none;
+    height: 0;
+    inline-size: 0;
+    min-height: 0;
+    min-width: 0;
+    padding: 0;
+    width: 0;
+  }
+
+  nav::-webkit-scrollbar-button:hover,
+  nav::-webkit-scrollbar-button:active {
+    background: var(--section-sidebar-scrollbar-bg);
+    background-color: var(--section-sidebar-scrollbar-bg);
+    background-image: none;
+    color: transparent;
+  }
+
+  nav::-webkit-scrollbar-button:single-button {
+    display: none;
+    height: 0;
+    width: 0;
+  }
+
+  nav::-webkit-scrollbar-button:vertical:start,
+  nav::-webkit-scrollbar-button:vertical:end {
+    display: none;
+    height: 0;
+    width: 0;
+  }
+
+  nav::-webkit-scrollbar-button:vertical:increment,
+  nav::-webkit-scrollbar-button:vertical:decrement {
+    display: none;
+    height: 0;
+    width: 0;
+  }
+
+  nav::-webkit-scrollbar-button:increment,
+  nav::-webkit-scrollbar-button:decrement {
+    display: none;
+    height: 0;
+    width: 0;
+  }
+
+  nav::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  nav::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  nav::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--color-primary) 22%, transparent);
+    border-radius: 3px;
+  }
+
+  nav::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--color-primary) 36%, transparent);
   }
 
   .sidebar-title {
