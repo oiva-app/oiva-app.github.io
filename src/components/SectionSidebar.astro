@@ -212,27 +212,30 @@ const { title, pages, currentPageId } = Astro.props;
 
 <style>
   .section-sidebar {
-    --section-sidebar-offset: calc(var(--header-height) + var(--space-md));
+    --section-sidebar-gap: var(--space-md);
+    --section-sidebar-max-height: calc(100dvh - var(--header-height) - (var(--section-sidebar-gap) * 2));
     --section-sidebar-scrollbar-bg: color-mix(in srgb, var(--color-surface) 86%, transparent);
 
     align-self: start;
     background: var(--section-sidebar-scrollbar-bg);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-lg);
-    display: grid;
-    height: calc(100vh - (var(--section-sidebar-offset) * 2));
-    max-height: calc(100vh - (var(--section-sidebar-offset) * 2));
+    box-sizing: border-box;
+    clip-path: inset(0 round var(--radius-lg));
+    display: block;
+    max-height: var(--section-sidebar-max-height);
     overflow: hidden;
-    padding: 0;
+    padding: var(--space-sm) 0;
     position: sticky;
-    top: var(--section-sidebar-offset);
+    top: calc(var(--header-height) + var(--section-sidebar-gap));
   }
 
   nav {
+    align-content: start;
     display: grid;
     gap: var(--space-2xs);
-    height: calc(100% - (var(--space-sm) * 2));
-    margin-block: var(--space-sm);
+    grid-auto-rows: max-content;
+    max-height: calc(var(--section-sidebar-max-height) - (var(--space-sm) * 2));
     min-height: 0;
     overflow-x: hidden;
     overflow-y: auto;
