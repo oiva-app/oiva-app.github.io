@@ -3,6 +3,9 @@
 .trash
 .vscode
 
+# lockfiles
+**~lock~*
+
 # build output
 dist/
 # generated types
