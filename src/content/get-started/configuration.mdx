@@ -1,6 +1,6 @@
 ---
 title: "Configuration"
-description: "Environment variables, Terraform settings, and credentials needed to deploy Oiva"
+description: "Environment variables, Credentials, and Terraform settings to deploy Oiva"
 order: 2
 sidebarLabel: "Configuration"
 ---
@@ -45,11 +45,11 @@ Keep the repository list focused on the services Oiva needs for incident investi
 
 This value is a channel ID, not a display name.
 
-## DNS And Certificate Options
+### DNS And Certificate Options
 
 Choose one supported domain path before applying Terraform.
 
-### Route 53 With Terraform-Managed Certificate
+#### Route 53 With Terraform-Managed Certificate
 
 For the beginner Route 53 path, set:
 
@@ -59,7 +59,7 @@ For the beginner Route 53 path, set:
 
 Leave `certificate_arn` unset so Terraform can create and validate the ACM certificate.
 
-### Route 53 With Existing Certificate
+#### Route 53 With Existing Certificate
 
 Use this path when DNS is in Route 53 but you already have a valid ACM certificate.
 
@@ -70,7 +70,7 @@ Use this path when DNS is in Route 53 but you already have a valid ACM certifica
 
 The certificate must cover the Oiva hostname.
 
-### External DNS With Existing Certificate
+#### External DNS With Existing Certificate
 
 Use this path when DNS is managed outside AWS.
 
