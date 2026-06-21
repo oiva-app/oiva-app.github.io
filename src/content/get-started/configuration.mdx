@@ -104,7 +104,7 @@ Use a token with the minimum repository access needed for the repositories liste
 
 Slack should send interactions to the `slack_action_webhook_url` Terraform output.
 
-## LLM Provider Secrets
+### LLM Provider Secrets
 
 The default deployment uses OpenAI models. LLM provider API key secrets are configured separately with `llm_provider_secret_env_vars`.
 
@@ -117,59 +117,6 @@ For the default OpenAI setup, include the environment variable name expected by 
 If you configure non-OpenAI providers, include each provider's expected API key environment variable name in `llm_provider_secret_env_vars`.
 
 Provider API key placeholders use the lower-case, hyphenated form of the environment variable name. For example, with `deployment_name = "oiva"`, a provider env var named `PROVIDER_API_KEY` creates a secret named `/oiva/oiva/provider-api-key`.
-
-## Knowledge Base
-
-Oiva can read knowledge-base files from S3 during investigations.
-
-### Default Upload Path
-
-Upload Markdown or text files to the managed knowledge-base bucket after deployment:
-
-```bash
-aws s3 sync ./knowledge-base "s3://$(terraform output -raw knowledge_base_bucket)/"
-```
-
-At minimum, include an `ARCHITECTURE.md` file that explains the app Oiva observes, the services it contains, how those services call each other, and which external systems they depend on.
-
-### Optional Prefix
-
-If you configure `knowledge_base_s3_prefix`, upload files under that prefix:
-
-```bash
-aws s3 sync ./knowledge-base "s3://$(terraform output -raw knowledge_base_bucket)/your-prefix/"
-```
-
-## Secret Population
-
-View the secret ARNs Terraform created:
-
-```bash
-terraform output secret_arns
-```
-
-The optional helper prompts for each required secret, writes non-empty values to Secrets Manager, and forces a new ECS deployment after successful updates:
-
-```bash
-./utilities/populate_secrets.py
-```
-
-If you populate secrets manually, use AWS CLI:
-
-```bash
-aws secretsmanager put-secret-value \
-  --secret-id /oiva/<deployment-name>/<secret-name> \
-  --secret-string "<actual-value>"
-```
-
-ECS injects Secrets Manager values only when a task starts. If a secret value changes later, force a new deployment so ECS replaces the running task:
-
-```bash
-aws ecs update-service \
-  --cluster "$(terraform output -raw ecs_cluster_name)" \
-  --service "$(terraform output -raw ecs_service_name)" \
-  --force-new-deployment
-```
 
 ## Optional Overrides
 
