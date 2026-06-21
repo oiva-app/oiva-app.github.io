@@ -56,3 +56,31 @@ export function toSinglePageSidebarPages(
 
   return pages;
 }
+
+export function toSectionSidebarPages(
+  section: SectionKey,
+  entries: {
+    entry: {
+      id: string;
+      data: {
+        title: string;
+        description: string;
+        order: number;
+        sidebarLabel?: string;
+      };
+    };
+    headings: HeadingLink[];
+  }[],
+): SectionPage[] {
+  return entries
+    .map(({ entry, headings }) => ({
+      href: withBase(`${sectionBasePath[section]}/${entry.id}/`),
+      label: entry.data.sidebarLabel ?? entry.data.title,
+      title: entry.data.title,
+      description: entry.data.description,
+      id: entry.id,
+      order: entry.data.order,
+      headings: headings.filter((heading) => heading.depth === 2),
+    }))
+    .sort((a, b) => a.order - b.order);
+}

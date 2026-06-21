@@ -10,8 +10,20 @@ export const navLinks = [
   },
   {
     label: "Get Started",
-    href: withBase("/get-started/"),
+    href: withBase("/get-started/manual-setup/"),
     match: "/get-started/",
+    children: [
+      {
+        label: "Manual Setup",
+        href: withBase("/get-started/manual-setup/"),
+        match: "/get-started/manual-setup/",
+      },
+      {
+        label: "Configuration",
+        href: withBase("/get-started/configuration/"),
+        match: "/get-started/configuration/",
+      },
+    ],
   },
   {
     label: "Team",

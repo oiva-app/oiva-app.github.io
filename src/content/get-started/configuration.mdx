@@ -1,0 +1,180 @@
+---
+title: "Configuration"
+description: "Environment variables, Terraform settings, and credentials needed to deploy Oiva"
+order: 2
+sidebarLabel: "Configuration"
+---
+
+## Overview
+
+Oiva's AWS deployment is configured in two places:
+
+- `terraform.tfvars` describes the infrastructure and deployment settings Terraform needs.
+- AWS Secrets Manager stores credentials, API keys, tokens, and signing secrets that should not be committed to source control.
+
+The default deployment creates placeholder secrets during `terraform apply`. Populate those secrets after Terraform creates the infrastructure, then force ECS to start a fresh task so the running container receives the new values.
+
+## Required Terraform Variables
+
+Set these values in `terraform/terraform.tfvars` before applying the stack.
+
+### Deployment Identity
+
+- `deployment_name`: names the deployment and is used in generated AWS resource names.
+- `aws_region`: the AWS region where Terraform should create resources.
+- `agent_image`: the container image URI ECS should pull for the Oiva app.
+
+Use the same region for `aws_region`, AWS CLI commands, and the container registry unless you intentionally configure a cross-region setup.
+
+### Public Endpoint
+
+- `domain_name`: the public hostname for the Oiva service.
+
+The default setup expects Oiva to be reachable over HTTPS. Choose the DNS and certificate path before running Terraform.
+
+### Observed Application
+
+- `observed_app_name`: the display name of the application Oiva investigates.
+- `app_github_repositories`: the GitHub repositories Oiva should be allowed to inspect.
+
+Keep the repository list focused on the services Oiva needs for incident investigation.
+
+### Slack Channel
+
+- `slack_channel_id`: the Slack channel where Oiva should post investigation updates and reports.
+
+This value is a channel ID, not a display name.
+
+## DNS And Certificate Options
+
+Choose one supported domain path before applying Terraform.
+
+### Route 53 With Terraform-Managed Certificate
+
+For the beginner Route 53 path, set:
+
+- `domain_name`
+- `hosted_zone_id`
+- `create_route53_record = true`
+
+Leave `certificate_arn` unset so Terraform can create and validate the ACM certificate.
+
+### Route 53 With Existing Certificate
+
+Use this path when DNS is in Route 53 but you already have a valid ACM certificate.
+
+- `domain_name`
+- `hosted_zone_id`
+- `create_route53_record = true`
+- `certificate_arn`
+
+The certificate must cover the Oiva hostname.
+
+### External DNS With Existing Certificate
+
+Use this path when DNS is managed outside AWS.
+
+- `domain_name`
+- `certificate_arn`
+
+After Terraform creates the load balancer, point your DNS provider at the Terraform output for the ALB DNS name.
+
+## Required Secrets
+
+Terraform creates placeholder secrets by default. Add real values after the first `terraform apply`.
+
+### Honeycomb
+
+- `HC_MCP_KEY`: allows Oiva to query Honeycomb through the Honeycomb MCP integration.
+- `HC_SHARED_SECRET`: verifies incoming Honeycomb webhook requests.
+- `HONEYCOMB_API_KEY`: allows telemetry export and Honeycomb API access.
+
+Configure Honeycomb alerts to call the `honeycomb_alert_webhook_url` Terraform output.
+
+### GitHub
+
+- `GITHUB_PAT`: allows Oiva to read configured GitHub repositories during an investigation.
+
+Use a token with the minimum repository access needed for the repositories listed in `app_github_repositories`.
+
+### Slack
+
+- `SLACK_BOT_TOKEN`: allows Oiva to post messages and reports.
+- `SLACK_SIGNING_SECRET`: verifies incoming Slack interaction requests.
+
+Slack should send interactions to the `slack_action_webhook_url` Terraform output.
+
+## LLM Provider Secrets
+
+The default deployment uses OpenAI models. LLM provider API key secrets are configured separately with `llm_provider_secret_env_vars`.
+
+### Default Provider
+
+For the default OpenAI setup, include the environment variable name expected by the Oiva app and populate the corresponding Secrets Manager value after Terraform creates the placeholder.
+
+### Additional Providers
+
+If you configure non-OpenAI providers, include each provider's expected API key environment variable name in `llm_provider_secret_env_vars`.
+
+Provider API key placeholders use the lower-case, hyphenated form of the environment variable name. For example, with `deployment_name = "oiva"`, a provider env var named `PROVIDER_API_KEY` creates a secret named `/oiva/oiva/provider-api-key`.
+
+## Knowledge Base
+
+Oiva can read knowledge-base files from S3 during investigations.
+
+### Default Upload Path
+
+Upload Markdown or text files to the managed knowledge-base bucket after deployment:
+
+```bash
+aws s3 sync ./knowledge-base "s3://$(terraform output -raw knowledge_base_bucket)/"
+```
+
+At minimum, include an `ARCHITECTURE.md` file that explains the app Oiva observes, the services it contains, how those services call each other, and which external systems they depend on.
+
+### Optional Prefix
+
+If you configure `knowledge_base_s3_prefix`, upload files under that prefix:
+
+```bash
+aws s3 sync ./knowledge-base "s3://$(terraform output -raw knowledge_base_bucket)/your-prefix/"
+```
+
+## Secret Population
+
+View the secret ARNs Terraform created:
+
+```bash
+terraform output secret_arns
+```
+
+The optional helper prompts for each required secret, writes non-empty values to Secrets Manager, and forces a new ECS deployment after successful updates:
+
+```bash
+./utilities/populate_secrets.py
+```
+
+If you populate secrets manually, use AWS CLI:
+
+```bash
+aws secretsmanager put-secret-value \
+  --secret-id /oiva/<deployment-name>/<secret-name> \
+  --secret-string "<actual-value>"
+```
+
+ECS injects Secrets Manager values only when a task starts. If a secret value changes later, force a new deployment so ECS replaces the running task:
+
+```bash
+aws ecs update-service \
+  --cluster "$(terraform output -raw ecs_cluster_name)" \
+  --service "$(terraform output -raw ecs_service_name)" \
+  --force-new-deployment
+```
+
+## Optional Overrides
+
+The Terraform example includes escape hatches for reusing existing infrastructure components, such as an existing VPC or S3 knowledge-base bucket.
+
+It also includes configuration variables for changing Oiva defaults. For example, the Codebase Agent uses OpenAI's GPT-5.4 by default, but the setup guide references `codebase_agent_model` as an override.
+
+Use these overrides only when you already know which existing component or model setting you want Oiva to use.

@@ -1,8 +1,8 @@
 ---
-title: "Get Started"
-description: "A guide for deploying on AWS"
+title: "Manual Setup"
+description: "A manual guide for deploying Oiva on AWS"
 order: 1
-sidebarLabel: "Get Started"
+sidebarLabel: "Manual Setup"
 ---
 
 import Steps from "../../components/Steps.astro";
@@ -13,12 +13,9 @@ Oiva can be deployed to any VPC and is not bound to a particular cloud vendor. H
 
 For instructions on setting up the local development server, see this [Project README](https://github.com/oiva-app/oiva/blob/main/README.md).
 
-For additional details on deployment, see the [Terraform Deployment README](https://github.com/oiva-app/oiva/blob/main/terraform/README.md).
+### What This Guide Deploys
 
-
-### What This Deploys
-
-The default deployment creates the AWS resources Oiva needs to run:
+The default deployment creates all of the AWS resources Oiva needs to run:
 
 - __dedicated VPC__ for Oiva
 - __two public subnets__ for the public load balancer
@@ -39,11 +36,6 @@ The default deployment creates the AWS resources Oiva needs to run:
 
 __Escape hatches__: If you already have AWS infrastructure you want to reuse, the Terraform module contains escape hatches for some existing components, such as the VPC, S3 knowledge-base bucket, and so on. More details below.
 
-The Fargate task runs two containers:
-
-- `oiva-agent`: the Oiva/Mastra HTTP API and background workflow process.
-- `adot-collector`: an AWS Distro for an OpenTelemetry sidecar that sends traces to Honeycomb.
-
 Terraform creates the AWS infrastructure, but it does not put your secret values directly in Terraform files. By default, it creates empty Secrets Manager placeholders. You populate those secrets after the first `terraform apply`, then force ECS to start a fresh task with the populated values.
 
 ## Prerequisites
@@ -60,6 +52,18 @@ Before starting, ensure you have the following installed and configured:
 Note:
 - Python (>=3.8) is only needed if you use the optional `populate_secrets.py` helper script. 
 - Node.js (>=24) and npm are only needed to set up and run the local development server.
+
+## Credentials
+- LLM provider key(s)
+- Honeycomb MCP key
+- Honeycomb shared secret
+- Honeycomb API key
+- GITHUB PAT
+- Slack Bot Token
+- Slack Channel ID
+- Slack Signing Secret
+
+For more details on these credentials and other environment variables, see the [Configuration page](/get-started/configuration/).
 
 ### AWS Account
 

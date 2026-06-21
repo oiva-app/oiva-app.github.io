@@ -8,6 +8,15 @@ type Props = {
 };
 
 const { title, pages, currentPageId } = Astro.props;
+
+function getHeadingHref(page: SectionPage, slug: string) {
+  if (page.id === currentPageId) {
+    return `#${slug}`;
+  }
+
+  const [pagePath] = page.href.split("#");
+  return `${pagePath}#${slug}`;
+}
 ---
 
 <aside
@@ -23,6 +32,7 @@ const { title, pages, currentPageId } = Astro.props;
           <a
             class="page-link"
             href={page.href}
+            aria-current={page.id === currentPageId ? "page" : undefined}
             data-section-page-link
           >
             {page.label}
@@ -50,7 +60,12 @@ const { title, pages, currentPageId } = Astro.props;
             data-heading-panel
           >
             {page.headings.map((heading) => (
-              <a class="heading-link" href={`#${heading.slug}`}>{heading.text}</a>
+              <a
+                class="heading-link"
+                href={getHeadingHref(page, heading.slug)}
+              >
+                {heading.text}
+              </a>
             ))}
           </div>
         )}
@@ -398,6 +413,7 @@ const { title, pages, currentPageId } = Astro.props;
   }
 
   a:hover,
+  a[aria-current="page"],
   .page-link:hover,
   .page-link:focus-visible {
     background: var(--color-primary-soft);
