@@ -16,6 +16,7 @@ export type HeadingLink = {
   depth: number;
   slug: string;
   text: string;
+  children?: HeadingLink[];
 };
 
 const sectionBasePath: Record<SectionKey, string> = {
@@ -55,4 +56,49 @@ export function toSinglePageSidebarPages(
   });
 
   return pages;
+}
+
+export function toSectionSidebarPages(
+  section: SectionKey,
+  entries: {
+    entry: {
+      id: string;
+      data: {
+        title: string;
+        description: string;
+        order: number;
+        sidebarLabel?: string;
+      };
+    };
+    headings: HeadingLink[];
+  }[],
+): SectionPage[] {
+  return entries
+    .map(({ entry, headings }) => ({
+      href: withBase(`${sectionBasePath[section]}/${entry.id}/`),
+      label: entry.data.sidebarLabel ?? entry.data.title,
+      title: entry.data.title,
+      description: entry.data.description,
+      id: entry.id,
+      order: entry.data.order,
+      headings: toNestedHeadingLinks(headings),
+    }))
+    .sort((a, b) => a.order - b.order);
+}
+
+function toNestedHeadingLinks(headings: HeadingLink[]): HeadingLink[] {
+  const nestedHeadings: HeadingLink[] = [];
+
+  headings.forEach((heading) => {
+    if (heading.depth === 2) {
+      nestedHeadings.push({ ...heading, children: [] });
+      return;
+    }
+
+    if (heading.depth === 3 && nestedHeadings.length > 0) {
+      nestedHeadings[nestedHeadings.length - 1].children?.push(heading);
+    }
+  });
+
+  return nestedHeadings;
 }

@@ -8,6 +8,15 @@ type Props = {
 };
 
 const { title, pages, currentPageId } = Astro.props;
+
+function getHeadingHref(page: SectionPage, slug: string) {
+  if (page.id === currentPageId) {
+    return `#${slug}`;
+  }
+
+  const [pagePath] = page.href.split("#");
+  return `${pagePath}#${slug}`;
+}
 ---
 
 <aside
@@ -23,6 +32,7 @@ const { title, pages, currentPageId } = Astro.props;
           <a
             class="page-link"
             href={page.href}
+            aria-current={page.id === currentPageId ? "page" : undefined}
             data-section-page-link
           >
             {page.label}
@@ -50,7 +60,49 @@ const { title, pages, currentPageId } = Astro.props;
             data-heading-panel
           >
             {page.headings.map((heading) => (
-              <a class="heading-link" href={`#${heading.slug}`}>{heading.text}</a>
+              <div class="heading-nav-item" data-heading-id={heading.slug}>
+                <div class:list={["heading-link-row", heading.children?.length && "has-heading-children"]}>
+                  <a
+                    class:list={["heading-link", `heading-link-depth-${heading.depth}`]}
+                    href={getHeadingHref(page, heading.slug)}
+                    data-heading-link
+                  >
+                    {heading.text}
+                  </a>
+                  {heading.children && heading.children.length > 0 && (
+                    <button
+                      class="heading-toggle"
+                      type="button"
+                      aria-expanded="false"
+                      aria-label={`Toggle ${heading.text} subsections`}
+                      data-heading-toggle
+                    >
+                      <svg class="toggle-icon" aria-hidden="true" viewBox="0 0 16 16">
+                        <path d="M6 4l4 4-4 4"></path>
+                      </svg>
+                    </button>
+                  )}
+                </div>
+                {heading.children && heading.children.length > 0 && (
+                  <div
+                    class="heading-children"
+                    aria-label={`${heading.text} subsections`}
+                    aria-hidden="true"
+                    data-open="false"
+                    data-nested-heading-panel
+                  >
+                    {heading.children.map((child) => (
+                      <a
+                        class="heading-link heading-link-depth-3"
+                        href={getHeadingHref(page, child.slug)}
+                        data-heading-link
+                      >
+                        {child.text}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         )}
@@ -78,8 +130,9 @@ const { title, pages, currentPageId } = Astro.props;
     panel.dataset.open = isOpen ? "true" : "false";
     panel.setAttribute("aria-hidden", isOpen ? "false" : "true");
 
-    const item = panel.closest<HTMLElement>("[data-page-id]");
-    const toggle = item?.querySelector<HTMLButtonElement>("[data-section-toggle]");
+    const toggle = panel.previousElementSibling?.querySelector<HTMLButtonElement>(
+      "[data-section-toggle], [data-heading-toggle]",
+    );
     toggle?.setAttribute("aria-expanded", isOpen ? "true" : "false");
 
     if (reducedMotionQuery.matches || !animate) {
@@ -134,6 +187,14 @@ const { title, pages, currentPageId } = Astro.props;
   const getPanelForItem = (item: HTMLElement) =>
     item.querySelector<PanelElement>("[data-heading-panel]");
 
+  const getNestedPanelForItem = (item: HTMLElement) =>
+    item.querySelector<PanelElement>("[data-nested-heading-panel]");
+
+  const normalizePathname = (pathname: string) => pathname.replace(/\/$/, "");
+
+  const isSamePathname = (url: URL) =>
+    normalizePathname(url.pathname) === normalizePathname(window.location.pathname);
+
   const initializeSectionAccordions = () => {
     document.querySelectorAll<HTMLElement>("[data-section-accordion]").forEach((accordion) => {
       const panels = Array.from(accordion.querySelectorAll<PanelElement>("[data-heading-panel]"));
@@ -184,11 +245,51 @@ const { title, pages, currentPageId } = Astro.props;
           return;
         }
 
+        const headingToggle = target instanceof Element
+          ? target.closest<HTMLButtonElement>("[data-heading-toggle]")
+          : null;
+
+        if (headingToggle) {
+          const item = headingToggle.closest<HTMLElement>("[data-heading-id]");
+          const panel = item ? getNestedPanelForItem(item) : null;
+
+          if (!panel) {
+            return;
+          }
+
+          setPanelOpen(panel, panel.dataset.open !== "true", true);
+          return;
+        }
+
+        const headingLink = target instanceof Element
+          ? target.closest<HTMLAnchorElement>("[data-heading-link]")
+          : null;
+
+        if (headingLink) {
+          const linkUrl = new URL(headingLink.href);
+          const isSamePageLink = isSamePathname(linkUrl);
+          const item = headingLink.closest<HTMLElement>("[data-heading-id]");
+          const panel = item ? getNestedPanelForItem(item) : null;
+
+          if (isSamePageLink && panel) {
+            setPanelOpen(panel, true, true);
+          }
+
+          return;
+        }
+
         const link = target instanceof Element
           ? target.closest<HTMLAnchorElement>("[data-section-page-link]")
           : null;
 
         if (!link) {
+          return;
+        }
+
+        const linkUrl = new URL(link.href);
+        const isSamePageLink = isSamePathname(linkUrl);
+
+        if (!isSamePageLink) {
           return;
         }
 
@@ -394,10 +495,14 @@ const { title, pages, currentPageId } = Astro.props;
   }
 
   .page-link {
+    color: color-mix(in srgb, var(--color-text) 72%, var(--color-text-muted));
+    font-size: 0.94rem;
+    font-weight: 750;
     min-width: 0;
   }
 
   a:hover,
+  a[aria-current="page"],
   .page-link:hover,
   .page-link:focus-visible {
     background: var(--color-primary-soft);
@@ -407,7 +512,7 @@ const { title, pages, currentPageId } = Astro.props;
   .page-headings {
     display: grid;
     gap: var(--space-2xs);
-    margin: 0 1.7rem 0.45rem 0.75rem;
+    margin: 0 1.45rem 0.5rem 1.05rem;
     min-width: 0;
     overflow: hidden;
     transition: height 360ms ease, opacity 280ms ease;
@@ -432,9 +537,92 @@ const { title, pages, currentPageId } = Astro.props;
     padding: 0.28rem 0.45rem;
   }
 
-  .heading-link:hover {
+  .heading-link-depth-2 {
+    color: color-mix(in srgb, var(--color-text-muted) 88%, var(--color-text-subtle));
+    font-size: 0.79rem;
+    font-weight: 680;
+    padding-left: 0.35rem;
+  }
+
+  .heading-nav-item {
+    display: grid;
+    gap: var(--space-2xs);
+    min-width: 0;
+  }
+
+  .heading-link-row {
+    align-items: center;
+    display: grid;
+    gap: var(--space-2xs);
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
+  }
+
+  .heading-link-row.has-heading-children {
+    grid-template-columns: minmax(0, 1fr) 1.35rem;
+  }
+
+  .heading-toggle {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-xs);
+    color: var(--color-text-subtle);
+    cursor: pointer;
+    display: inline-flex;
+    height: 1.25rem;
+    justify-content: center;
+    padding: 0;
+    width: 1.25rem;
+  }
+
+  .heading-toggle:hover {
     background: var(--color-surface-raised);
     color: var(--color-text);
+  }
+
+  .heading-toggle[aria-expanded="true"] .toggle-icon {
+    transform: rotate(90deg);
+  }
+
+  .heading-children {
+    border-left: 1px solid color-mix(in srgb, var(--color-primary) 24%, transparent);
+    display: grid;
+    gap: var(--space-2xs);
+    margin-left: 0.55rem;
+    min-width: 0;
+    overflow: hidden;
+    padding-left: 0.55rem;
+    transition: height 260ms ease, opacity 200ms ease;
+  }
+
+  .heading-children[data-open="false"] {
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .heading-children[data-open="true"] {
+    opacity: 1;
+  }
+
+  .heading-link-depth-3 {
+    color: color-mix(in srgb, var(--color-text-subtle) 86%, transparent);
+    font-size: 0.74rem;
+    font-weight: 600;
+    padding-left: 0.35rem;
+  }
+
+  .heading-link:hover,
+  .heading-link:focus-visible {
+    background: var(--color-surface-raised);
+    color: var(--color-text);
+  }
+
+  .heading-link-depth-2:hover,
+  .heading-link-depth-2:focus-visible {
+    background: color-mix(in srgb, var(--color-surface-raised) 72%, transparent);
   }
 
   @media (max-width: 900px) {

@@ -61,20 +61,23 @@ Astro creates pages from files in `src/pages/`.
 - `src/pages/index.astro` becomes `/`.
 - `src/pages/team.astro` becomes `/team/`.
 - `src/pages/case-study/index.astro` renders `/case-study/`.
-- `src/pages/get-started/index.astro` renders `/get-started/`.
+- `src/pages/get-started/index.astro` redirects `/get-started/`.
+- `src/pages/get-started/[slug].astro` renders `/get-started/manual-setup/` and `/get-started/configuration/`.
 
-The case study and get started sections each use one MDX file:
+The case study section uses one MDX file. The get started section uses one MDX file per page:
 
 ```text
 src/content/case-study/index.mdx
-src/content/get-started/index.mdx
+src/content/get-started/manual-setup.mdx
+src/content/get-started/configuration.mdx
 ```
 
 Those files become:
 
 ```text
 /case-study/
-/get-started/
+/get-started/manual-setup/
+/get-started/configuration/
 ```
 
 ## Editing Case Study and Get Started Pages
@@ -86,7 +89,7 @@ Most article-style content lives in MDX files:
 
 MDX is Markdown with the option to import and use components. Regular Markdown headings, paragraphs, lists, links, and code blocks work as expected.
 
-The case study and get started sidebars are generated from headings inside their single MDX files. Use `##` for top sidebar sections and `###` for nested subsection links.
+The case study sidebar is generated from headings inside its single MDX file. Get started sidebars list each MDX page, with `##` headings nested below the current page. Use `##` for top sidebar sections and `###` for nested subsection links.
 
 Each MDX file starts with frontmatter. Frontmatter is the data between the `---` lines at the top of the file.
 
@@ -112,7 +115,7 @@ The frontmatter fields are validated in `src/content.config.ts`.
 
 To add a new section to a single-page content file:
 
-1. Open `src/content/case-study/index.mdx` or `src/content/get-started/index.mdx`.
+1. Open `src/content/case-study/index.mdx` or the relevant file in `src/content/get-started/`.
 2. Add a `##` heading for the new sidebar section.
 3. Add `###` headings for nested sidebar links.
 4. Run `npm run build` to catch missing or invalid fields.
@@ -312,6 +315,7 @@ Then spot-check:
 
 - Homepage: `/`
 - Case study page: `/case-study/`
-- Get started page: `/get-started/`
+- Manual setup page: `/get-started/manual-setup/`
+- Configuration page: `/get-started/configuration/`
 - Team page: `/team/`
 - Light and dark theme logo switching
