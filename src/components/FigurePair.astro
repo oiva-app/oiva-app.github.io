@@ -1,12 +1,13 @@
 ---
 type Props = {
   class?: string;
+  variant?: "equal" | "right-wide";
 };
 
-const { class: className = "" } = Astro.props;
+const { class: className = "", variant = "equal" } = Astro.props;
 ---
 
-<div class:list={["figure-pair", className]}>
+<div class:list={["figure-pair", `figure-pair-${variant}`, className]}>
   <slot />
 </div>
 
@@ -16,6 +17,10 @@ const { class: className = "" } = Astro.props;
     gap: var(--space-md);
     grid-template-columns: repeat(2, minmax(0, 1fr));
     margin: var(--space-xl) 0;
+  }
+
+  .figure-pair-right-wide {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
   }
 
   .figure-pair :global(figure) {

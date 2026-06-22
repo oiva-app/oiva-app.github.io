@@ -52,9 +52,11 @@
         activeTrigger = trigger instanceof HTMLElement ? trigger : null;
 
         const alt = trigger.getAttribute("data-figure-modal-alt") || "";
+        const size = trigger.getAttribute("data-figure-modal-size") || "default";
 
         image.src = src;
         image.alt = alt;
+        modal.dataset.figureModalSize = size;
 
         modal.showModal();
         closeButton instanceof HTMLElement && closeButton.focus();
@@ -74,6 +76,7 @@
           image.alt = "";
         }
 
+        delete modal.dataset.figureModalSize;
         activeTrigger?.focus();
         activeTrigger = null;
       }, { signal });
@@ -104,10 +107,11 @@
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-card);
+    box-sizing: border-box;
     max-height: calc(100dvh - (2 * var(--space-md)));
     max-width: calc(100vw - (2 * var(--space-md)));
     overflow: hidden;
-    padding: var(--space-md);
+    padding: var(--space-sm);
     position: relative;
     width: fit-content;
   }
@@ -125,8 +129,8 @@
     justify-content: center;
     padding: 0;
     position: absolute;
-    right: calc(var(--space-md) + var(--space-sm));
-    top: calc(var(--space-md) + var(--space-sm));
+    right: var(--space-md);
+    top: var(--space-md);
     width: 2.25rem;
     z-index: 1;
   }
@@ -144,11 +148,16 @@
 
   .figure-modal-image {
     display: block;
-    height: auto;
+    height: min(82dvh, calc(100dvh - (2 * var(--space-md)) - (2 * var(--space-sm))));
     justify-self: center;
-    max-height: calc(100dvh - (2 * var(--space-md)) - (2 * var(--space-md)));
-    max-width: 100%;
-    object-fit: contain;
+    max-height: calc(100dvh - (2 * var(--space-md)) - (2 * var(--space-sm)));
+    max-width: calc(100vw - (2 * var(--space-md)) - (2 * var(--space-sm)));
+    width: auto;
+  }
+
+  .figure-modal[data-figure-modal-size="wide"] .figure-modal-image {
+    height: calc(100dvh - (2 * var(--space-md)) - (2 * var(--space-sm)));
+    max-width: calc(100vw - (2 * var(--space-md)) - (2 * var(--space-sm)));
     width: auto;
   }
 
@@ -160,16 +169,25 @@
     .figure-modal-panel {
       max-height: calc(100dvh - (2 * var(--space-sm)));
       max-width: calc(100vw - (2 * var(--space-sm)));
-      padding: var(--space-sm);
+      padding: var(--space-xs);
     }
 
     .figure-modal-close {
-      right: calc(var(--space-sm) + var(--space-xs));
-      top: calc(var(--space-sm) + var(--space-xs));
+      right: var(--space-sm);
+      top: var(--space-sm);
     }
 
     .figure-modal-image {
-      max-height: calc(100dvh - (2 * var(--space-sm)) - (2 * var(--space-sm)));
+      height: auto;
+      max-height: calc(100dvh - (2 * var(--space-sm)) - (2 * var(--space-xs)));
+      max-width: calc(100vw - (2 * var(--space-sm)) - (2 * var(--space-xs)));
+      width: calc(100vw - (2 * var(--space-sm)) - (2 * var(--space-xs)));
+    }
+
+    .figure-modal[data-figure-modal-size="wide"] .figure-modal-image {
+      height: auto;
+      max-width: calc(100vw - (2 * var(--space-sm)) - (2 * var(--space-xs)));
+      width: calc(100vw - (2 * var(--space-sm)) - (2 * var(--space-xs)));
     }
   }
 </style>
