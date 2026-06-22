@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
+import { unified } from '@astrojs/markdown-remark';
 import GithubSlugger from 'github-slugger';
 
 const anchorableHeadingTags = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']);
@@ -117,9 +118,10 @@ function rehypeHeadingAnchors() {
 // https://astro.build/config
 export default defineConfig({
   site: 'https://oiva-app.github.io',
-  integrations: [
-    mdx({
+  markdown: {
+    processor: unified({
       rehypePlugins: [rehypeHeadingAnchors],
     }),
-  ],
+  },
+  integrations: [mdx()],
 });
