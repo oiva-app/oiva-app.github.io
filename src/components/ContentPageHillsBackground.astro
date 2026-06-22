@@ -1,5 +1,5 @@
 ---
-const BACKGROUND_HEIGHT = 20000;
+const BACKGROUND_HEIGHT = 78000;
 const GLOBAL_CLOSE_Y = BACKGROUND_HEIGHT + 360;
 const LEFT_EDGE = -260;
 const RIGHT_EDGE = 1860;
@@ -40,6 +40,24 @@ const hillRepeats = [
   { x: 104, y: 9750, colorOffset: 8 },
   { x: -96, y: 13000, colorOffset: 3 },
   { x: 48, y: 16200, colorOffset: 6 },
+  { x: -120, y: 19450, colorOffset: 9 },
+  { x: 88, y: 22700, colorOffset: 1 },
+  { x: -48, y: 25950, colorOffset: 4 },
+  { x: 120, y: 29200, colorOffset: 7 },
+  { x: -88, y: 32450, colorOffset: 10 },
+  { x: 56, y: 35700, colorOffset: 2 },
+  { x: -128, y: 38950, colorOffset: 5 },
+  { x: 96, y: 42200, colorOffset: 8 },
+  { x: -72, y: 45450, colorOffset: 0 },
+  { x: 112, y: 48700, colorOffset: 3 },
+  { x: -104, y: 51950, colorOffset: 6 },
+  { x: 64, y: 55200, colorOffset: 9 },
+  { x: -40, y: 58450, colorOffset: 1 },
+  { x: 88, y: 61000, colorOffset: 4 },
+  { x: -96, y: 64250, colorOffset: 7 },
+  { x: 120, y: 67500, colorOffset: 10 },
+  { x: -56, y: 70750, colorOffset: 2 },
+  { x: 72, y: 74000, colorOffset: 5 },
 ];
 
 const buildHillPath = (hill: (typeof hillCurves)[number], repeatY: number) => {
@@ -109,7 +127,7 @@ const buildHillPath = (hill: (typeof hillCurves)[number], repeatY: number) => {
 
 <style>
   .content-page-hills-background {
-    --content-background-art-height: 20000px;
+    --content-background-art-height: 78000px;
     inset: 0;
     min-height: var(--content-background-art-height);
     overflow: hidden;
