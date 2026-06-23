@@ -275,6 +275,20 @@
     width: 100%;
   }
 
+  /* The figure is a fixed three-column layout; on narrow viewports its in-SVG
+     text would scale down to an illegible size. Below the breakpoint, scroll
+     horizontally and hold a readable minimum width instead of squashing. */
+  @media (max-width: 640px) {
+    .workflow-figure {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .workflow-figure__svg {
+      min-width: 640px;
+    }
+  }
+
   /* ---- Dark mode: remap the dark-on-light artwork onto sage/text tokens ----
      Light mode keeps the original inline colors untouched. CSS rules override
      SVG presentation attributes, so only the dark overrides live here. */
@@ -339,11 +353,17 @@
 <script>
   // SMIL doesn't respect prefers-reduced-motion. For users who opt out, freeze
   // the figure on its settled end-state (report drawn, nodes lit, check shown)
-  // rather than the blank t=0 frame.
+  // rather than the blank t=0 frame. This runs as early as the module script
+  // allows (right after DOM parse) so the loop never visibly plays for them.
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     for (const svg of document.querySelectorAll<SVGSVGElement>(".workflow-figure__svg")) {
-      svg.setCurrentTime(5.9);
-      svg.pauseAnimations();
+      try {
+        // Pause first to stop the clock, then jump to the settled frame.
+        svg.pauseAnimations();
+        svg.setCurrentTime(5.9);
+      } catch {
+        // SMIL unavailable or the timeline isn't ready yet — leave it animating.
+      }
     }
   }
 </script>
