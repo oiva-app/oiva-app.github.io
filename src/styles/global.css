@@ -126,8 +126,8 @@
   --shadow-soft: 0 18px 60px rgba(0, 0, 0, 0.35);
   --shadow-card: 0 10px 32px rgba(0, 0, 0, 0.28);
 
-  --motif-line-color: rgba(217, 189, 105, 0.32);
-  --motif-dot-color: rgba(217, 189, 105, 0.34);
+  --motif-line-color: rgba(166, 199, 160, 0.32);
+  --motif-dot-color: rgba(166, 199, 160, 0.34);
   --motif-opacity-quiet: 0.18;
   --motif-opacity-medium: 0.3;
 }
