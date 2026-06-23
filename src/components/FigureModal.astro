@@ -29,7 +29,7 @@
 
       const image = modal.querySelector("[data-figure-modal-image]");
       const closeButton = modal.querySelector("[data-figure-modal-close]");
-      let activeTrigger = null;
+      let activeTrigger: HTMLElement | null = null;
 
       const closeModal = () => {
         if (modal.open) {
