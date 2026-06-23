@@ -12,20 +12,24 @@ import afterOivaImage from "../../assets/figures/300-problem/310-before-and-afte
 import astroShopArchitectureImage from "../../assets/figures/300-problem/320-astro-shop-architecture-mermaid.png";
 import alertOverwhelmImage from "../../assets/figures/300-problem/301-overwhelm/301-overwhelm.png";
 import observabilityDashboardImage from "../../assets/figures/300-problem/325-modern-observability-dashboard.png";
-import oivaOverallDesignImage from "../../assets/figures/100-intro/101-overall-design.excalidraw.svg";
-import oivaVendorDesignImage from "../../assets/figures/100-intro/102-overall-design-w-vendors.excalidraw.svg";
-import minAgentImage from "../../assets/figures/700-agent/751-min-agent.excalidraw.svg";
-import medAgentImage from "../../assets/figures/700-agent/752-med-agent.excalidraw.svg";
-import superAgentImage from "../../assets/figures/700-agent/753-super-agent.excalidraw.svg";
-import beforeEvalsImage from "../../assets/figures/500-challenges/550-before-evals.excalidraw.svg";
-import afterEvalsImage from "../../assets/figures/500-challenges/551-after-evals.excalidraw.svg";
+import oivaOverallDesignImage from "../../assets/figures/900-finals/export/101.svg";
+import oivaVendorDesignImage from "../../assets/figures/900-finals/export/102.svg";
+import minAgentImage from "../../assets/figures/900-finals/export/751-min-agent.svg";
+import medAgentImage from "../../assets/figures/900-finals/export/752-med-agent.svg";
+import superAgentImage from "../../assets/figures/900-finals/export/753-super-agent.svg";
+import beforeEvalsImage from "../../assets/figures/900-finals/export/550-before-evals.svg";
+import afterEvalsImage from "../../assets/figures/900-finals/export/551-after-evals.svg";
 import beforeEnrichAlertImage from "../../assets/figures/700-agent/770-before-enrich-alert-tool.excalidraw.svg";
 import afterEnrichAlertImage from "../../assets/figures/700-agent/771-after-enrich-alert-tool.excalidraw.svg";
-import oivaOverviewImage from "../../assets/figures/700-agent/710-oiva-overview.excalidraw.svg";
-import toolWrapperImage from "../../assets/figures/700-agent/760-tool-wrapper.excalidraw.svg";
-import abstractInfraImage from "../../assets/figures/600-infra/610-abstract-infra.excalidraw.svg";
-import azReplicationImage from "../../assets/figures/600-infra/670-az-replication.excalidraw.svg";
-import finalInfraImage from "../../assets/figures/600-infra/690-final-infra.excalidraw.svg";
+import oivaOverviewImage from "../../assets/figures/900-finals/export/710-oiva-overview.svg";
+import toolWrapperImage from "../../assets/figures/900-finals/export/760-tool-wrapper.svg";
+import abstractInfraImage from "../../assets/figures/900-finals/export/610-abstract-infra.svg";
+import azReplicationImage from "../../assets/figures/900-finals/export/670-az-replication.svg";
+import finalInfraImage from "../../assets/figures/900-finals/export/690-final-infra.svg";
+import codebaseGithubImage from "../../assets/figures/900-finals/export/701-codebase-agent-github.svg";
+import codebaseWorkspaceImage from "../../assets/figures/900-finals/export/702-codebase-agent-workspace.svg";
+import fargateLongRunningImage from "../../assets/figures/900-finals/export/625-fargate-long-running.svg";
+import fargateEphemeralImage from "../../assets/figures/900-finals/export/626-fargate-ephemeral.svg";
 
 ## Overview: What is Oiva?
 
@@ -117,7 +121,7 @@ Oiva is a self-hosted, open-source incident investigation agent. When a producti
     caption="Vendor-neutral overview of Oiva."
     modalSize="wide"
     frameVariant="matched"
-    thumbnailAspectRatio="799 / 297"
+    thumbnailAspectRatio="625 / 300"
   />
 
   <FigureImage
@@ -126,7 +130,7 @@ Oiva is a self-hosted, open-source incident investigation agent. When a producti
     caption="Oiva with Honeycomb as the observability platform and Slack as the report endpoint."
     modalSize="wide"
     frameVariant="matched"
-    thumbnailAspectRatio="799 / 297"
+    thumbnailAspectRatio="625 / 300"
   />
 </FigurePair>
 
@@ -249,9 +253,23 @@ Oiva currently uses a GitHub fine-grained Personal Access Token (PAT). This is t
 
 We decided that locally stored repositories provide the most effective code inspection. Initially, Oiva used GitHub’s MCP server to inspect remote repositories. This kept the agent’s code simple, but introduced limitations. The agent made more invalid tool calls to GitHub MCP tools than to the local filesystem and Git tools. Remote inspection also added latency, increased the likelihood of failed requests, and exposed investigations to GitHub rate limits. Local repositories allow the agent to use more advanced tools, including LSP inspection, BM25 search, and direct Git history commands. This also opens a path toward future capabilities, such as testing suggested fixes and creating pull requests.
 
-<span className="asset-placeholder">Image placeholder: 701 - Option A: Explore code via the GitHub MCP. This option is simple, but slower and token-heavy</span>
+<FigurePair>
+  <FigureImage
+    src={codebaseGithubImage}
+    alt="Diagram of Option A: the codebase agent explores the user's repository remotely through the GitHub MCP server."
+    caption="Option A: Explore code via the GitHub MCP. This option is simple, but slower and token-heavy."
+    modalSize="wide"
+    frameVariant="matched"
+  />
 
-<span className="asset-placeholder">Image placeholder: 702 - Option B (selected): Pull code into a local Mastra workspace (sandbox) and explore with workspace tools. This option is faster, more effective, not limited by MCP rate limits, and more token-efficient</span>
+  <FigureImage
+    src={codebaseWorkspaceImage}
+    alt="Diagram of Option B: the codebase agent explores a local clone of the repository inside a Mastra workspace sandbox."
+    caption="Option B (selected): Pull code into a local Mastra workspace (sandbox) and explore with workspace tools. This option is faster, more effective, not limited by MCP rate limits, and more token-efficient."
+    modalSize="wide"
+    frameVariant="matched"
+  />
+</FigurePair>
 
 ##### Investigation workspace isolation
 
@@ -348,9 +366,21 @@ At its core, Oiva is a self-hosted, cloud-neutral application that runs in a con
 
 Oiva runs both the HTTP API and the background workflow in a single container. Splitting into separate web and worker services would improve independent scaling and fault isolation, but requires more deployment units, coordination, and possibly a queue boundary. A single-service design simplifies the architecture and matches the expected workload — likely no more than 15 alerts per week. This effectively trades increased infrastructure complexity for some code complexity, as resources must be allocated and released for each investigation.
 
-<span className="asset-placeholder">Image placeholder: 625 - ROUND 3: A long-running ECS task that handles all Oiva duties makes for simple infrastructure, but requires more code complexity, hidden in this diagram</span>
+<FigureImage
+  src={fargateLongRunningImage}
+  alt="Diagram of a single long-running ECS task that handles all of Oiva's duties, including alert ingestion and investigations."
+  caption="A long-running ECS task that handles all of Oiva's duties makes for simple infrastructure, but requires more code complexity, hidden in this diagram."
+  modalSize="wide"
+  width="narrow"
+/>
 
-<span className="asset-placeholder">Image placeholder: 626 - ROUND 3: Keeping alert ingestion and other services in a long-running ECS task, then spinning up a new ECS task for each investigation would reduce some code complexity, but would introduce new challenges, including making it more difficult to develop and test locally</span>
+<FigureImage
+  src={fargateEphemeralImage}
+  alt="Diagram of a long-running ECS task for alert ingestion that spins up a new, ephemeral ECS task for each investigation."
+  caption="Keeping alert ingestion in a long-running ECS task and spinning up a new task per investigation would reduce some code complexity, but introduces new challenges — including making it harder to develop and test locally."
+  modalSize="wide"
+  width="narrow"
+/>
 
 ### Key Decisions for the Provisioned AWS Deployment
 
