@@ -1,0 +1,369 @@
+---
+// Inline, theme-aware animation of Oiva's three-stage workflow.
+// Light mode preserves the original artwork colors; a [data-theme="dark"]
+// override block remaps the dark-on-light elements (outlines, text, surfaces)
+// onto the sage/green/text tokens so it reads natively on the dark surface.
+// SMIL animations don't honor prefers-reduced-motion on their own, so the
+// script below freezes the figure on its settled end-state for those users.
+---
+
+<figure class="workflow-figure">
+  <svg
+    class="workflow-figure__svg"
+    viewBox="0 0 700 322"
+    role="img"
+    aria-labelledby="workflow-figure-title"
+    font-family="'Inter','Segoe UI',system-ui,-apple-system,Helvetica,Arial,sans-serif"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <title id="workflow-figure-title">
+      How Oiva works: 1. Alert received — a production alert arrives from your
+      observability stack. 2. Investigation launched — a hypothesis is formed
+      based on telemetry and codebase data. 3. Report delivered — an
+      evidence-backed incident report is delivered to your team.
+    </title>
+
+    <!-- ============ DEFS ============ -->
+    <defs>
+      <radialGradient id="circleFill" cx="50%" cy="40%" r="68%">
+        <stop class="wf-halo-0" offset="0%" stop-color="#F1F6F1"/>
+        <stop class="wf-halo-1" offset="100%" stop-color="#DCE8DE"/>
+      </radialGradient>
+
+      <linearGradient id="bellGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop class="wf-bell-0" offset="0%" stop-color="#FFFFFF"/>
+        <stop class="wf-bell-1" offset="100%" stop-color="#F1ECDF"/>
+      </linearGradient>
+
+      <linearGradient id="paperGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop class="wf-paper-0" offset="0%" stop-color="#FEFDF9"/>
+        <stop class="wf-paper-1" offset="100%" stop-color="#F4EFE3"/>
+      </linearGradient>
+
+      <linearGradient id="scanBar" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#5E8E70" stop-opacity="0"/>
+        <stop offset="50%" stop-color="#5E8E70" stop-opacity="0.42"/>
+        <stop offset="100%" stop-color="#5E8E70" stop-opacity="0"/>
+      </linearGradient>
+
+      <filter id="orbGlow" x="-150%" y="-150%" width="400%" height="400%">
+        <feGaussianBlur stdDeviation="3" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+
+      <filter id="softGlow" x="-120%" y="-120%" width="340%" height="340%">
+        <feGaussianBlur stdDeviation="1.6" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+
+      <filter id="cardShadow" x="-25%" y="-25%" width="150%" height="160%">
+        <feDropShadow dx="0" dy="5" stdDeviation="9" flood-color="#3A5240" flood-opacity="0.10"/>
+      </filter>
+    </defs>
+
+    <!-- ============ CARDS ============ -->
+    <g filter="url(#cardShadow)">
+      <rect class="wf-card" x="16"  y="36" width="204" height="250" rx="22" fill="#FDFCF7" fill-opacity="0.72" stroke="#E9E2D3" stroke-width="1"/>
+      <rect class="wf-card" x="248" y="36" width="204" height="250" rx="22" fill="#FDFCF7" fill-opacity="0.72" stroke="#E9E2D3" stroke-width="1"/>
+      <rect class="wf-card" x="480" y="36" width="204" height="250" rx="22" fill="#FDFCF7" fill-opacity="0.72" stroke="#E9E2D3" stroke-width="1"/>
+    </g>
+
+    <!-- ============ CONNECTORS ============ -->
+    <line x1="178" y1="118" x2="290" y2="118" stroke="#6E9B7C" stroke-opacity="0.55" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="3 8">
+      <animate attributeName="stroke-dashoffset" values="0;-33" dur="6s" repeatCount="indefinite"/>
+    </line>
+    <line x1="410" y1="118" x2="522" y2="118" stroke="#6E9B7C" stroke-opacity="0.55" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="3 8">
+      <animate attributeName="stroke-dashoffset" values="0;-33" dur="6s" repeatCount="indefinite"/>
+    </line>
+
+    <!-- ===================================================== -->
+    <!-- STAGE 1 : ALERT RECEIVED -->
+    <!-- ===================================================== -->
+    <g>
+      <!-- breathing halo circle -->
+      <circle class="wf-halo-ring" cx="118" cy="118" r="55" fill="url(#circleFill)" stroke="#D8E3DA" stroke-width="1">
+        <animate attributeName="r" values="55;56.5;55;56.5;55" keyTimes="0;0.25;0.5;0.75;1" dur="6s" repeatCount="indefinite"/>
+      </circle>
+
+      <!-- expanding alert pulse rings -->
+      <circle cx="118" cy="118" fill="none" stroke="#D99A4E" stroke-width="1.6">
+        <animate attributeName="r" values="44;72;72" keyTimes="0;0.20;1" dur="6s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.45;0;0" keyTimes="0;0.20;1" dur="6s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="118" cy="118" fill="none" stroke="#D99A4E" stroke-width="1.6">
+        <animate attributeName="r" values="44;44;72;72" keyTimes="0;0.07;0.27;1" dur="6s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0;0.4;0;0" keyTimes="0;0.07;0.27;1" dur="6s" repeatCount="indefinite"/>
+      </circle>
+
+      <!-- amber ring waves -->
+      <g fill="none" stroke="#D99A4E" stroke-width="2.3" stroke-linecap="round">
+        <g>
+          <path d="M96 110 Q88 120 96 130"/>
+          <path d="M140 110 Q148 120 140 130"/>
+          <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.01;0.04;0.10;0.14;1" dur="6s" repeatCount="indefinite"/>
+        </g>
+        <g>
+          <path d="M89 106 Q78 120 89 134"/>
+          <path d="M147 106 Q158 120 147 134"/>
+          <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.03;0.06;0.10;0.15;1" dur="6s" repeatCount="indefinite"/>
+        </g>
+      </g>
+
+      <!-- bell (wobble group) -->
+      <g>
+        <animateTransform attributeName="transform" type="rotate"
+          values="0 118 96; 7 118 96; -6 118 96; 4 118 96; -2 118 96; 0 118 96; 0 118 96"
+          keyTimes="0;0.025;0.05;0.075;0.10;0.13;1" dur="6s" repeatCount="indefinite"/>
+        <path class="wf-outline" d="M118 100 C107 100 98 110 98 122 C98 130 96 134 91.5 138.5 L144.5 138.5 C140 134 138 130 138 122 C138 110 129 100 118 100 Z"
+              fill="url(#bellGrad)" stroke="#2F4A38" stroke-width="2" stroke-linejoin="round"/>
+        <circle class="wf-outline" cx="118" cy="95.5" r="4.3" fill="url(#bellGrad)" stroke="#2F4A38" stroke-width="2"/>
+        <circle class="wf-outline" cx="118" cy="146" r="5.2" fill="url(#bellGrad)" stroke="#2F4A38" stroke-width="2"/>
+      </g>
+    </g>
+
+    <!-- ===================================================== -->
+    <!-- STAGE 2 : INVESTIGATION LAUNCHED -->
+    <!-- ===================================================== -->
+    <g>
+      <circle class="wf-halo-ring" cx="350" cy="118" r="55" fill="url(#circleFill)" stroke="#D8E3DA" stroke-width="1">
+        <animate attributeName="r" values="55;56.5;55;56.5;55" keyTimes="0;0.25;0.5;0.75;1" dur="6s" repeatCount="indefinite"/>
+      </circle>
+
+      <!-- observability panel -->
+      <rect class="wf-panel" x="320" y="86" width="60" height="58" rx="8" fill="#FFFFFF" fill-opacity="0.45" stroke="#CFDBCD" stroke-width="1"/>
+
+      <!-- graph edges -->
+      <g stroke="#A6BFAE" stroke-width="1.3">
+        <line x1="332" y1="102" x2="354" y2="97"/>
+        <line x1="332" y1="102" x2="342" y2="116"/>
+        <line x1="354" y1="97"  x2="342" y2="116"/>
+        <line x1="354" y1="97"  x2="366" y2="110"/>
+        <line x1="342" y1="116" x2="366" y2="110"/>
+        <line x1="342" y1="116" x2="352" y2="128"/>
+        <line x1="366" y1="110" x2="352" y2="128"/>
+      </g>
+
+      <!-- base nodes -->
+      <g fill="#B7CCBE" stroke="#4E7860" stroke-width="1.2">
+        <circle cx="332" cy="102" r="3.4"/>
+        <circle cx="354" cy="97"  r="3.4"/>
+        <circle cx="342" cy="116" r="3.4"/>
+        <circle cx="366" cy="110" r="3.4"/>
+        <circle cx="352" cy="128" r="3.4"/>
+      </g>
+
+      <!-- nodes lighting up in sequence -->
+      <g fill="#3E8A5E">
+        <circle cx="332" cy="102" r="3.9" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.30;0.33;1" dur="6s" repeatCount="indefinite"/></circle>
+        <circle cx="354" cy="97"  r="3.9" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.34;0.37;1" dur="6s" repeatCount="indefinite"/></circle>
+        <circle cx="342" cy="116" r="3.9" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.39;0.42;1" dur="6s" repeatCount="indefinite"/></circle>
+        <circle cx="366" cy="110" r="3.9" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.44;0.47;1" dur="6s" repeatCount="indefinite"/></circle>
+        <circle cx="352" cy="128" r="3.9" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.49;0.52;1" dur="6s" repeatCount="indefinite"/></circle>
+      </g>
+
+      <!-- sweeping scanner -->
+      <rect y="88" width="7" height="56" fill="url(#scanBar)" opacity="0">
+        <animate attributeName="x" values="320;320;373;373" keyTimes="0;0.28;0.46;1" dur="6s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0;0;0.5;0.5;0;0" keyTimes="0;0.275;0.30;0.44;0.47;1" dur="6s" repeatCount="indefinite"/>
+      </rect>
+
+      <!-- magnifier -->
+      <line class="wf-outline" x1="376.6" y1="126.6" x2="389" y2="139" stroke="#2F4A38" stroke-width="4.6" stroke-linecap="round"/>
+      <circle class="wf-outline" cx="366" cy="116" r="15" fill="#FFFFFF" fill-opacity="0.12" stroke="#2F4A38" stroke-width="2.4"/>
+      <path d="M357 113 Q358 107 364 105" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+
+      <!-- lens discovery pulse -->
+      <circle cx="366" cy="116" r="14" fill="none" stroke="#3E8A5E" stroke-width="1.5">
+        <animate attributeName="r" values="14;14;23;23" keyTimes="0;0.40;0.54;1" dur="6s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0;0;0.55;0;0" keyTimes="0;0.40;0.415;0.54;1" dur="6s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- ===================================================== -->
+    <!-- STAGE 3 : REPORT DELIVERED -->
+    <!-- ===================================================== -->
+    <g>
+      <circle class="wf-halo-ring" cx="582" cy="118" r="55" fill="url(#circleFill)" stroke="#D8E3DA" stroke-width="1">
+        <animate attributeName="r" values="55;56.5;55;56.5;55" keyTimes="0;0.25;0.5;0.75;1" dur="6s" repeatCount="indefinite"/>
+      </circle>
+
+      <!-- document -->
+      <path class="wf-outline" d="M563 90 L593 90 L605 102 L605 152 L563 152 Z" fill="url(#paperGrad)" stroke="#2F4A38" stroke-width="1.9" stroke-linejoin="round"/>
+      <path class="wf-outline wf-doc-corner" d="M593 90 L593 102 L605 102 Z" fill="#E4DDCD" stroke="#2F4A38" stroke-width="1.6" stroke-linejoin="round"/>
+
+      <!-- report lines drawing in -->
+      <rect class="wf-report-line" x="571" y="106" width="24" height="3" rx="1.5" fill="#4A6B54"><animate attributeName="width" values="0;0;24;24" keyTimes="0;0.70;0.745;1" dur="6s" repeatCount="indefinite"/></rect>
+      <rect class="wf-report-line" x="571" y="116" width="24" height="3" rx="1.5" fill="#4A6B54"><animate attributeName="width" values="0;0;24;24" keyTimes="0;0.72;0.765;1" dur="6s" repeatCount="indefinite"/></rect>
+      <rect class="wf-report-line" x="571" y="126" width="15" height="3" rx="1.5" fill="#4A6B54"><animate attributeName="width" values="0;0;15;15" keyTimes="0;0.74;0.785;1" dur="6s" repeatCount="indefinite"/></rect>
+
+      <!-- checkmark badge (pops in, then check draws) -->
+      <g transform="translate(601,144)">
+        <g>
+          <animateTransform attributeName="transform" type="scale"
+            values="0;0;1.18;0.96;1;1" keyTimes="0;0.79;0.85;0.89;0.92;1"
+            dur="6s" repeatCount="indefinite" calcMode="spline"
+            keySplines="0 0 1 1;0.34 1.3 0.5 1;0.4 0 0.6 1;0.4 0 0.6 1;0 0 1 1"/>
+          <circle r="12" fill="#34774E" stroke="#FCFAF4" stroke-width="2.5"/>
+          <path d="M-6 0 L-1.5 5 L7 -5.5" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="22" stroke-dashoffset="22">
+            <animate attributeName="stroke-dashoffset" values="22;22;0;0" keyTimes="0;0.86;0.93;1" dur="6s" repeatCount="indefinite"/>
+          </path>
+        </g>
+      </g>
+    </g>
+
+    <!-- ============ TRAVELING EVIDENCE ORBS ============ -->
+    <g opacity="0">
+      <animateTransform attributeName="transform" type="translate" values="0 0;0 0;112 0;112 0" keyTimes="0;0.15;0.35;1" dur="6s" repeatCount="indefinite" calcMode="spline" keySplines="0 0 1 1;0.45 0 0.2 1;0 0 1 1"/>
+      <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.14;0.18;0.32;0.36;1" dur="6s" repeatCount="indefinite"/>
+      <circle cx="178" cy="118" r="5.5" fill="#5E8E70" filter="url(#orbGlow)" opacity="0.9"/>
+      <circle cx="178" cy="118" r="2.6" fill="#E4F1E7"/>
+    </g>
+    <g opacity="0">
+      <animateTransform attributeName="transform" type="translate" values="0 0;0 0;112 0;112 0" keyTimes="0;0.56;0.76;1" dur="6s" repeatCount="indefinite" calcMode="spline" keySplines="0 0 1 1;0.45 0 0.2 1;0 0 1 1"/>
+      <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.55;0.59;0.73;0.77;1" dur="6s" repeatCount="indefinite"/>
+      <circle cx="410" cy="118" r="5.5" fill="#5E8E70" filter="url(#orbGlow)" opacity="0.9"/>
+      <circle cx="410" cy="118" r="2.6" fill="#E4F1E7"/>
+    </g>
+
+    <!-- ============ NUMBER BADGES + TITLES + COPY ============ -->
+    <!-- Stage 1 -->
+    <circle cx="43" cy="204" r="9" fill="#2E6B45"/>
+    <text x="43" y="204" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="700" fill="#FFFFFF">1</text>
+    <text class="wf-title" x="59" y="204" dominant-baseline="central" font-size="12.5" font-weight="700" fill="#22402E">Alert Received</text>
+    <text class="wf-body" x="34" y="228" font-size="11" fill="#5F6E61">
+      <tspan x="34" dy="0">A production alert arrives</tspan>
+      <tspan x="34" dy="14.5">from your observability</tspan>
+      <tspan x="34" dy="14.5">stack.</tspan>
+    </text>
+
+    <!-- Stage 2 -->
+    <circle cx="275" cy="204" r="9" fill="#2E6B45"/>
+    <text x="275" y="204" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="700" fill="#FFFFFF">2</text>
+    <text class="wf-title" x="291" y="204" dominant-baseline="central" font-size="12.5" font-weight="700" fill="#22402E">Investigation Launched</text>
+    <text class="wf-body" x="266" y="228" font-size="11" fill="#5F6E61">
+      <tspan x="266" dy="0">A hypothesis is formed</tspan>
+      <tspan x="266" dy="14.5">based on telemetry and</tspan>
+      <tspan x="266" dy="14.5">codebase data.</tspan>
+    </text>
+
+    <!-- Stage 3 -->
+    <circle cx="507" cy="204" r="9" fill="#2E6B45"/>
+    <text x="507" y="204" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="700" fill="#FFFFFF">3</text>
+    <text class="wf-title" x="523" y="204" dominant-baseline="central" font-size="12.5" font-weight="700" fill="#22402E">Report Delivered</text>
+    <text class="wf-body" x="498" y="228" font-size="11" fill="#5F6E61">
+      <tspan x="498" dy="0">Evidence-backed incident</tspan>
+      <tspan x="498" dy="14.5">report is delivered to</tspan>
+      <tspan x="498" dy="14.5">your team.</tspan>
+    </text>
+  </svg>
+</figure>
+
+<style>
+  .workflow-figure {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    margin: var(--space-xl) auto 0;
+    max-width: 760px;
+    overflow: hidden;
+  }
+
+  .workflow-figure__svg {
+    display: block;
+    height: auto;
+    width: 100%;
+  }
+
+  /* The figure is a fixed three-column layout; on narrow viewports its in-SVG
+     text would scale down to an illegible size. Below the breakpoint, scroll
+     horizontally and hold a readable minimum width instead of squashing. */
+  @media (max-width: 640px) {
+    .workflow-figure {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .workflow-figure__svg {
+      min-width: 640px;
+    }
+  }
+
+  /* ---- Dark mode: remap the dark-on-light artwork onto sage/text tokens ----
+     Light mode keeps the original inline colors untouched. CSS rules override
+     SVG presentation attributes, so only the dark overrides live here. */
+  :global([data-theme="dark"]) .wf-outline {
+    stroke: #a6c7a0;
+  }
+
+  :global([data-theme="dark"]) .wf-title {
+    fill: #e7efe7;
+  }
+
+  :global([data-theme="dark"]) .wf-body {
+    fill: #a9bab2;
+  }
+
+  :global([data-theme="dark"]) .wf-card {
+    fill: rgba(231, 239, 231, 0.035);
+    stroke: rgba(231, 239, 231, 0.1);
+  }
+
+  :global([data-theme="dark"]) .wf-panel {
+    fill: rgba(231, 239, 231, 0.05);
+  }
+
+  :global([data-theme="dark"]) .wf-doc-corner {
+    fill: #22413b;
+  }
+
+  :global([data-theme="dark"]) .wf-report-line {
+    fill: #a6c7a0;
+  }
+
+  :global([data-theme="dark"]) .wf-halo-ring {
+    stroke: rgba(231, 239, 231, 0.1);
+  }
+
+  :global([data-theme="dark"]) .wf-halo-0 {
+    stop-color: #163430;
+  }
+
+  :global([data-theme="dark"]) .wf-halo-1 {
+    stop-color: #0e2723;
+  }
+
+  :global([data-theme="dark"]) .wf-bell-0 {
+    stop-color: #1c3a35;
+  }
+
+  :global([data-theme="dark"]) .wf-bell-1 {
+    stop-color: #122e2a;
+  }
+
+  :global([data-theme="dark"]) .wf-paper-0 {
+    stop-color: #1c3a35;
+  }
+
+  :global([data-theme="dark"]) .wf-paper-1 {
+    stop-color: #122e2a;
+  }
+</style>
+
+<script>
+  // SMIL doesn't respect prefers-reduced-motion. For users who opt out, freeze
+  // the figure on its settled end-state (report drawn, nodes lit, check shown)
+  // rather than the blank t=0 frame. This runs as early as the module script
+  // allows (right after DOM parse) so the loop never visibly plays for them.
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    for (const svg of document.querySelectorAll<SVGSVGElement>(".workflow-figure__svg")) {
+      try {
+        // Pause first to stop the clock, then jump to the settled frame.
+        svg.pauseAnimations();
+        svg.setCurrentTime(5.9);
+      } catch {
+        // SMIL unavailable or the timeline isn't ready yet — leave it animating.
+      }
+    }
+  }
+</script>
