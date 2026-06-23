@@ -32,6 +32,7 @@ import codebaseGithubImage from "../../assets/figures/900-finals/export/701-code
 import codebaseWorkspaceImage from "../../assets/figures/900-finals/export/702-codebase-agent-workspace.svg";
 import fargateLongRunningImage from "../../assets/figures/900-finals/export/625-fargate-long-running.svg";
 import fargateEphemeralImage from "../../assets/figures/900-finals/export/626-fargate-ephemeral.svg";
+import ecsOnFargate from "../../assets/figures/900-finals/export/620-fargate.svg";
 
 ## Overview: What is Oiva?
 
@@ -391,7 +392,13 @@ Terraform encodes the architecture as a reusable module that includes the networ
 
 #### Running Containers With Fargate
 
-<span className="asset-placeholder">Image placeholder: 621 - Oiva runs on ECS with Fargate to maximize uptime and minimize maintenance overhead</span>
+<FigureImage
+  src={ecsOnFargate}
+  alt="Diagram illustrating ECS relationship with fargate.  ECS manages a Task, which runs on Fargate."
+  caption="Oiva runs on ECS with Fargate to maximize uptime and minimize maintenance overhead"
+  modalSize="wide"
+  width="narrow"
+/>
 
 For compute, we chose Amazon ECS with Fargate. ECS is AWS’s container orchestration service, and Fargate is its serverless container runtime: users provide a container image and resource settings, while AWS runs the container without users having to manage virtual machines.
 

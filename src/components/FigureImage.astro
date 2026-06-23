@@ -44,9 +44,9 @@ const isSvg = typeof src !== "string" && src.format === "svg";
     data-figure-modal-size={modalSize}
   >
     {isSvg || typeof src === "string" ? (
-      <img src={typeof src === "string" ? src : src.src} alt={alt} loading="lazy" />
+      <img src={typeof src === "string" ? src : src.src} alt={alt} loading="eager" />
     ) : (
-      <Image src={src} alt={alt} widths={[640, 960, 1280, 1600]} sizes="(max-width: 900px) 100vw, 760px" />
+      <Image src={src} alt={alt} loading="eager" widths={[640, 960, 1280, 1600]} sizes="(max-width: 900px) 100vw, 760px" />
     )}
   </button>
   {caption && (
