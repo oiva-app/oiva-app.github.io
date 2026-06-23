@@ -34,21 +34,19 @@ const {
     </header>
   )}
 
-  {modalSrc ? (
-    <button
-      class="figure-card-body figure-card-modal-trigger"
-      type="button"
-      data-figure-modal-trigger
-      data-figure-modal-src={modalSrc}
-      data-figure-modal-alt={modalAlt ?? title ?? ""}
-    >
-      <slot />
-    </button>
-  ) : (
-    <div class="figure-card-body">
-      <slot />
-    </div>
-  )}
+  <div class="figure-card-body">
+    <slot />
+    {modalSrc && (
+      <button
+        class="figure-card-modal-trigger"
+        type="button"
+        data-figure-modal-trigger
+        data-figure-modal-src={modalSrc}
+        data-figure-modal-alt={modalAlt ?? title ?? ""}
+        aria-label={title ? `Enlarge ${title}` : "Enlarge figure"}
+      ></button>
+    )}
+  </div>
 
   {caption && (
     <DiagramCaption sourceLabel={sourceLabel} sourceHref={sourceHref}>
@@ -110,18 +108,18 @@ const {
   .figure-card-modal-trigger {
     background: transparent;
     border: 0;
-    color: inherit;
     cursor: zoom-in;
-    display: block;
-    font: inherit;
+    height: 100%;
+    inset: 0;
     padding: 0;
-    text-align: inherit;
+    position: absolute;
     width: 100%;
+    z-index: 2;
   }
 
   .figure-card-modal-trigger:focus-visible {
     border-radius: var(--radius-md);
     outline: 3px solid color-mix(in srgb, var(--color-primary) 32%, transparent);
-    outline-offset: 3px;
+    outline-offset: -3px;
   }
 </style>
