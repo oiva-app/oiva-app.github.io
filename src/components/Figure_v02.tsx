@@ -20,7 +20,7 @@ export default function Figure({ src, alt, caption }: FigureProps) {
           alt={alt}
           style={{ width: "100%", height: "auto", cursor: "pointer" }}
         />
-        <figcaption style={{ color: "var(--color-text-muted)" }}>
+        <figcaption style={{ color: "var(--color-text-muted)", textAlign: "center" }}>
           {caption}
         </figcaption>
       </figure>

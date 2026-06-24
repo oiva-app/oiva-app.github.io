@@ -38,8 +38,6 @@ import ecsOnFargate from "../../assets/figures/900-finals/export/620-fargate.svg
 
 ## Overview: What is Oiva?
 
-<Figure src={fargateEphemeralImage} alt="tktk" caption="lorem ipsum" />
-
 Oiva is a self-hosted, open-source service for AI-assisted incident investigation. When a production alert fires, Oiva authenticates that alert and launches an investigation that queries the team’s existing observability stack and Git repositories. Oiva then returns a structured report with findings and a supporting evidence trail, easing the on-call engineer’s cognitive load and aiming to reduce time-to-resolution by compressing the initial context-gathering phase.
 
 <FigurePair>
@@ -123,18 +121,12 @@ Oiva is a self-hosted, open-source incident investigation agent. When a producti
     src={oivaOverallDesignImage}
     alt="Vendor-neutral overview diagram showing Oiva receiving an alert, investigating telemetry and code, and delivering a report."
     caption="Vendor-neutral overview of Oiva."
-    modalSize="wide"
-    frameVariant="matched"
-    thumbnailAspectRatio="625 / 300"
 />
 
 <Figure
     src={oivaVendorDesignImage}
     alt="Oiva overview diagram showing Honeycomb as the observability platform and Slack as the report endpoint."
     caption="Oiva with Honeycomb as the observability platform and Slack as the report endpoint."
-    modalSize="wide"
-    frameVariant="matched"
-    thumbnailAspectRatio="625 / 300"
 />
 
 Oiva’s aim is not to replace the engineer’s judgment but to compress the slowest and often most stressful part of incident response: the initial scramble for context.
@@ -152,12 +144,11 @@ Oiva is built for on-call engineers and small to midsize platform teams who cann
 
 At the core of Oiva’s incident workflow is the investigation phase, the agentic process surrounded by the application’s deterministic edges. It encompasses two specialized domains: querying and interpreting telemetry data and examining the user’s codebase and Git history. Oiva then synthesizes the findings into a cohesive hypothesis with actionable next steps. This phase poses a central design challenge and directly affects the quality of Oiva’s incident reports. The ask is big: the agent must be built to reason reliably about an open-ended alert, investigate each domain effectively while sticking to various specialized instruction sets, and synthesize surfaced data accurately, minimizing hallucinations as the investigation context grows.
 
-<FigureImage
+<Figure
   src={oivaOverviewImage}
   alt="Overview diagram of Oiva's logical internals and incident investigation workflow."
   caption="Overview of Oiva's logical internals."
-  modalSize="wide"
-  width="narrow"
+
 />
 
 #### Multi-Agent System
@@ -165,28 +156,26 @@ At the core of Oiva’s incident workflow is the investigation phase, the agenti
 Oiva is a multi-agent system rather than a single general-purpose agent. An early prototype took the latter approach, offering simplicity and cost-effectiveness by minimizing LLM calls within a single loop. Its limits became apparent as we expanded domain-specific capabilities. The tight coupling of components within a single agent made it much harder to develop, scope, and test new additions. Thus, Oiva transitioned to a system in which a supervisor and specialized subagents split responsibilities. A separate report agent sits downstream of the investigation step, rendering relevant findings into Oiva’s main user-facing deliverable – the incident report.
 
 <FigurePair>
-  <FigureImage
+  <Figure
     src={minAgentImage}
     alt="Single-agent architecture diagram where one agent is responsible for the full investigation and report workflow."
     caption="Simple but ineffective: one agent is responsible for everything and good at nothing."
-    width="reduced"
-    frameVariant="matched"
+
   />
 
-  <FigureImage
+  <Figure
     src={medAgentImage}
     alt="Two-agent architecture diagram showing separated investigation and report responsibilities."
     caption="Somewhat more effective: simpler prompts and conversation histories allow two separate agents to be more effective."
-    width="reduced"
-    frameVariant="matched"
+
   />
 </FigurePair>
 
-<FigureImage
+<Figure
   src={superAgentImage}
   alt="Multi-agent architecture diagram where a supervisor delegates to specialized subagents and passes findings to a report agent."
   caption="Most effective: Supervisor Agent owns oversight and QC, delegates tasks to subagents, and passes findings to Report Agent."
-  width="compact"
+
 />
 
 The supervisor agent owns the investigation as a whole. It interprets the incoming alert and orchestrates the investigation flow by delegating tasks to its subagents. The supervisor never queries telemetry or source code directly and has no access to the domain-specific tools. Instead, it calls the relevant subagents as needed and synthesizes their findings into a hypothesis, refining it over the course of the investigation to form an accurate analysis.
