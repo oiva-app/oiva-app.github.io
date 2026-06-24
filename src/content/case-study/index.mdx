@@ -4,7 +4,7 @@ description: "A case study covering Oiva's problem domain, design, and future wo
 order: 1
 sidebarLabel: "Case Study"
 ---
-import Figure from "../../components/Figure_v02"
+import Figure from "../../components/Figure.astro"
 import FigureImage from "../../components/FigureImage.astro";
 import FigurePair from "../../components/FigurePair.astro";
 import Video from "../../components/Video.astro";
@@ -38,23 +38,21 @@ import ecsOnFargate from "../../assets/figures/900-finals/export/620-fargate.svg
 
 ## Overview: What is Oiva?
 
-<Figure src={fargateEphemeralImage.src} alt="tktk" caption="lorem ipsum" client:visible />
+<Figure src={fargateEphemeralImage} alt="tktk" caption="lorem ipsum" />
 
 Oiva is a self-hosted, open-source service for AI-assisted incident investigation. When a production alert fires, Oiva authenticates that alert and launches an investigation that queries the team’s existing observability stack and Git repositories. Oiva then returns a structured report with findings and a supporting evidence trail, easing the on-call engineer’s cognitive load and aiming to reduce time-to-resolution by compressing the initial context-gathering phase.
 
-<FigurePair>
-  <FigureImage
+<Figure
     src={beforeOivaImage}
     alt="An alert reaches an on-call engineer at night with only a vague warning that something is wrong."
     caption="Before Oiva: an alert wakes the on-call engineer, but the first useful context still has to be gathered manually."
-  />
+/>
 
-  <FigureImage
+<Figure
     src={afterOivaImage}
     alt="Oiva investigates an alert before it reaches the on-call engineer and provides a report with evidence and a hypothesis."
     caption="After Oiva: the alert arrives with an initial investigation report, evidence, and a hypothesis already attached."
-  />
-</FigurePair>
+/>
 
 <Video src={demoVideo} />
 
@@ -63,7 +61,7 @@ Oiva is a self-hosted, open-source service for AI-assisted incident investigatio
 
 Nearly all production systems are complex and distributed and can fail in unforeseeable ways. A timeout in one service can trigger a retry storm two network hops upstream, a latency spike originating in a database connection pool can surface in a different service, or a small code change in an error handler can produce a type error that bubbles up the call chain and produces a sudden spike in 500 errors. In production, the symptoms of an incident and its underlying cause are often spread across a system, making it especially challenging for on-call engineers, who, when an alert fires at 2 a.m., have to quickly determine what broke and where before they can even start thinking about how to fix it.
 
-<FigureImage
+<Figure
   src={astroShopArchitectureImage}
   alt="OpenTelemetry Astronomy Shop architecture diagram showing a complex distributed storefront system with many connected services."
   caption="The OpenTelemetry Astronomy Shop demonstrates the kind of complex distributed system where incident symptoms and root causes can be spread across many services."

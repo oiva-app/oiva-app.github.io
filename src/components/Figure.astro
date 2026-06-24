@@ -1,0 +1,19 @@
+---
+/*
+Purpose of this wrapper: enable 'client:visible' by default,
+to prevent user from having to add this prop every time they use the 'Figure' component
+*/
+
+import type { ImageMetadata } from "astro";
+import FigureLightbox from "./Figure_v02.tsx";
+
+interface Props {
+  src: ImageMetadata | string;
+  alt: string;
+  caption: string;
+}
+
+const { src, alt, caption } = Astro.props;
+const imageSrc = typeof src === "string" ? src : src.src;
+---
+<FigureLightbox src={imageSrc} alt={alt} caption={caption} client:visible />

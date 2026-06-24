@@ -30,7 +30,7 @@ export default function Figure({ src, alt, caption }: FigureProps) {
         close={() => setVisible(false)}
         // Only supports a single slide!
         slides={[{ src }]}
-        
+
         render={{
           // Hide prev/next buttons
           buttonPrev: () => null,
@@ -40,7 +40,7 @@ export default function Figure({ src, alt, caption }: FigureProps) {
           slide: ({ slide }) => (
             <img
               src={slide.src}
-              alt=""
+              alt={alt}
               style={{
                 width: "100%",
                 objectFit: "contain",
