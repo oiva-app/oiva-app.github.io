@@ -42,17 +42,19 @@ import ecsOnFargate from "../../assets/figures/900-finals/export/620-fargate.svg
 
 Oiva is a self-hosted, open-source service for AI-assisted incident investigation. When a production alert fires, Oiva authenticates that alert and launches an investigation that queries the team’s existing observability stack and Git repositories. Oiva then returns a structured report with findings and a supporting evidence trail, easing the on-call engineer’s cognitive load and aiming to reduce time-to-resolution by compressing the initial context-gathering phase.
 
-<Figure
-    src={beforeOivaImage}
-    alt="An alert reaches an on-call engineer at night with only a vague warning that something is wrong."
-    caption="Before Oiva: an alert wakes the on-call engineer, but the first useful context still has to be gathered manually."
-/>
+<FigurePair>
+    <Figure
+        src={beforeOivaImage}
+        alt="An alert reaches an on-call engineer at night with only a vague warning that something is wrong."
+        caption="Before Oiva: an alert wakes the on-call engineer, but the first useful context still has to be gathered manually."
+    />
 
-<Figure
-    src={afterOivaImage}
-    alt="Oiva investigates an alert before it reaches the on-call engineer and provides a report with evidence and a hypothesis."
-    caption="After Oiva: the alert arrives with an initial investigation report, evidence, and a hypothesis already attached."
-/>
+    <Figure
+        src={afterOivaImage}
+        alt="Oiva investigates an alert before it reaches the on-call engineer and provides a report with evidence and a hypothesis."
+        caption="After Oiva: the alert arrives with an initial investigation report, evidence, and a hypothesis already attached."
+    />
+</FigurePair>
 
 <Video src={demoVideo} />
 
@@ -71,22 +73,17 @@ That initial investigation can be the most challenging and time-consuming part o
 
 But these tools are limited in how they can assist engineers in investigating incident alerts. This is true whether the team adopts the more traditional approach to observability, with its emphasis on the “three pillars” of metrics, logs, and traces, or the newer paradigm that supports a wide-event model. Within the former, a team’s metrics can indicate that something is wrong in the system, logs can provide additional details of the issue, and traces can reconstruct a request’s path. Still, the engineer has to manually stitch all of these signals together to build a coherent story about what is happening.
 
-<FigurePair>
-  <FigureImage
-    src={alertOverwhelmImage}
-    alt="An on-call engineer trying to make sense of a production alert at 2 a.m."
-    caption="Trying to make sense of an alert at 2 a.m."
-  />
+<Figure
+src={alertOverwhelmImage}
+alt="An on-call engineer trying to make sense of a production alert at 2 a.m."
+caption="Trying to make sense of an alert at 2 a.m."
+/>
 
-  <FigureImage
-    src={observabilityDashboardImage}
-    alt="A modern observability dashboard with dense production telemetry charts and tables."
-    caption="Observability dashboards are powerful and helpful, but they can be overwhelming during an active incident."
-    thumbnailVariant="cropped"
-    thumbnailAspectRatio="1166 / 1012"
-    thumbnailPosition="top center"
-  />
-</FigurePair>
+<Figure
+src={observabilityDashboardImage}
+alt="A modern observability dashboard with dense production telemetry charts and tables."
+caption="Observability dashboards are powerful and helpful, but they can be overwhelming during an active incident."
+/>
 
 The newer paradigm consolidates these different signals into a single source of truth: wide, high-cardinality events that can be sliced and queried along any dimension. However, the engineer can be overwhelmed by the task of deciding how to efficiently and effectively query that vast data store while production is down and the clock is ticking. Thus, whether the team’s telemetry is fragmented across different signal types or unified in a massive data store, the initial investigation still imposes a substantial cognitive burden on the on-call engineer.
 
@@ -122,25 +119,23 @@ Taken together, these existing solutions validate the main idea behind Oiva – 
 
 Oiva is a self-hosted, open-source incident investigation agent. When a production alert is triggered, Oiva receives the alert via a webhook, authenticates it, and orchestrates an investigation into the team’s observability data and relevant codebase. The agent then produces and delivers a structured report to a dedicated Slack channel. The final report includes a hypothesis about the root cause, the evidence trail supporting it, and a clear set of next steps. Teams also receive live updates on ongoing investigations via Slack and can download a full report on the incident after the agent completes its investigation.
 
-<FigurePair>
-  <FigureImage
+<Figure
     src={oivaOverallDesignImage}
     alt="Vendor-neutral overview diagram showing Oiva receiving an alert, investigating telemetry and code, and delivering a report."
     caption="Vendor-neutral overview of Oiva."
     modalSize="wide"
     frameVariant="matched"
     thumbnailAspectRatio="625 / 300"
-  />
+/>
 
-  <FigureImage
+<Figure
     src={oivaVendorDesignImage}
     alt="Oiva overview diagram showing Honeycomb as the observability platform and Slack as the report endpoint."
     caption="Oiva with Honeycomb as the observability platform and Slack as the report endpoint."
     modalSize="wide"
     frameVariant="matched"
     thumbnailAspectRatio="625 / 300"
-  />
-</FigurePair>
+/>
 
 Oiva’s aim is not to replace the engineer’s judgment but to compress the slowest and often most stressful part of incident response: the initial scramble for context.
 

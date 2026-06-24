@@ -45,7 +45,7 @@ export default function Figure({ src, alt, caption }: FigureProps) {
                 width: "100%",
                 objectFit: "contain",
                 display: "block",
-                padding: "2%",
+                margin: "2%",
                 background: "var(--color-surface)",
               }}
             />
@@ -56,8 +56,8 @@ export default function Figure({ src, alt, caption }: FigureProps) {
         styles={{
           container: {
             background: "rgba(0, 0, 0, 0.40)",
-            padding: 0,
             margin: 0,
+            padding: 0,
           },
         }}
       />
