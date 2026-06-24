@@ -33,8 +33,26 @@ export default function Gallery() {
         close={() => setVisible(false)}
         slides={slides}
         render={{
+
+          // Hide prev/next buttons if not needed
           buttonPrev: slides.length <= 1 ? () => null : undefined,
           buttonNext: slides.length <= 1 ? () => null : undefined,
+          
+          // Workaround: forces the image to enlarge to fill lightbox
+          slide: ({ slide }) => (
+            <img
+              src={slide.src}
+              alt=""
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+                display: "block",
+                padding: "2%",
+              }}
+
+            />
+          ),
         }}
         carousel={{ padding: 0, spacing: 0 }}
         styles={{
@@ -42,9 +60,6 @@ export default function Gallery() {
             background: "var(--color-surface)",
             padding: 0,
             margin: 0,
-          },
-          slide: {
-            padding: 0,
           },
         }}
       />
