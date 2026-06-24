@@ -19,9 +19,38 @@ export default function Figure({
 }: FigureProps) {
   const [visible, setVisible] = useState(false);
 
-  function LightboxWrapper() {
-    return (
-      <Lightbox
+
+  return (
+    <>
+      <figure
+        style={{
+          margin: "var(--space-xl) 20px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "10px",
+        }}
+      >
+        <img
+          className="invert-when-dark"
+          onClick={clickable ? () => setVisible(true) : () => {}}
+          src={src}
+          alt={alt}
+          style={{
+            width: "100%",
+            height: "auto",
+            cursor: clickable ? "pointer" : "auto",
+            ...style,
+          }}
+        />
+        <figcaption
+          style={{ color: "var(--color-text-muted)", textAlign: "center", maxWidth: "500px" }}
+        >
+          {caption}
+        </figcaption>
+      </figure>
+
+      {!clickable ? null : <Lightbox
         open={visible}
         close={() => setVisible(false)}
         // Only supports a single slide!
@@ -57,41 +86,7 @@ export default function Figure({
             padding: 0,
           },
         }}
-      />
-    );
-  }
-
-  return (
-    <>
-      <figure
-        style={{
-          margin: "var(--space-xl) 20px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "10px",
-        }}
-      >
-        <img
-          className="invert-when-dark"
-          onClick={clickable ? () => setVisible(true) : () => {}}
-          src={src}
-          alt={alt}
-          style={{
-            width: "100%",
-            height: "auto",
-            cursor: clickable ? "pointer" : "auto",
-            ...style,
-          }}
-        />
-        <figcaption
-          style={{ color: "var(--color-text-muted)", textAlign: "center", maxWidth: "500px" }}
-        >
-          {caption}
-        </figcaption>
-      </figure>
-
-      {clickable ? <LightboxWrapper /> : null}
+      />}
     </>
   );
 }
