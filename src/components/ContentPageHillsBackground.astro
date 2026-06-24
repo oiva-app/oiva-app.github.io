@@ -117,18 +117,6 @@ const getRepeatMask = (repeat: (typeof hillRepeats)[number], index: number) => {
     focusable="false"
   >
     <defs>
-      <filter id="watercolor-edge" x="-4%" y="-4%" width="108%" height="108%">
-        <feTurbulence
-          type="fractalNoise"
-          baseFrequency="0.008 0.022"
-          numOctaves="3"
-          seed="11"
-          result="edgeNoise"
-        />
-        <feDisplacementMap in="SourceGraphic" in2="edgeNoise" scale="10" xChannelSelector="R" yChannelSelector="G" />
-        <feGaussianBlur stdDeviation="0.55" />
-      </filter>
-
       <linearGradient id="paper-warmth" x1="0" x2="1" y1="0" y2="1">
         <stop offset="0" class="gradient-stop-warm" />
         <stop offset="0.44" class="gradient-stop-mid" />
@@ -172,7 +160,7 @@ const getRepeatMask = (repeat: (typeof hillRepeats)[number], index: number) => {
     <rect width="1600" height={BACKGROUND_HEIGHT} class="paper-base" />
     <rect width="1600" height={BACKGROUND_HEIGHT} fill="url(#paper-warmth)" />
 
-    <g filter="url(#watercolor-edge)">
+    <g>
       {
         hillRepeats.map((repeat, repeatIndex) => (
           <g mask={`url(#hill-repeat-mask-${repeatIndex})`}>
