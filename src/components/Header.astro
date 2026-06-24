@@ -654,7 +654,8 @@ function getHeadingHref(page: SectionPage, slug: string) {
     color: var(--color-text);
   }
 
-  @media (max-width: 780px) {
+  /* two-column breakpoint — must find-and-replace to keep in sync! */
+  @media (max-width: 1200px) {
     .desktop-nav,
     .desktop-github,
     .desktop-theme {

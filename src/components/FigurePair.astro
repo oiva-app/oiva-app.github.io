@@ -15,7 +15,7 @@ const { class: className = "", variant = "equal" } = Astro.props;
   .figure-pair {
     display: grid;
     gap: var(--space-md);
-    row-gap: func(var(--space-md) * 2);
+    row-gap: calc(var(--space-md) * 2);
     grid-template-columns: repeat(2, minmax(0, 1fr));
     margin: var(--space-xl) 0;
     align-items: top;
@@ -29,7 +29,8 @@ const { class: className = "", variant = "equal" } = Astro.props;
     margin: 0;
   }
 
-  @media (max-width: 1300px) {
+  /* two-column breakpoint — must find-and-replace to keep in sync! */
+  @media (max-width: 1200px) {
     .figure-pair {
       grid-template-columns: 1fr;
     }
