@@ -155,27 +155,25 @@ At the core of Oiva’s incident workflow is the investigation phase, the agenti
 
 Oiva is a multi-agent system rather than a single general-purpose agent. An early prototype took the latter approach, offering simplicity and cost-effectiveness by minimizing LLM calls within a single loop. Its limits became apparent as we expanded domain-specific capabilities. The tight coupling of components within a single agent made it much harder to develop, scope, and test new additions. Thus, Oiva transitioned to a system in which a supervisor and specialized subagents split responsibilities. A separate report agent sits downstream of the investigation step, rendering relevant findings into Oiva’s main user-facing deliverable – the incident report.
 
-<FigurePair>
-  <Figure
+<Figure
     src={minAgentImage}
     alt="Single-agent architecture diagram where one agent is responsible for the full investigation and report workflow."
     caption="Simple but ineffective: one agent is responsible for everything and good at nothing."
+    clickable={false}
+/>
 
-  />
-
-  <Figure
+<Figure
     src={medAgentImage}
     alt="Two-agent architecture diagram showing separated investigation and report responsibilities."
     caption="Somewhat more effective: simpler prompts and conversation histories allow two separate agents to be more effective."
-
-  />
-</FigurePair>
+    clickable={false}
+/>
 
 <Figure
-  src={superAgentImage}
-  alt="Multi-agent architecture diagram where a supervisor delegates to specialized subagents and passes findings to a report agent."
-  caption="Most effective: Supervisor Agent owns oversight and QC, delegates tasks to subagents, and passes findings to Report Agent."
-
+    src={superAgentImage}
+    alt="Multi-agent architecture diagram where a supervisor delegates to specialized subagents and passes findings to a report agent."
+    caption="Most effective: Supervisor Agent owns oversight and QC, delegates tasks to subagents, and passes findings to Report Agent."
+    clickable={false}
 />
 
 The supervisor agent owns the investigation as a whole. It interprets the incoming alert and orchestrates the investigation flow by delegating tasks to its subagents. The supervisor never queries telemetry or source code directly and has no access to the domain-specific tools. Instead, it calls the relevant subagents as needed and synthesizes their findings into a hypothesis, refining it over the course of the investigation to form an accurate analysis.

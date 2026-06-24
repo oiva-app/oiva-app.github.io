@@ -6,25 +6,14 @@ type FigureProps = {
   src: string;
   alt: string;
   caption: string;
+  clickable: boolean;
 };
 
-export default function Figure({ src, alt, caption }: FigureProps) {
+export default function Figure({ src, alt, caption, clickable = true }: FigureProps) {
   const [visible, setVisible] = useState(false);
 
-  return (
-    <>
-      <figure style={{ margin: "var(--space-xl) 10px" }}>
-        <img
-          onClick={() => setVisible(true)}
-          src={src}
-          alt={alt}
-          style={{ width: "100%", height: "auto", cursor: "pointer" }}
-        />
-        <figcaption style={{ color: "var(--color-text-muted)", textAlign: "center" }}>
-          {caption}
-        </figcaption>
-      </figure>
-
+  function LightboxWrapper() {
+    return (
       <Lightbox
         open={visible}
         close={() => setVisible(false)}
@@ -55,12 +44,31 @@ export default function Figure({ src, alt, caption }: FigureProps) {
         controller={{ closeOnBackdropClick: true }}
         styles={{
           container: {
+            // background: "var(--color-surface)",
             background: "rgba(0, 0, 0, 0.40)",
             margin: 0,
             padding: 0,
           },
         }}
       />
+    )
+  }
+
+  return (
+    <>
+      <figure style={{ margin: "var(--space-xl) 10px" }}>
+        <img
+          onClick={ clickable ? () => setVisible(true) : () => {}}
+          src={src}
+          alt={alt}
+          style={{ width: "100%", height: "auto", cursor: clickable ? "pointer" : "auto" }}
+        />
+        <figcaption style={{ color: "var(--color-text-muted)", textAlign: "center" }}>
+          {caption}
+        </figcaption>
+      </figure>
+
+      {clickable ? <LightboxWrapper /> : null}
     </>
   );
 }
