@@ -260,13 +260,8 @@
 
 <style>
   .workflow-figure {
-    background: var(--color-card);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-card);
     margin: var(--space-xl) auto 0;
-    max-width: 760px;
-    overflow: hidden;
+    max-width: 880px;
   }
 
   .workflow-figure__svg {
@@ -275,9 +270,6 @@
     width: 100%;
   }
 
-  /* The figure is a fixed three-column layout; on narrow viewports its in-SVG
-     text would scale down to an illegible size. Below the breakpoint, scroll
-     horizontally and hold a readable minimum width instead of squashing. */
   @media (max-width: 640px) {
     .workflow-figure {
       overflow-x: auto;
@@ -289,9 +281,6 @@
     }
   }
 
-  /* ---- Dark mode: remap the dark-on-light artwork onto sage/text tokens ----
-     Light mode keeps the original inline colors untouched. CSS rules override
-     SVG presentation attributes, so only the dark overrides live here. */
   :global([data-theme="dark"]) .wf-outline {
     stroke: #a6c7a0;
   }

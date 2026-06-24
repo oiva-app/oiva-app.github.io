@@ -1,0 +1,380 @@
+---
+// A condensed, static example of Oiva's investigation report structure.
+// Kept as real HTML (not an image) so it stays selectable, accessible, and
+// legible at any width. All styles are scoped under .oiva-report and driven by
+// local CSS vars; the dark theme re-declares those vars in one block.
+---
+
+<div class="oiva-report">
+  <article class="oiva-report__card" aria-label="Example Oiva investigation report">
+
+    <!-- Header -->
+    <div class="oiva-report__header">
+      <div class="oiva-report__topline">
+        <div class="oiva-report__brand">
+          <div class="oiva-report__logo">
+            <!-- Oiva bear mark (cropped from the brand logo; wordmark + white bg removed) -->
+            <svg viewBox="78 70 368 288" width="24" height="19" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Oiva"><path fill="#31513C" d="M182.75,288.42c-1.64-5.29-4.42-8.41-8.27-10.59-2.85-.75-5.69-.63-8.53-.29-2,.25-3.64,1.16-4.81,2.75-1.27,1.72-2.38,3.55-3.45,5.17-1.32,3.04-1.83,6.03-2.29,9.11-.53,3.51-1.19,6.99-1.4,10.55-.13,2.1-.92,4.16-1.2,6.26-.28,2.11-.19,4.28-1.1,6.28-.27,4.98-1.86,9.76-2.07,14.77-.17,4.01-.93,8-1.49,12.48-1.28,3.07-3.77,5.42-7.63,6.54-3.61,0-7.4,0-11.2,0-1.9,0-3.81.11-5.65-.51-2.56-.87-5.1.54-7.74-.1-2.51-.6-5.18-.35-7.77.32-1.36.35-2.82.39-4.24.47-1.18.07-2.37.01-3.27.01-3.11-.83-5.7-1.92-7.32-5.17-.79-3.73-1.46-7.92-1.61-12.2-.13-3.79-.26-7.58-1.25-11.3-.48-1.8-.34-3.78-.39-5.68-.06-2.14.02-4.28-.03-6.42-.03-1.18.09-2.48-.34-3.52-1.14-2.74-1.03-5.58-1.07-8.43-.04-2.85-.02-5.71-.23-8.55-.21-2.83-.75-5.64-1-8.47-.25-2.84-.07-5.73-.54-8.53-.86-5.17-1.33-10.36-1.23-15.59.04-2.18-.71-4.22-.8-6.34-.26-6.17-.66-12.34-.29-18.52.13-2.13.26-4.28.2-6.41-.12-4.79.84-9.45,1.59-14.12.63-3.97,1.33-7.96,2.52-11.8,1.75-5.66,3.57-11.3,5.6-16.87,1.05-2.88,2.51-5.63,3.97-8.34,3.26-6.08,6.97-11.87,11.64-17,1.76-1.93,3.4-3.96,5.12-5.93,3-3.41,6.58-6.17,10.1-8.99,5.94-4.76,12.36-8.8,19.12-12.3.21-.11.45-.18.64-.31,6.54-4.55,14.07-6.77,21.53-9.11,5.64-1.77,11.39-3.21,17.11-4.75.91-.25,1.87-.31,2.81-.39,2.6-.21,5.2-.37,7.74-1.14,1.12-.34,2.35-.26,3.53-.41,3.05-.39,6.1-1.08,9.16-1.13,3.08-.05,6.16.04,9.25-.05,4.04-.12,8.08-.09,12.12.08,5.92.25,11.79,1.34,17.73,1.34,4.17,1.14,8.46,1.09,12.72,1.37.71.05,1.46,0,2.12.23,3.23,1.09,6.59.68,9.89.94,4.96.4,9.33-1.34,13.57-3.56,1.24-.65,2.31-1.69,2.42-3.19-.18-1.63-1.26-2.62-2.19-3.68-1.42-1.62-2.57-3.4-3.26-5.46-1.1-3.27-1.26-4.17-1.26-8.42.87-2.95,2.54-5.56,3.89-8.33.88-1.79,2.26-3.08,3.96-3.97,2.95-1.53,5.96-2.94,8.28-4.08,4.67-1.39,8.27.14,11.69,1.68,3.73,1.68,6.74,4.42,8.81,8.42.61,2.73,1.28,5.73,1.92,8.55,1.26,2.13,3.13,2.58,5.02,1.86,3.21-1.22,6.5-1.2,9.82-1.38,3.85-.21,7.58.21,11.13,1.43,1.35-.03,2.38-.54,3.22-1.46,1.59-2.2,1.62-4.91,2.26-7.26q3.03-3.81,9.35-7.83c1.52-.49,3.1-1,4.68-1.51h5.91c1.85.7,3.85,1.43,5.83,2.2,2.51.98,4.52,2.61,6.08,4.79,1.1,1.54,2.1,3.16,2.34,3.52,3.16,6.45,2.13,11.48.03,16.13.21,2.37,1.37,3.85,2.82,5.13,1.78,1.57,3.62,3.06,5.41,4.62,2.54,2.21,4.51,4.86,6.03,7.87,1.71,3.4,3.59,6.69,5.89,9.74.85,1.13,1.68,2.34,2.23,3.64,1.58,3.77,4.11,6.93,6.45,10.21,1.8,2.53,4.06,4.59,6.68,6.34,4.95,3.3,9.98,6.41,15.54,8.61,1.8.71,3.29,1.9,4.2,3.97.45,2.65.13,5.37-.86,8.16-1.59,4.48-3.22,8.92-5.41,13.03-4.11,4.94-9.27,8.28-14.84,11.04-2.13,1.05-4.33,1.95-6.5,2.91-3.72,1.65-7.68,2.56-11.64,3.14-4.52.66-8.71,2.23-12.96,3.7-2.46.86-4.82,1.98-6.91,2.85-3.72,3.13-7.22,5.98-10.6,8.96-1.23,1.09-2.29,2.41-3.28,3.73-2.29,3.03-4.3,6.26-6.83,9.12-1.41,1.59-2.37,3.52-3.29,5.47-2.13,4.52-3.81,9.2-5.28,13.95-.77,2.49-1.38,5.02-1.39,7.68-.02,5.71-1.43,11.3-1.66,17-1.23,3.91-1.02,7.98-1.4,11.99-.43,4.48-1.12,8.94-1.99,13.36-.18.93-.4,1.86-.44,2.8-.16,3.56-.27,7.1-1.24,10.59-.44,1.56-.21,3.31-.31,4.96-.2,3.07.03,6.2-1.17,9.14-.17.43-.24.94-.22,1.4.26,5.5-1.48,10.8-1.54,16.27,0,.46-.2.93-.38,1.7-.63.64-1.44,1.48-2.3,2.37-1.69.16-3.35.49-4.99.43-11.64-.4-23.28-.07-34.92-.11-2.13,0-4.26-.09-5.84-.12-2.66-.96-4.21-2.37-5.29-4.39-1.38-3.77-2.14-7.7-1.93-11.8.05-.94.06-1.98-.3-2.81-1.06-2.49-1.04-5.09-1.22-7.7-.11-1.65-.46-3.28-.7-4.92-.18-1.17-.44-2.34-.53-3.52-.2-2.61-.37-5.19-1.04-7.75-.42-1.58-.39-3.3-.43-4.96-.08-3.8-.19-7.58-1.1-11.32-.39-1.6-.37-3.3-.56-5.21-.79-1.73-1.59-3.72-2.58-5.6-2.1-3.98-5.57-5.62-9.96-5.64-2.45-.01-4.67.72-7.25,2.02-.99,1.02-2.31,2.37-3.29,3.37-.43.89-.73,1.29-.84,1.74-.94,3.92-1.86,7.84-2.75,11.77-.16.69-.2,1.41-.24,2.12-.31,6.65-1.33,13.21-2.64,19.73-.28,1.39-.25,2.84-.41,4.25-.14,1.17-.34,2.34-.53,3.51-.27,1.64-.68,3.26-.82,4.91-.22,2.6-.31,5.2-1.04,7.75-.32,1.12-.22,2.36-.28,3.54-.09,1.66-.17,3.32-.25,5.06-.43.79-.78,1.7-1.37,2.42-.58.71-1.32,1.43-2.14,1.8-2.19.99-4.54,1.6-6.93.93-2.34-.66-4.7-.58-7.07-.61-3.8-.05-7.6-.14-11.41-.16-1.42,0-2.91-.12-4.26.21-4.46,1.09-8.97.71-13.47.78-.47,0-.95,0-1.23,0-2.06-.48-3.89-.98-5.29-2.48-1.2-2.03-1.88-4.24-2.22-6.64-.74-5.16-1.08-10.38-2.42-15.45-.12-.45-.2-.94-.19-1.41.16-6.23-1.29-12.25-2.45-18.3-.62-3.26-.71-6.61-1.65-9.83-.33-1.11-.17-2.36-.21-3.55-.08-1.9-.14-3.8-.2-5.38ZM368.36,159.22h3.78c4.78-1.2,6.81-4.05,7.17-8.18-.77-3.16-2.01-5.89-5.25-7.34-2.2-.61-4.56-.87-6.77.26-2.17,1.1-3.65,2.93-4.49,5.07-1,4.12.59,7.03,3.82,9.22.39.26.82.46,1.74.97Z"/></svg>
+          </div>
+          <span class="oiva-report__brandlabel">OIVA INCIDENT REPORT</span>
+        </div>
+        <span class="oiva-report__status">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
+          Report Ready
+        </span>
+      </div>
+
+      <h3 class="oiva-report__title">502 errors on <span class="mono">/api/orders</span> gateway</h3>
+
+      <div class="oiva-report__meta">
+        <span class="oiva-report__env">homelab-env</span>
+        <span class="oiva-report__timer">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          Time to report <strong>1m 43s</strong>
+        </span>
+      </div>
+    </div>
+
+    <!-- Timed checklist -->
+    <div class="oiva-report__checklist">
+      <div class="oiva-report__check"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg> Alert verified</div>
+      <div class="oiva-report__check"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg> <span>Investigated telemetry — sustained 502s from an unreachable upstream <span class="oiva-report__dur">39s</span></span></div>
+      <div class="oiva-report__check"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg> <span>Examined codebase — matches unreachable orders upstream, not a proxy bug <span class="oiva-report__dur">29s</span></span></div>
+      <div class="oiva-report__check"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg> Investigation concluded</div>
+      <div class="oiva-report__check"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg> Report written <span class="oiva-report__dur">16s</span></div>
+    </div>
+
+    <!-- Body -->
+    <div class="oiva-report__body">
+
+      <div class="oiva-report__col">
+        <div class="oiva-report__eyebrow">SUMMARY</div>
+        <p class="oiva-report__para">Constant 502s on POST /api/orders in homelab-env, starting ~00:38 UTC and persisting through the alert window — a user-facing failure in order creation.</p>
+
+        <div class="oiva-report__eyebrow">HYPOTHESIS</div>
+        <p class="oiva-report__para oiva-report__para--hyp"><span class="oiva-report__confidence">I'm fairly confident</span> the gateway can't reach the upstream orders service. 26/26 requests failed with a latency distribution matching the configured upstream timeout — an orders outage, not a gateway code regression.</p>
+
+        <div class="oiva-report__evidence">
+          <div class="oiva-report__ev"><span class="tag tag--telemetry">TELEMETRY</span><span class="oiva-report__ev-text">every failing request had <span class="mono">upstream.reachable=false</span> at ~5.0s (P99 5009ms) — matches a fixed upstream timeout.</span></div>
+          <div class="oiva-report__ev"><span class="tag tag--codebase">CODEBASE</span><span class="oiva-report__ev-text">gateway returns 502 with <span class="mono">upstream.reachable=false</span> when the fetch throws; <span class="mono">ORDERS_TIMEOUT_MS</span> defaults to 5000ms.</span></div>
+        </div>
+      </div>
+
+      <div class="oiva-report__col">
+        <div class="oiva-report__eyebrow">AGAINST/RULED OUT</div>
+        <div class="oiva-report__evidence">
+          <div class="oiva-report__ev"><span class="tag tag--codebase-r">CODEBASE</span><span class="oiva-report__ev-text">no recent code change in gateway or orders explains a new /api/orders regression.</span></div>
+          <div class="oiva-report__ev"><span class="tag tag--gap">GAP</span><span class="oiva-report__ev-text">trace waterfall returned no spans, so the downstream host couldn't be confirmed from trace data alone.</span></div>
+        </div>
+
+        <div class="oiva-report__eyebrow">NEXT STEPS</div>
+        <p class="oiva-report__para">Check orders-service health &amp; reachability from gateway around 00:38 UTC — restarts, DNS, and whether <span class="mono">ORDERS_URL</span> pointed to a live endpoint.</p>
+
+        <div class="oiva-report__eyebrow">INVESTIGATION STEPS</div>
+        <div class="oiva-report__tools">
+          <span class="oiva-report__tool">honeycomb_get_workspace_context</span>
+          <span class="oiva-report__tool">honeycomb_run_query ×5</span>
+          <span class="oiva-report__tool">honeycomb_get_trace</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+</div>
+
+<style>
+  /* =========================================================
+     OIVA REPORT CARD
+     Palette lives in the local vars below; everything is scoped
+     under .oiva-report. The dark theme re-declares the vars in
+     one block further down.
+     ========================================================= */
+  .oiva-report {
+    --green: #22402e;
+    --green-logo: #2f4a38;
+    --sage: #5e8e70;
+    --sage-text: #3a5a45;
+    --sage-tint: #e8f0e9;
+    --card: #fdfcf7;
+    --border: #e9e2d3;
+    --border-soft: #f0ece2;
+    --text: #3a4a3e;
+    --muted: #5f6e61;
+    --faint: #9a9486;
+    --mono-bg: #f1ecdf;
+    --logo-bg: #f4efe3;
+    --logo-border: #e4dccb;
+    --checklist-bg: #f4f8f4;
+    --code-tag: #7a5a2a;
+    --code-tint: #f4ecdd;
+    --ruled-tag-bg: #f1e6d2;
+    --gap-text: #8a6a2c;
+    --tool-bg: #eef3ee;
+    --card-shadow: 0 6px 22px rgba(58, 82, 64, 0.1);
+
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+    box-sizing: border-box;
+    margin: var(--space-xl) auto 0;
+    max-width: 880px;
+    width: 100%;
+  }
+  .oiva-report *,
+  .oiva-report *::before,
+  .oiva-report *::after { box-sizing: border-box; }
+
+  .oiva-report__card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+  }
+
+  /* ---- Header ---- */
+  .oiva-report__header {
+    padding: 1.25rem 1.5rem 1.1rem;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .oiva-report__topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .oiva-report__brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .oiva-report__logo {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--logo-bg);
+    border: 1px solid var(--logo-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .oiva-report__logo svg { display: block; }
+  .oiva-report__brandlabel {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+  .oiva-report__status {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--sage-text);
+    background: var(--sage-tint);
+    padding: 3px 9px;
+    border-radius: 6px;
+  }
+  .oiva-report__title {
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--green);
+    line-height: 1.3;
+    margin: 0 0 10px;
+  }
+  .oiva-report__meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .oiva-report__env {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--code-tag);
+    background: var(--code-tint);
+    padding: 3px 9px;
+    border-radius: 6px;
+  }
+  .oiva-report__timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .oiva-report__timer strong { color: var(--green); font-weight: 600; }
+
+  /* ---- Timed checklist ---- */
+  .oiva-report__checklist {
+    padding: 1rem 1.5rem;
+    background: var(--checklist-bg);
+    border-bottom: 1px solid var(--border-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .oiva-report__check {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .oiva-report__check svg {
+    flex-shrink: 0;
+    color: var(--sage);
+    margin-top: 1px;
+  }
+  .oiva-report__dur {
+    color: var(--faint);
+    font-family: var(--mono);
+    font-size: 11px;
+  }
+
+  /* ---- Body ---- */
+  /* Two columns on wider viewports keep the card short; the letterhead
+     (header + checklist) stays full width above. Collapses to one column
+     where there isn't room. */
+  .oiva-report__body {
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 0;
+    row-gap: 1.5rem;
+  }
+  .oiva-report__col:first-child { padding-right: 1.75rem; }
+  .oiva-report__col + .oiva-report__col {
+    padding-left: 1.75rem;
+    border-left: 1px solid var(--border-soft);
+  }
+  .oiva-report__col > *:last-child { margin-bottom: 0; }
+
+  @media (max-width: 680px) {
+    .oiva-report__body { grid-template-columns: 1fr; }
+    .oiva-report__col:first-child { padding-right: 0; }
+    .oiva-report__col + .oiva-report__col {
+      padding-left: 0;
+      border-left: none;
+    }
+  }
+  .oiva-report__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    color: var(--sage);
+    margin-bottom: 7px;
+  }
+  /* Uniform section marker — a small sage tick gives every label the same
+     light structure without any one section reading as a callout. */
+  .oiva-report__eyebrow::before {
+    content: "";
+    flex-shrink: 0;
+    width: 3px;
+    height: 11px;
+    border-radius: 2px;
+    background: var(--sage);
+  }
+  .oiva-report__para {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.65;
+    margin: 0 0 1.5rem;
+  }
+  .oiva-report__para--hyp { margin-bottom: 1.25rem; }
+  .oiva-report__confidence { font-style: italic; color: var(--muted); }
+
+  .mono {
+    font-family: var(--mono);
+    font-size: 0.86em;
+    background: var(--mono-bg);
+    padding: 0 4px;
+    border-radius: 4px;
+  }
+
+  /* ---- Evidence ---- */
+  .oiva-report__evidence {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-bottom: 1.25rem;
+  }
+  .oiva-report__ev {
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+  }
+  .oiva-report__ev-text {
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.55;
+  }
+  .tag {
+    flex-shrink: 0;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-top: 2px;
+    white-space: nowrap;
+  }
+  .tag--telemetry,
+  .tag--codebase  { color: var(--code-tag); background: var(--code-tint); }
+
+  /* ---- Ruled out (presented as a plain section, like Evidence) ---- */
+  .tag--codebase-r { color: var(--code-tag); background: var(--ruled-tag-bg); }
+  .tag--gap        { color: var(--gap-text);  background: var(--ruled-tag-bg); }
+
+  /* ---- Investigation steps (tool-call chips) ---- */
+  .oiva-report__tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .oiva-report__tool {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--sage-text);
+    background: var(--tool-bg);
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+
+  /* ---- Dark theme: re-declare the palette onto the site's dark tokens ---- */
+  :global([data-theme="dark"]) .oiva-report {
+    --green: #e7efe7;
+    --sage: #a6c7a0;
+    --sage-text: #cfe3d4;
+    --sage-tint: rgba(166, 199, 160, 0.14);
+    --card: #102b28;
+    --border: rgba(231, 239, 231, 0.14);
+    --border-soft: rgba(231, 239, 231, 0.08);
+    --text: #d6e0d8;
+    --muted: #a9bab2;
+    --faint: #82968f;
+    --mono-bg: rgba(231, 239, 231, 0.08);
+    --logo-bg: #16332f;
+    --logo-border: rgba(231, 239, 231, 0.12);
+    --checklist-bg: rgba(231, 239, 231, 0.025);
+    --code-tag: #d9bd69;
+    --code-tint: rgba(217, 189, 105, 0.12);
+    --ruled-tag-bg: rgba(217, 189, 105, 0.12);
+    --gap-text: #cdb87f;
+    --tool-bg: rgba(166, 199, 160, 0.1);
+    --card-shadow: 0 10px 32px rgba(0, 0, 0, 0.28);
+  }
+
+  /* The bear logo path is a fixed dark green; lift it to sage so it stays
+     visible on the dark logo tile. */
+  :global([data-theme="dark"]) .oiva-report__logo svg path {
+    fill: #a6c7a0;
+  }
+</style>
