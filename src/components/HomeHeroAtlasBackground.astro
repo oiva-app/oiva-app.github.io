@@ -6,21 +6,7 @@
     preserveAspectRatio="none"
     focusable="false"
   >
-    <defs>
-      <filter id="home-atlas-edge" x="-4%" y="-8%" width="108%" height="116%">
-        <feTurbulence
-          type="fractalNoise"
-          baseFrequency="0.01 0.03"
-          numOctaves="3"
-          seed="19"
-          result="edgeNoise"
-        />
-        <feDisplacementMap in="SourceGraphic" in2="edgeNoise" scale="8" xChannelSelector="R" yChannelSelector="G" />
-        <feGaussianBlur stdDeviation="0.45" />
-      </filter>
-    </defs>
-
-    <g class="home-atlas-sky" filter="url(#home-atlas-edge)">
+    <g class="home-atlas-sky">
       <path
         class="home-sky home-sky-one"
         d="M-120 118 C58 92 190 68 342 124 C514 188 682 238 878 178 C1064 120 1196 52 1408 92 C1536 116 1624 146 1720 120 L1720 300 C1530 322 1368 278 1202 310 C1006 348 844 424 640 374 C430 322 286 270 94 318 C2 340 -66 366 -120 348 Z"
@@ -35,7 +21,7 @@
       />
     </g>
 
-    <g class="home-atlas-fields" filter="url(#home-atlas-edge)">
+    <g class="home-atlas-fields">
       <path
         class="home-hill home-hill-mist"
         d="M-120 344 C18 292 180 250 354 318 C522 384 640 474 834 446 C1018 420 1132 300 1332 304 C1502 308 1594 388 1720 368 L1720 900 L-120 900 Z"
@@ -70,7 +56,6 @@
       />
     </g>
   </svg>
-  <span class="home-hero-atlas-background__fiber"></span>
 </div>
 
 <style>
@@ -165,16 +150,6 @@
     opacity: 0.22;
   }
 
-  .home-hero-atlas-background__fiber {
-    background-image:
-      radial-gradient(circle at 18% 24%, color-mix(in srgb, var(--color-text-subtle) 14%, transparent) 0 0.55px, transparent 0.75px),
-      radial-gradient(circle at 76% 58%, color-mix(in srgb, var(--color-bg-wash) 70%, transparent) 0 0.7px, transparent 1px);
-    background-size: 19px 23px, 29px 31px;
-    inset: 0;
-    opacity: 0.05;
-    position: absolute;
-  }
-
   :global([data-theme="dark"]) .home-hero-atlas-background {
     opacity: 0.88;
   }
@@ -232,10 +207,6 @@
   :global([data-theme="dark"]) .home-hill-ground-two {
     fill: #1e5059;
     opacity: 0.24;
-  }
-
-  :global([data-theme="dark"]) .home-hero-atlas-background__fiber {
-    opacity: 0.035;
   }
 
   @media (max-width: 920px) {

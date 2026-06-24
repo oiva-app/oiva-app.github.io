@@ -7,18 +7,6 @@
     focusable="false"
   >
     <defs>
-      <filter id="team-watercolor-edge" x="-4%" y="-4%" width="108%" height="108%">
-        <feTurbulence
-          type="fractalNoise"
-          baseFrequency="0.009 0.024"
-          numOctaves="3"
-          seed="17"
-          result="edgeNoise"
-        />
-        <feDisplacementMap in="SourceGraphic" in2="edgeNoise" scale="9" xChannelSelector="R" yChannelSelector="G" />
-        <feGaussianBlur stdDeviation="0.5" />
-      </filter>
-
       <linearGradient id="team-paper-warmth" x1="0" x2="1" y1="0" y2="1">
         <stop offset="0" class="gradient-stop-warm" />
         <stop offset="0.44" class="gradient-stop-mid" />
@@ -29,7 +17,7 @@
     <rect width="1600" height="900" class="paper-base" />
     <rect width="1600" height="900" fill="url(#team-paper-warmth)" />
 
-    <g filter="url(#team-watercolor-edge)">
+    <g>
       <path
         class="hill hill-mist-blue"
         d="M-80 230 C110 295 300 335 530 265 C750 200 900 185 1110 215 C1300 242 1480 290 1680 240 L1680 900 L-80 900 Z"
@@ -48,7 +36,6 @@
       />
     </g>
   </svg>
-  <span class="atlas-fiber"></span>
 </div>
 
 <style>
@@ -108,17 +95,6 @@
     opacity: 0.52;
   }
 
-  .atlas-fiber {
-    background-image:
-      radial-gradient(circle at 18% 24%, color-mix(in srgb, var(--color-text-subtle) 14%, transparent) 0 0.55px, transparent 0.75px),
-      radial-gradient(circle at 76% 58%, color-mix(in srgb, var(--color-bg-wash) 70%, transparent) 0 0.7px, transparent 1px),
-      linear-gradient(100deg, transparent 0 48%, color-mix(in srgb, var(--color-surface) 30%, transparent) 49% 51%, transparent 52% 100%);
-    background-size: 19px 23px, 29px 31px, 43px 47px;
-    inset: 0;
-    opacity: 0.09;
-    position: absolute;
-  }
-
   :global([data-theme="dark"]) .team-page-background {
     opacity: 0.68;
   }
@@ -143,7 +119,4 @@
     opacity: 0.72;
   }
 
-  :global([data-theme="dark"]) .atlas-fiber {
-    opacity: 0.05;
-  }
 </style>
