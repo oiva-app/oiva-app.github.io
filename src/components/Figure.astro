@@ -12,9 +12,10 @@ interface Props {
   alt: string;
   caption: string;
   clickable?: boolean;
+  style?: import("react").CSSProperties;
 }
 
-const { src, alt, caption, clickable = true } = Astro.props;
+const { src, alt, caption, clickable = false, style } = Astro.props;
 const imageSrc = typeof src === "string" ? src : src.src;
 ---
-<FigureLightbox src={imageSrc} alt={alt} caption={caption} clickable={clickable} client:visible />
+<FigureLightbox src={imageSrc} alt={alt} caption={caption} clickable={clickable} style={style} client:visible />

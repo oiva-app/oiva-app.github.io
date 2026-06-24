@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
@@ -7,9 +7,16 @@ type FigureProps = {
   alt: string;
   caption: string;
   clickable: boolean;
+  style?: CSSProperties;
 };
 
-export default function Figure({ src, alt, caption, clickable = true }: FigureProps) {
+export default function Figure({
+  src,
+  alt,
+  caption,
+  clickable = false,
+  style,
+}: FigureProps) {
   const [visible, setVisible] = useState(false);
 
   function LightboxWrapper() {
@@ -19,7 +26,6 @@ export default function Figure({ src, alt, caption, clickable = true }: FigurePr
         close={() => setVisible(false)}
         // Only supports a single slide!
         slides={[{ src }]}
-
         render={{
           // Hide prev/next buttons
           buttonPrev: () => null,
@@ -51,19 +57,34 @@ export default function Figure({ src, alt, caption, clickable = true }: FigurePr
           },
         }}
       />
-    )
+    );
   }
 
   return (
     <>
-      <figure style={{ margin: "var(--space-xl) 10px" }}>
+      <figure
+        style={{
+          margin: "var(--space-xl) 20px",
+          display: "flex",
+          flexDirection: "column",
+          alignContent: "center",
+          gap: "10px",
+        }}
+      >
         <img
-          onClick={ clickable ? () => setVisible(true) : () => {}}
+          onClick={clickable ? () => setVisible(true) : () => {}}
           src={src}
           alt={alt}
-          style={{ width: "100%", height: "auto", cursor: clickable ? "pointer" : "auto" }}
+          style={{
+            width: "100%",
+            height: "auto",
+            cursor: clickable ? "pointer" : "auto",
+            ...style,
+          }}
         />
-        <figcaption style={{ color: "var(--color-text-muted)", textAlign: "center" }}>
+        <figcaption
+          style={{ color: "var(--color-text-muted)", textAlign: "center" }}
+        >
           {caption}
         </figcaption>
       </figure>
