@@ -51,6 +51,7 @@ export default function Gallery() {
           ),
         }}
         carousel={{ padding: 0, spacing: 0 }}
+        controller={{ closeOnBackdropClick: true }}
         styles={{
           container: {
             background: "rgba(0, 0, 0, 0.40)",
