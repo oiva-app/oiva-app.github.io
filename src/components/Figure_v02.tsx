@@ -2,9 +2,7 @@ import { useState } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
-const slides = [
-  { src: "/src/assets/figures/900-finals/export/101.svg" },
-];
+const slides = [{ src: "/src/assets/figures/900-finals/export/101.svg" }];
 
 export default function Gallery() {
   const [visible, setVisible] = useState(false);
@@ -33,11 +31,10 @@ export default function Gallery() {
         close={() => setVisible(false)}
         slides={slides}
         render={{
-
           // Hide prev/next buttons if not needed
           buttonPrev: slides.length <= 1 ? () => null : undefined,
           buttonNext: slides.length <= 1 ? () => null : undefined,
-          
+
           // Workaround: forces the image to enlarge to fill lightbox
           slide: ({ slide }) => (
             <img
@@ -45,19 +42,18 @@ export default function Gallery() {
               alt=""
               style={{
                 width: "100%",
-                height: "100%",
                 objectFit: "contain",
                 display: "block",
                 padding: "2%",
+                background: "var(--color-surface)",
               }}
-
             />
           ),
         }}
         carousel={{ padding: 0, spacing: 0 }}
         styles={{
           container: {
-            background: "var(--color-surface)",
+            background: "rgba(0, 0, 0, 0.40)",
             padding: 0,
             margin: 0,
           },
