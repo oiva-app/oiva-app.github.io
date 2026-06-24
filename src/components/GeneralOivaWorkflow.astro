@@ -259,14 +259,12 @@
 </figure>
 
 <style>
+  /* Layout container only — no frame. The three step cards inside the SVG
+     provide the only boxing, so the workflow reads as an integrated diagram
+     rather than cards-within-a-card. */
   .workflow-figure {
-    background: var(--color-card);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-card);
     margin: var(--space-xl) auto 0;
-    max-width: 760px;
-    overflow: hidden;
+    max-width: 880px;
   }
 
   .workflow-figure__svg {

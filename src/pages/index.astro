@@ -11,30 +11,29 @@ import demoVideo from "../assets/video/oiva-demo.mp4";
 <BaseLayout title="Oiva" bareTitle description={heroSubtext}>
   <HomeHero />
 
+  <section class="home-section home-how-it-works" aria-labelledby="home-how-title">
+    <div class="home-section__inner">
+      <p class="eyebrow">Workflow</p>
+      <h2 id="home-how-title">How Oiva Works</h2>
+      <p class="home-section__lead">From an alert to an evidence-backed incident report.</p>
+      <GeneralOivaWorkflow />
+    </div>
+  </section>
+
   <section class="home-section home-demo" aria-labelledby="home-demo-title">
-    <div class="home-section__inner home-demo__inner">
-      <div class="home-demo__copy">
-        <p class="eyebrow">Demo</p>
-        <h2 id="home-demo-title">See Oiva receive an alert</h2>
-        <p>A production alert arrives in Slack and starts an investigation workflow.</p>
-      </div>
+    <div class="home-section__inner">
+      <p class="eyebrow">Demo</p>
+      <h2 id="home-demo-title">See Oiva In Action</h2>
+      <p class="home-section__lead">A production alert arrives and starts an investigation workflow.</p>
       <div class="home-demo__media">
         <Video src={demoVideo} />
       </div>
     </div>
   </section>
 
-  <section class="home-section home-how-it-works" aria-labelledby="home-how-title">
-    <div class="home-section__inner">
-      <p class="eyebrow">Workflow</p>
-      <h2 id="home-how-title">How Oiva Works</h2>
-      <GeneralOivaWorkflow />
-    </div>
-  </section>
-
   <section class="home-section home-next-steps" aria-labelledby="home-next-title">
     <div class="home-section__inner">
-      <h2 id="home-next-title">Next steps</h2>
+      <h2 id="home-next-title">Next Steps</h2>
       <div class="button-row home-next-steps__links">
         <a class="button button-primary" href={withBase("/case-study/")}>Case Study</a>
         <a class="button button-secondary" href={withBase("/get-started/manual-setup/")}>Get Started</a>
@@ -53,13 +52,6 @@ import demoVideo from "../assets/video/oiva-demo.mp4";
     max-width: var(--container-wide);
   }
 
-  .home-demo__inner {
-    align-items: center;
-    display: grid;
-    gap: var(--space-2xl);
-    grid-template-columns: minmax(0, 0.85fr) minmax(18rem, 1.15fr);
-  }
-
   .home-demo h2,
   .home-how-it-works h2,
   .home-next-steps h2 {
@@ -68,7 +60,7 @@ import demoVideo from "../assets/video/oiva-demo.mp4";
     margin: 0;
   }
 
-  .home-demo__copy p:not(.eyebrow) {
+  .home-section__lead {
     color: var(--color-muted);
     font-size: var(--text-md);
     line-height: 1.6;
@@ -81,6 +73,8 @@ import demoVideo from "../assets/video/oiva-demo.mp4";
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-card);
+    margin: var(--space-xl) auto 0;
+    max-width: 880px;
     min-width: 0;
     overflow: hidden;
     padding-top: 2.25rem;
@@ -108,12 +102,6 @@ import demoVideo from "../assets/video/oiva-demo.mp4";
   .home-next-steps__links {
     justify-content: center;
     margin-top: var(--space-lg);
-  }
-
-  @media (max-width: 920px) {
-    .home-demo__inner {
-      grid-template-columns: 1fr;
-    }
   }
 
   @media (max-width: 620px) {
