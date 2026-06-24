@@ -4,7 +4,7 @@ import "yet-another-react-lightbox/styles.css";
 
 
 type FigureProps = {
-  src: string | { src: string };
+  src: string;
   alt: string;
   caption: string;
 };
@@ -12,20 +12,12 @@ type FigureProps = {
 export default function Figure({ src, alt, caption }: FigureProps) {
   const [visible, setVisible] = useState(false);
 
-  let imagePath: string = ""
-
-  if (typeof src !== "string") {
-    imagePath = src.src
-  } else {
-    imagePath = src
-  }
-
   return (
     <>
       <figure>
         <img
           onClick={() => setVisible(true)}
-          src={imagePath}
+          src={src}
           alt={alt}
           style={{ width: "100%", height: "auto", cursor: "pointer" }}
         />
@@ -35,9 +27,9 @@ export default function Figure({ src, alt, caption }: FigureProps) {
       <Lightbox
         open={visible}
         close={() => setVisible(false)}
-        slides={[{ src: imagePath }]}
+        slides={[{ src }]}
         render={{
-          // Hide prev/next buttons if not needed
+          // Hide prev/next buttons
           buttonPrev: () => null,
           buttonNext: () => null,
 
