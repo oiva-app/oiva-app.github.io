@@ -25,6 +25,7 @@ export default function Figure({
       <figure
         style={{
           margin: "var(--space-xl) 20px",
+          maxWidth: "100%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -37,10 +38,17 @@ export default function Figure({
           src={src}
           alt={alt}
           style={{
-            width: "100%",
-            height: "auto",
+            display: "block",
             cursor: clickable ? "pointer" : "auto",
+            aspectRatio: "auto",
             ...style,
+            maxWidth: style?.maxWidth
+              ? `min(${
+                  typeof style.maxWidth === "number"
+                    ? `${style.maxWidth}px`
+                    : style.maxWidth
+                }, 100%)`
+              : "100%",
           }}
         />
         <figcaption
