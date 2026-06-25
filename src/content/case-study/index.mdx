@@ -76,6 +76,7 @@ src={alertOverwhelmImage}
 alt="An on-call engineer trying to make sense of a production alert at 2 a.m."
 caption="Trying to make sense of an alert at 2 a.m."
 clickable={false}
+style={{maxWidth: "650px"}}
 />
 
 <Figure
@@ -124,12 +125,14 @@ Oiva is a self-hosted, open-source incident investigation agent. When a producti
     src={oivaOverallDesignImage}
     alt="Vendor-neutral overview diagram showing Oiva receiving an alert, investigating telemetry and code, and delivering a report."
     caption="Vendor-neutral overview of Oiva."
+    style={{maxHeight: "300px"}}
 />
 
 <Figure
     src={oivaVendorDesignImage}
     alt="Oiva overview diagram showing Honeycomb as the observability platform and Slack as the report endpoint."
     caption="Oiva with Honeycomb as the observability platform and Slack as the report endpoint."
+    style={{maxHeight: "300px"}}
 />
 
 Oiva’s aim is not to replace the engineer’s judgment but to compress the slowest and often most stressful part of incident response: the initial scramble for context.
@@ -309,7 +312,7 @@ The value of the evals dataset lies not in the final pass/fail grade, but in the
     src={beforeEvalsImage}
     alt="Diagram showing that before formal evals it was difficult to judge agent output quality or compare investigations across versions."
     caption="Before evals, it was difficult to gauge agent output quality in absolute terms or relative to previous investigations."
-    
+    style={{maxWidth: "750px"}}
   />
 
   <Figure
@@ -317,6 +320,7 @@ The value of the evals dataset lies not in the final pass/fail grade, but in the
     alt="Diagram showing that after implementing evals, agent performance can be measured against goals and compared across versions."
     caption="After evals, we could evaluate agent performance against specific goals and compare versions more effectively."
     clickable={true}
+    style={{maxWidth: "650px"}}
   />
 
 #### Improving the Foundation of the Telemetry Investigation
@@ -349,6 +353,7 @@ At its core, Oiva is a self-hosted, cloud-neutral application that runs in a con
   src={abstractInfraImage}
   alt="High-level infrastructure diagram showing Oiva's simple deployment architecture."
   caption="At a high level, Oiva's architecture is simple; the detailed infrastructure appears below."
+  style={{ maxWidth: "650px"}}
 />
 
 ### One Application Service vs. Split Services
@@ -359,7 +364,7 @@ Oiva runs both the HTTP API and the background workflow in a single container. S
   src={fargateLongRunningImage}
   alt="Diagram of a single long-running ECS task that handles all of Oiva's duties, including alert ingestion and investigations."
   caption="A long-running ECS task that handles all of Oiva's duties makes for simple infrastructure, but requires more code complexity, hidden in this diagram."
-  style={{ maxWidth: "800px"}}
+  style={{ maxWidth: "700px"}}
 />
 
 <Figure
