@@ -56,6 +56,7 @@ export default function Figure({
 
       {!clickable ? null : (
         <Lightbox
+          className="invert-when-dark"
           open={visible}
           plugins={[Zoom]}
           zoom={{
