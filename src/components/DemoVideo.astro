@@ -13,6 +13,7 @@ import demoPoster from "../assets/video/oiva-demo-poster.jpg";
     controls
     playsinline
     preload="none"
+    tabindex="0"
   >
     Your browser does not support the video tag.
   </video>
@@ -40,6 +41,7 @@ import demoPoster from "../assets/video/oiva-demo-poster.jpg";
     });
 
     playButton.addEventListener("click", () => {
+      video.focus();
       void video.play();
     });
   });
