@@ -92,7 +92,8 @@ const usesFramedContentLayout = section === "caseStudy" || section === "getStart
     margin: var(--space-md) 0 var(--space-xl);
   }
 
-  @media (max-width: 900px) {
+  /* two-column breakpoint — must find-and-replace to keep in sync! */
+  @media (max-width: 1200px) {
     .content-shell {
       display: block;
       padding-top: var(--space-xl);

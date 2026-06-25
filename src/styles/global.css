@@ -132,6 +132,12 @@
   --motif-opacity-medium: 0.3;
 }
 
+/* DARK MODE SVG inversion*/
+[data-theme="dark"] .invert-when-dark[src*=".svg"],
+[data-theme="dark"] .invert-when-dark img[src*=".svg"] {
+filter: invert(1) hue-rotate(180deg);
+}
+
 * {
   box-sizing: border-box;
 }
