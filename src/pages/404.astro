@@ -62,6 +62,21 @@ import { withBase } from "../lib/urls";
         transparent 34%,
         color-mix(in srgb, var(--color-bg) 20%, transparent) 100%
       ),
+      url("../assets/backgrounds/404-forest-light.webp");
+    background-image:
+      linear-gradient(
+        90deg,
+        transparent 0%,
+        color-mix(in srgb, var(--color-bg) 18%, transparent) 44%,
+        color-mix(in srgb, var(--color-surface) 58%, transparent) 70%,
+        color-mix(in srgb, var(--color-surface) 78%, transparent) 100%
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--color-surface) 16%, transparent),
+        transparent 34%,
+        color-mix(in srgb, var(--color-bg) 20%, transparent) 100%
+      ),
       image-set(
         url("../assets/backgrounds/404-forest-light.avif") type("image/avif"),
         url("../assets/backgrounds/404-forest-light.webp") type("image/webp")
@@ -95,6 +110,21 @@ import { withBase } from "../lib/urls";
 
   :global([data-theme="dark"]) .not-found-hero__background {
     background-color: var(--color-bg);
+    background-image:
+      linear-gradient(
+        90deg,
+        rgba(6, 23, 22, 0.12) 0%,
+        rgba(6, 23, 22, 0.34) 48%,
+        rgba(6, 23, 22, 0.62) 74%,
+        rgba(6, 23, 22, 0.8) 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(6, 23, 22, 0.1),
+        transparent 40%,
+        rgba(6, 23, 22, 0.34) 100%
+      ),
+      url("../assets/backgrounds/404-forest-dark.webp");
     background-image:
       linear-gradient(
         90deg,
@@ -266,6 +296,19 @@ import { withBase } from "../lib/urls";
           color-mix(in srgb, var(--color-bg) 20%, transparent),
           color-mix(in srgb, var(--color-surface) 42%, transparent)
         ),
+        url("../assets/backgrounds/404-forest-light.webp");
+      background-image:
+        linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--color-surface) 88%, transparent) 0%,
+          color-mix(in srgb, var(--color-surface) 72%, transparent) 34%,
+          transparent 70%
+        ),
+        linear-gradient(
+          90deg,
+          color-mix(in srgb, var(--color-bg) 20%, transparent),
+          color-mix(in srgb, var(--color-surface) 42%, transparent)
+        ),
         image-set(
           url("../assets/backgrounds/404-forest-light.avif") type("image/avif"),
           url("../assets/backgrounds/404-forest-light.webp") type("image/webp")
@@ -274,6 +317,19 @@ import { withBase } from "../lib/urls";
     }
 
     :global([data-theme="dark"]) .not-found-hero__background {
+      background-image:
+        linear-gradient(
+          180deg,
+          rgba(6, 23, 22, 0.86) 0%,
+          rgba(6, 23, 22, 0.7) 38%,
+          rgba(6, 23, 22, 0.08) 74%
+        ),
+        linear-gradient(
+          90deg,
+          rgba(6, 23, 22, 0.18),
+          rgba(6, 23, 22, 0.44)
+        ),
+        url("../assets/backgrounds/404-forest-dark.webp");
       background-image:
         linear-gradient(
           180deg,

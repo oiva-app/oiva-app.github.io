@@ -10,6 +10,14 @@
         transparent 30%,
         color-mix(in srgb, var(--color-bg-soft) 12%, transparent) 100%
       ),
+      url("../assets/backgrounds/home-hero-light.webp");
+    background-image:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--color-surface) 10%, transparent),
+        transparent 30%,
+        color-mix(in srgb, var(--color-bg-soft) 12%, transparent) 100%
+      ),
       image-set(
         url("../assets/backgrounds/home-hero-light.avif") type("image/avif"),
         url("../assets/backgrounds/home-hero-light.webp") type("image/webp")
@@ -58,6 +66,14 @@
 
   :global([data-theme="dark"]) .home-hero-atlas-background {
     background-color: var(--color-bg);
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(6, 23, 22, 0.08),
+        transparent 34%,
+        rgba(6, 23, 22, 0.16) 100%
+      ),
+      url("../assets/backgrounds/home-hero-dark.webp");
     background-image:
       linear-gradient(
         180deg,
