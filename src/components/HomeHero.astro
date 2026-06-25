@@ -93,6 +93,7 @@ import { withBase } from "../lib/urls";
     margin: 0 auto;
     max-width: 52rem;
     text-align: center;
+    transform: translateY(calc(-1 * clamp(2rem, 5svh, 3.5rem)));
   }
 
   .home-hero__headline {
@@ -176,6 +177,10 @@ import { withBase } from "../lib/urls";
     .home-hero {
       min-height: auto;
       padding-block: var(--space-2xl) var(--space-3xl);
+    }
+
+    .home-hero__content {
+      transform: none;
     }
   }
 
