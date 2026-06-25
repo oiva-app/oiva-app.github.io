@@ -386,12 +386,18 @@
 
 <script>
   // reduced motion: freeze on the settled end frame
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    for (const svg of document.querySelectorAll<SVGSVGElement>(".workflow__svg")) {
-      try {
-        svg.pauseAnimations();
-        svg.setCurrentTime(5.9);
-      } catch {}
+  const freezeAnimations = () => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      for (const svg of document.querySelectorAll<SVGSVGElement>(".workflow__svg")) {
+        try {
+          svg.pauseAnimations();
+          svg.setCurrentTime(5.9);
+        } catch {}
+      }
     }
-  }
+  };
+
+  // run on initial load and after Astro View Transitions client-side navigations
+  freezeAnimations();
+  document.addEventListener("astro:page-load", freezeAnimations);
 </script>
