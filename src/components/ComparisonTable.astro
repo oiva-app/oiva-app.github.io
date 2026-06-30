@@ -1,23 +1,18 @@
 ---
-// Comparison of Oiva against the surveyed AI SRE tool categories.
-// Transposed layout: capabilities are rows, solutions are columns.
-
 import Check from "../assets/icon/check.svg";
 import X from "../assets/icon/x.svg";
 
 type Mark = "yes" | "partial" | "no";
 type Cell = Mark | { mark: Mark; note: string };
 
-// Single source of truth for how each mark renders. `Icon` (a Lucide SVG
-// component) wins when present; otherwise the ASCII `glyph` is used. Both the
-// cells and the legend read from this map, so this is the only swap point.
+// Lucide icons with ASCII fallback
 const MARKS: Record<Mark, { glyph: string; label: string; className: string; Icon?: typeof Check }> = {
   yes: { glyph: "Y", label: "yes", className: "mark-yes", Icon: Check },
   partial: { glyph: "~", label: "partial or limited", className: "mark-partial" },
   no: { glyph: "N", label: "no / not a focus", className: "mark-no", Icon: X },
 };
 
-const solutions: { name: string; examples?: string; isOiva?: boolean }[] = [
+const columnHeadings: { name: string; examples?: string; isOiva?: boolean }[] = [
   { name: "Oiva", isOiva: true },
   { name: "Standalone autonomous agents", examples: "Cleric, Resolve AI, Traversal" },
   { name: "IncidentFox"},
@@ -25,7 +20,6 @@ const solutions: { name: string; examples?: string; isOiva?: boolean }[] = [
   { name: "Incident-management platforms", examples: "incident.io, Rootly" },
 ];
 
-// Each row aligns to `solutions` order: [Oiva, Standalone, IncidentFox, ObsNative, IncidentMgmt]
 const rows: { criterion: string; cells: Cell[] }[] = [
   { criterion: "Open-source", cells: ["yes", "no", "yes", "no", "no"] },
   { criterion: "Self-hostable", cells: ["yes", "no", "yes", "no", "no"] },
@@ -50,7 +44,7 @@ const cellOf = (c: Cell): { mark: Mark; note?: string } =>
         <tr>
           <th scope="col" class="corner"><span class="sr-only">Capability</span></th>
           {
-            solutions.map((solution) => (
+            columnHeadings.map((solution) => (
               <th scope="col" class:list={["solution", solution.isOiva && "is-oiva"]}>
                 <span class="solution-name">{solution.name}</span>
                 {solution.examples && <span class="solution-examples">{solution.examples}</span>}
@@ -71,7 +65,7 @@ const cellOf = (c: Cell): { mark: Mark; note?: string } =>
                 const meta = MARKS[mark];
                 const Icon = meta.Icon;
                 return (
-                  <td class:list={[solutions[i].isOiva && "is-oiva"]}>
+                  <td class:list={[columnHeadings[i].isOiva && "is-oiva"]}>
                     <span class:list={["mark", meta.className]}>
                       <span class="glyph" aria-hidden="true">
                         {Icon ? <Icon /> : meta.glyph}
@@ -116,7 +110,6 @@ const cellOf = (c: Cell): { mark: Mark; note?: string } =>
 
   .comparison-scroll {
     border: 1px solid var(--border-subtle);
-    /* border-radius: var(--radius-md); */
     overflow-x: auto;
   }
 
@@ -182,7 +175,6 @@ const cellOf = (c: Cell): { mark: Mark; note?: string } =>
 
   .comparison .criterion {
     background: var(--color-surface-muted);
-    /* background: var(--color-surface); */
     color: var(--color-text);
     font-size: var(--text-sm);
     font-weight: 650;
@@ -192,11 +184,6 @@ const cellOf = (c: Cell): { mark: Mark; note?: string } =>
   .comparison .corner {
     background: var(--color-surface-muted);
     z-index: 2;
-  }
-
-  /* Oiva column emphasis */
-  .comparison .is-oiva {
-    /* background: var(--color-primary-soft); */
   }
 
   .comparison thead .is-oiva {
