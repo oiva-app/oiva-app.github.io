@@ -108,7 +108,7 @@ const cellOf = (c: Cell): { mark: Mark; note?: string } =>
 
   .comparison-scroll {
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
+    /* border-radius: var(--radius-md); */
     overflow-x: auto;
   }
 
@@ -168,11 +168,13 @@ const cellOf = (c: Cell): { mark: Mark; note?: string } =>
     left: 0;
     position: sticky;
     text-align: left;
+    background: var(--color-surface-muted);
     z-index: 1;
   }
 
   .comparison .criterion {
-    background: var(--color-surface);
+    background: var(--color-surface-muted);
+    /* background: var(--color-surface); */
     color: var(--color-text);
     font-size: var(--text-sm);
     font-weight: 650;
