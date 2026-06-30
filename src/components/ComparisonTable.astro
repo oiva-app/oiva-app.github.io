@@ -2,15 +2,19 @@
 // Comparison of Oiva against the surveyed AI SRE tool categories.
 // Transposed layout: capabilities are rows, solutions are columns.
 
+import Check from "../assets/icon/check.svg";
+import X from "../assets/icon/x.svg";
+
 type Mark = "yes" | "partial" | "no";
 type Cell = Mark | { mark: Mark; note: string };
 
-// Single source of truth for how each mark renders. Swap `glyph` here for a
-// Lucide icon component later — every cell + the legend read from this map.
-const MARKS: Record<Mark, { glyph: string; label: string; className: string }> = {
-  yes: { glyph: "Y", label: "yes", className: "mark-yes" },
+// Single source of truth for how each mark renders. `Icon` (a Lucide SVG
+// component) wins when present; otherwise the ASCII `glyph` is used. Both the
+// cells and the legend read from this map, so this is the only swap point.
+const MARKS: Record<Mark, { glyph: string; label: string; className: string; Icon?: typeof Check }> = {
+  yes: { glyph: "Y", label: "yes", className: "mark-yes", Icon: Check },
   partial: { glyph: "~", label: "partial or limited", className: "mark-partial" },
-  no: { glyph: "N", label: "no / not a focus", className: "mark-no" },
+  no: { glyph: "N", label: "no / not a focus", className: "mark-no", Icon: X },
 };
 
 const solutions: { name: string; examples?: string; isOiva?: boolean }[] = [
@@ -65,11 +69,12 @@ const cellOf = (c: Cell): { mark: Mark; note?: string } =>
               {row.cells.map((cell, i) => {
                 const { mark, note } = cellOf(cell);
                 const meta = MARKS[mark];
+                const Icon = meta.Icon;
                 return (
                   <td class:list={[solutions[i].isOiva && "is-oiva"]}>
                     <span class:list={["mark", meta.className]}>
                       <span class="glyph" aria-hidden="true">
-                        {meta.glyph}
+                        {Icon ? <Icon /> : meta.glyph}
                       </span>
                       <span class="sr-only">{meta.label}</span>
                     </span>
@@ -87,16 +92,19 @@ const cellOf = (c: Cell): { mark: Mark; note?: string } =>
   <figcaption class="legend">
     <span class="legend-title">Legend:</span>
     {
-      Object.values(MARKS).map((meta) => (
-        <span class="legend-item">
-          <span class:list={["mark", meta.className]}>
-            <span class="glyph" aria-hidden="true">
-              {meta.glyph}
+      Object.values(MARKS).map((meta) => {
+        const Icon = meta.Icon;
+        return (
+          <span class="legend-item">
+            <span class:list={["mark", meta.className]}>
+              <span class="glyph" aria-hidden="true">
+                {Icon ? <Icon /> : meta.glyph}
+              </span>
             </span>
+            {meta.label}
           </span>
-          {meta.label}
-        </span>
-      ))
+        );
+      })
     }
   </figcaption>
 </figure>
@@ -202,9 +210,15 @@ const cellOf = (c: Cell): { mark: Mark; note?: string } =>
 
   .comparison .glyph {
     font-family: var(--font-mono);
-    font-size: var(--text-md);
+    font-size: 1.5rem;
     font-weight: 700;
     line-height: 1;
+  }
+
+  .comparison .glyph :global(svg) {
+    display: block;
+    height: 1.5rem;
+    width: 1.5rem;
   }
 
   .comparison .mark-yes .glyph {
