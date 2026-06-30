@@ -16,7 +16,7 @@ const MARKS: Record<Mark, { glyph: string; label: string; className: string }> =
 const solutions: { name: string; examples?: string; isOiva?: boolean }[] = [
   { name: "Oiva", isOiva: true },
   { name: "Standalone autonomous agents", examples: "Cleric, Resolve AI, Traversal" },
-  { name: "IncidentFox", examples: "open-source standalone" },
+  { name: "IncidentFox"},
   { name: "Observability-platform-native", examples: "Datadog Bits AI, Dynatrace Davis" },
   { name: "Incident-management platforms", examples: "incident.io, Rootly" },
 ];
@@ -103,7 +103,7 @@ const cellOf = (c: Cell): { mark: Mark; note?: string } =>
 
 <style>
   .comparison {
-    margin: var(--space-xl) 0;
+    margin: var(--space-md) 0;
   }
 
   .comparison-scroll {
@@ -142,7 +142,7 @@ const cellOf = (c: Cell): { mark: Mark; note?: string } =>
   }
 
   .comparison .solution {
-    min-width: 9rem;
+    min-width: 8rem;
   }
 
   .comparison .solution-name {
@@ -157,7 +157,7 @@ const cellOf = (c: Cell): { mark: Mark; note?: string } =>
     margin-top: var(--space-2xs);
   }
 
-  /* Row headings — capability labels — pinned while scrolling sideways */
+  /* Row headings */
   .comparison .criterion,
   .comparison .corner {
     left: 0;
@@ -171,7 +171,7 @@ const cellOf = (c: Cell): { mark: Mark; note?: string } =>
     color: var(--color-text);
     font-size: var(--text-sm);
     font-weight: 650;
-    min-width: 11rem;
+    min-width: 7rem;
   }
 
   .comparison .corner {
@@ -181,7 +181,7 @@ const cellOf = (c: Cell): { mark: Mark; note?: string } =>
 
   /* Oiva column emphasis */
   .comparison .is-oiva {
-    background: var(--color-primary-soft);
+    /* background: var(--color-primary-soft); */
   }
 
   .comparison thead .is-oiva {
