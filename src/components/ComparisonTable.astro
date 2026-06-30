@@ -35,7 +35,7 @@ const cellOf = (c: Cell): { mark: Mark; note?: string } =>
 ---
 
 <figure class="comparison">
-  <div class="comparison-scroll">
+  <div class="comparison-scroll" tabindex="0" aria-label="Comparison table">
     <table>
       <caption class="sr-only">
         Existing solutions — comparison of Oiva against other AI SRE tool categories.
@@ -65,7 +65,7 @@ const cellOf = (c: Cell): { mark: Mark; note?: string } =>
                 const meta = MARKS[mark];
                 const Icon = meta.Icon;
                 return (
-                  <td class:list={[columnHeadings[i].isOiva && "is-oiva"]}>
+                  <td class:list={[columnHeadings[i]?.isOiva && "is-oiva"]}>
                     <span class:list={["mark", meta.className]}>
                       <span class="glyph" aria-hidden="true">
                         {Icon ? <Icon /> : meta.glyph}
